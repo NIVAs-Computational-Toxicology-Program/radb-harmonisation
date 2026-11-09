@@ -1,0 +1,39 @@
+# R
+.Rhistory
+.RData
+.Rproj.user/
+.Ruserdata
+*.Rproj.user
+renv/library/
+renv/local/
+renv/cellar/
+renv/lock/
+renv/python/
+renv/sandbox/
+renv/staging/
+.quarto/
+*_cache/
+*_files/
+
+# Secrets / credentials
+.Renviron
+.env
+*.pgpass
+.pgpass
+pg_service.conf
+*.pem
+*.key
+
+# Data & outputs (may contain sensitive DB extracts)
+data/raw/*
+data/processed/*
+output/figures/*
+output/tables/*
+output/reports/*
+!**/.gitkeep
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
