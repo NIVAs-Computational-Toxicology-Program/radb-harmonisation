@@ -25,6 +25,7 @@ pg_service.conf
 *.key
 
 # Data & outputs (may contain sensitive DB extracts)
+data/*
 data/raw/*
 data/processed/*
 output/figures/*

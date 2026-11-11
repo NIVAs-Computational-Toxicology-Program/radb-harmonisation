@@ -1,0 +1,1345 @@
+---
+title: "RADB Exploration"
+format: html
+---
+
+Purpose: explore RADB with a view to harmonisation.
+
+```{r}
+library(DBI)
+library(tidyverse)
+# requres RPostgres to be built + installed
+# which in turn requres PSQL to be installed
+
+# read in project-specific renviron
+readRenviron(".Renviron")
+
+# Check renviron variables exist
+pg_sysenv <- Sys.getenv(c(
+  "PGHOST",
+  "PGPORT",
+  "PGDATABASE",
+  "PGUSER",
+  "PGPASSWORD"
+))
+
+# check all exist
+stopifnot(!("" %in% pg_sysenv))
+# assign in environment
+list2env(as.list(pg_sysenv), envir = globalenv())
+
+con <- dbConnect(
+  RPostgres::Postgres(),
+  dbname = PGDATABASE,
+  host = PGHOST,
+  port = PGPORT,
+  user = PGUSER,
+  password = PGPASSWORD
+)
+
+## Functions ##
+sample_n_safe <- function(x, n) {
+  x_unique <- unique(x)
+  n_safe <- ifelse(length(x_unique) >= n, n, length(x_unique))
+  sample(x_unique, n_safe)
+}
+
+classify_value <- function(x) {
+  recode_values(x, c(NA, NULL) ~ "NA or NULL", 0 ~ "0", default = ">0")
+}
+```
+
+Which are the main tables in RADB?
+
+```{r}
+# relevant tables?
+# eyeballed from tables list as of 09.11.2026
+tables <- c(
+  "analytical_method",
+  "chemical_identifiers",
+  "chemical_name_lookup",
+  "data_source",
+  "data_type",
+  "data_type_sub",
+  "environ_compartment",
+  "environmental_con",
+  "exposure_env_summary",
+  "exposure_types_sample_matrix",
+  "extraction_method",
+  "fraction",
+  "gender",
+  "lifestage",
+  "measured_category",
+  "measured_type",
+  "parent_compounds",
+  "ref_id_type",
+  "reliab_eval_sys",
+  "sample_matrix",
+  "sampling_method",
+  "sites",
+  "species",
+  "species_identifier",
+  "stressor_source",
+  "stressor_type",
+  "taxonomy_ncbi_unique",
+  "tissue_ontology",
+  "units_conversion",
+  "user_ref"
+)
+
+# table sizes
+table_sizes <- dbGetQuery(
+  con,
+  "SELECT 
+    relname AS TableName, 
+    n_live_tup AS RowCount
+FROM 
+    pg_stat_user_tables
+ORDER BY 
+    n_live_tup DESC;
+"
+)
+
+table_sizes |> mutate(Relevant = tablename %in% tables)
+```
+
+We know already that `environmental_con` and `sites` are likely to be the most relevant tables for us, so they're a good place to start. 
+
+Before we do so, is there data validation/constraints associated with the database?
+
+```{r}
+database_constraints <- dbGetQuery(
+  con,
+  "SELECT * FROM information_schema.table_constraints;"
+)
+```
+
+Apparently not.
+
+# `environmental_con`
+
+```{r}
+read_or_write_parquet <- function(con, table_name, file_name) {
+  if (!file.exists(file_name)) {
+    table <- dbGetQuery(
+      con,
+      glue::glue("SELECT * FROM {table_name};")
+    )
+    nanoparquet::write_parquet(
+      table,
+      file_name
+    )
+  } else {
+    table <- nanoparquet::read_parquet(
+      file_name
+    )
+  }
+  table
+}
+
+sites <- read_or_write_parquet(con, "sites", "data/sites.parquet")
+environmental_con <- read_or_write_parquet(
+  con,
+  "environmental_con",
+  "data/environmental_con.parquet"
+)
+taxonomy_ncbi_unique <- read_or_write_parquet(
+  con,
+  "taxonomy_ncbi_unique",
+  "data/taxonomy_ncbi_unique.parquet"
+)
+
+species_group_species <- read_or_write_parquet(
+  con,
+  "species_group_species",
+  "data/species_group_species.parquet"
+)
+
+species_group <- read_or_write_parquet(
+  con,
+  "species_group",
+  "data/species_group.parquet"
+)
+
+gender <- read_or_write_parquet(
+  con,
+  "gender",
+  "data/gender.parquet"
+)
+
+lifestage <- read_or_write_parquet(
+  con,
+  "lifestage",
+  "data/lifestage.parquet"
+)
+
+fraction <- read_or_write_parquet(
+  con,
+  "fraction",
+  "data/fraction.parquet"
+)
+
+extraction_method <- read_or_write_parquet(
+  con,
+  "extraction_method",
+  "data/extraction_method.parquet"
+)
+
+sampling_method <- read_or_write_parquet(
+  con,
+  "sampling_method",
+  "data/sampling_method.parquet"
+)
+
+tissue_ontology <- read_or_write_parquet(
+  con,
+  "tissue_ontology",
+  "data/tissue_ontology.parquet"
+)
+
+analytical_method <- read_or_write_parquet(
+  con,
+  "analytical_method",
+  "data/analytical_method.parquet"
+)
+
+data_type <- read_or_write_parquet(
+  con,
+  "data_type",
+  "data/data_type.parquet"
+)
+
+data_type_sub <- read_or_write_parquet(
+  con,
+  "data_type_sub",
+  "data/data_type_sub.parquet"
+)
+
+measured_category <- read_or_write_parquet(
+  con,
+  "measured_category",
+  "data/measured_category.parquet"
+)
+
+measured_type <- read_or_write_parquet(
+  con,
+  "measured_type",
+  "data/measured_type.parquet"
+)
+
+units_conversion <- read_or_write_parquet(
+  con,
+  "units_conversion",
+  "data/units_conversion.parquet"
+)
+
+reliab_eval_sys <- read_or_write_parquet(
+  con,
+  "reliab_eval_sys",
+  "data/reliab_eval_sys.parquet"
+)
+
+user_ref <- read_or_write_parquet(
+  con,
+  "user_ref",
+  "data/user_ref.parquet"
+)
+```
+
+```{r}
+environmental_con |> glimpse()
+```
+
+Ok, lots of columns. Let's split them into thematic groups and work on the most important parts
+
+## `campaign`
+
+This is stored as text rather than a foreign key for a campaign table (as far as I know). Can come back to later if important.
+
+```{r}
+environmental_con |> count(campaign, sort = TRUE)
+```
+
+Priority: 1/5
+Difficulty: 1/5
+
+## `environ_compartment_id` and `environ_compartment`
+
+To see the controlled vocabulary, we need to look at the relevant table:
+
+```{r}
+environ_compartment <- dbGetQuery(con, "SELECT * FROM environ_compartment;")
+environ_compartment
+```
+
+```{r}
+environmental_con |> count(environ_compartment)
+```
+
+In practical terms, all samples are listed either as `Fresh water` or `Salt water`... which is a problem, because these two don't exist in the lookup table `environ_compartment`. This shouldn't be difficult to fix, since we can just add/rename columns?
+
+In eData, we have a compartments table that consists of `ENVIRON_COMPARTMENT` (which maps *mostly*) to `RADB.environmental_con`, and `ENVIRON_COMPARTMENT_SUB`, which is mostly comprehensive. 
+
+The environmental compartment fields are important for organsing and understanding environmental data, so I think they should be given high priority. Some technical/harmonisation work is needed, but I don't see it being especially complicated. 
+
+Priority: 4/5
+Difficulty: 3/5
+
+## `site_id` and `site_code`
+
+`site_id` is an internal serial UID, and `site_code` is a short site name (80 characters?). `site_code` is generally terse, and looks like we reuse site names from whatever campaign was imported. I'll cover sites in more detail in their own section, as they're a primary table (fact table?).
+
+
+```{r}
+environmental_con |>
+  group_by(campaign) |>
+  reframe(
+    unique_sites = n_distinct(site_code),
+    sites_sample = str_flatten_comma(sample_n_safe(site_code, 5))
+  ) |>
+  arrange(desc(unique_sites))
+```
+
+
+Priority: /5
+Difficulty: /5
+
+## `sample_date`
+
+`sample_date` is a properly formatted `dttm` object, although time never seems to be actually recorded. No forseen issues here.
+
+```{r}
+environmental_con |> count(sample_date)
+```
+
+Priority: /5
+Difficulty: /5
+
+## Sample matrix
+
+### `sample_matrix_id` and `sample_matrix`
+
+`sample_matrix` is potentially very important, as we can expect it to be used as a foreign key for joining to `qData`. Looking at the data we have, it mostly corresponds to `environ_compartment`. However, `environ_compartment` doesn't include biota, this is rather tracked by `sample_matrix`. 
+
+```{r}
+environmental_con |> count(environ_compartment, sample_matrix, sort = TRUE)
+```
+
+`sample_matrix` also has its own table:
+
+```{r}
+sample_matrix <- dbReadTable(con, "sample_matrix")
+```
+
+There are a lot of possible values in here, and they're inconsistent and not fully defined. I strongly recommend that
+
+1. We clean this up, coordinating with Li to make sure all relevant matrices are captured and defined
+2. We develop a lookup table for matching `sample_matrix` (qData) and `ENVIRON_COMPARTMENT` and `ENVIRON_COMPARTMENT_SUB`
+
+I believe that despite the benefits of having one harmonised list of sample matrices between qData and eData, the two concepts (experimental media and sampled matrix) are sufficiently dissimilar that it is better to maintain two strictly scoped variable than one loosely scoped variable.
+
+Priority: 5/5
+Difficulty: 5/5
+
+## Species
+
+### `species_tax_id` and `sample_species`
+
+A relatively small number of biota, and a small number of species, are recorded in `RADB.environmental_con`. It's mostly seagulls (*Larus argentatus*). 
+
+```{r}
+environmental_con |>
+  group_by(sample_species) |>
+  reframe(environ_compartment, species_tax_id, n = n()) |>
+  distinct()
+```
+
+Key Points:
+- Is `Salt water` that likely for sampling of herring gulls (`Larus argentatus`)?
+- `RADB.environmental_con` reports both `NR` and `Not relevant`
+
+We can also take a brief look at the species table, `RADB.taxonomy_ncbi_unique`. This is presumably based on https://www.ncbi.nlm.nih.gov/datasets/taxonomy/, although I don't have any metadata immediately to hand.
+
+```{r}
+taxonomy_ncbi_unique |> glimpse()
+
+# do we have humans?
+taxonomy_ncbi_unique |> filter(tax_id == 9606)
+```
+
+Some important points:
+- No common names or tax for species, which makes it difficult to filter to relevant subsets
+- `tax_id` is the NBCI ID (e.g. humans https://www.ncbi.nlm.nih.gov/datasets/taxonomy/9606/)
+- Lots of irrelevant species (although qData "irrelevant" and eData "irrelevant" may be different definitions)
+- NCBI Taxonomy apparently contains ~2.5 entries, so this is only 10% - and it's not clear how it was filtered
+
+### `species_group_id` and `sample_species_group`
+
+Within `RADB.environmental_con`, there are only a handful of species groups. `sample_species_group` looks correct for species, but how is it set?
+
+```{r}
+environmental_con |>
+  group_by(sample_species_group) |>
+  reframe(
+    n = n(),
+    examples = str_flatten_comma(sample_n_safe(sample_species, 5))
+  ) |>
+  distinct()
+```
+
+Two candidate tables exist:
+
+#### `RADB.species_group`
+
+```{r}
+species_group |> glimpse()
+```
+
+Does each species belong to a unique group? Yes. 
+
+```{r}
+species_group |>
+  group_by(species_name) |>
+  count(species_group_id) |>
+  filter(n > 1)
+```
+
+Some key points:
+
+- Different species_group_id, same species_group/species_name (e.g. `635` - `Algae` - `Dasycladaceae`, but also `636` - `Algae` - `Dasycladales`)
+- Only 26,332 rows, which means we're missing a lot of species from `RADB.taxonomy_ncbi_unique`
+
+```{r}
+species_group |>
+  group_by(species_group_id) |>
+  reframe(
+    species_group,
+    n = n(),
+    examples = str_flatten_comma(sample_n_safe(species_name, 5))
+  ) |>
+  arrange(desc(n))
+```
+
+Let's look at e.g. Daphnia:
+
+```{r}
+species_group |>
+  filter(str_detect(species_name, "Daphni")) |>
+  arrange(nchar(species_name)) |>
+  glimpse()
+```
+
+There are 30 species and species groups here, including `Daphniidae` (family), `Daphnia sp.` (genus), and a tree I included by accident. Species names do belong to a unique group, so it's possible this is being used to assign a species group on upload?
+
+#### `RADB.species_group_species`
+
+```{r}
+species_group_species |> glimpse()
+```
+
+- This table has 26,380 rows (slightly more than `RADB.species_group`), and notably includes `species_group_species_id`, `species_group_id`, `species_group`, `species_name`, and `ncbi_synonym`
+
+```{r}
+species_group_species |>
+  group_by(species_group) |>
+  reframe(
+    n = n(),
+    examples = str_flatten_comma(sample_n_safe(species_name, 5))
+  ) |>
+  arrange(desc(n))
+```
+
+- This is clearly also a subset of species, but it's not clear how it was created, and what it's relation to other species tables are. 
+
+Conclusions:
+
+- We need to take a look at species together - it's not immediately blocking other work, but it would be good to figure out the intention with these two tables and the filtering used.
+- We can then make sure that this and eData use a single list of species.
+
+### `sample_species_gender_id` and `sample_species_gender`
+
+```{r}
+environmental_con |>
+  count(sample_species_gender)
+```
+
+No big surprises for sample species gender. This also has a lookup table:
+
+```{r}
+gender |> glimpse()
+```
+
+Key points:
+- Inconsistent IDs
+- `NR` and `Not reported` & `Not relevant` - ambiguous
+- Otherwise unchallenging
+
+Priority: 2/5
+Difficulty: 1/5
+
+### `sample_species_lifestage_id` and `sample_species_lifestage`
+
+```{r}
+environmental_con |>
+  count(sample_species_lifestage)
+```
+
+```{r}
+lifestage |> glimpse()
+```
+
+`sample_species_lifestage` is moderately complicated and has a code system in addition to names. 
+
+How many life stages are from an existing ontology?
+
+```{r}
+lifestage |> count(uberon_id)
+```
+
+Only 4. In general, it looks like life stage has ended up catching a lot of species-specific levels. This may be very relevant for qData, I can't easily judge. For eData, I intentionally filtered this down to a [much smaller subset](https://nivanorge.github.io/eDataDRF/reference/lifestage_vocabulary.html). 
+
+Key points:
+- What are the needs for this field in eData and qData?
+- To what extent do we need to capture species-specific life stages (e.g. `Alevin`)
+- Can we integrate with UBERON or other ontologies more thoroughly?
+
+### `tissue_id` and `sample_tissue`
+
+In `RADB.environmental_con`:
+
+```{r}
+environmental_con |> count(sample_tissue)
+```
+
+This also has its own lookup:
+
+```{r}
+tissue_ontology |> glimpse()
+```
+
+```{r}
+tissue_ontology |> count(!is.na(brenda_id), !is.na(uberon_id))
+```
+
+Key Points:
+
+- Far superior in its coverage to [eData's](https://nivanorge.github.io/eDataDRF/reference/tissue_types_vocabulary.html),
+- also includes a lot of tissue that may not be relevant for exposure/ecotoxicology data
+- Coverage/overlap between brenda and uberon IDs unclear (no tissue has both)
+- May not include required tissues (e.g. there doesn't seem to be a hepatopancreas, although there is a `hepatobillary system`)  
+
+
+::: {.callout-important}
+
+Recommendation:
+- Determine if needs for eData and qData align
+- Expert review of vocabulary, identify overlap and missing tissues
+- Replace eData vocab
+
+Priority: 2/5
+Difficulty: 4/5
+
+:::
+
+
+## Sample remarks
+
+### `sample_remark`
+
+```{r}
+environmental_con |> count(sample_remark, sort = TRUE)
+```
+
+- Used as a comments field to capture additional information. 
+- Character limit unclear?
+- Doesn't need vocab, but important to keep an eye on as a lot of important information may be captured here - indicating need for other fields
+- In eData, kept but renamed to `MEASUREMENT_COMMENT` (https://nivanorge.github.io/eDataDRF/articles/measurements_data.html)
+
+
+::: {.callout-important}
+Recommendations
+- Ignore for now but worth coming back to in future versions
+- Comments/remarks fields store important metadata
+
+Priority: 1/5
+Difficulty: 1/5
+:::
+
+## Sampling
+
+### `sampling_method_id` and `sampling_method`
+
+In `RADB.environmental_con`:
+
+```{r}
+environmental_con |> count(sampling_method, sort = TRUE)
+```
+
+Has its own lookup:
+
+```{r}
+sampling_method |> glimpse()
+```
+
+Key Points:
+- Well-rounded vocabulary, although methods are not fully defined
+- eData's [sampling_protocols_vocabulary()](https://nivanorge.github.io/eDataDRF/reference/sampling_protocols_vocabulary.html) is based on the RADB vocab, but with additional techniques and long/short names
+
+::: {.callout-important}
+Recommendations
+- Easy to harmonise, but may require adding new fields to `RADB.sampling_method`
+- Haven't found any existing ontologies for sampling techniques
+- Need to identify optimal level of precision, as there may be many sampling techniques for e.g. fish samples, sediment samples, etc.
+- Would be good to include brief description of each method
+
+Priority: 2/5
+Difficulty: 2/5
+:::
+
+### `sampling_duration_value` and `sampling_duration_unit`
+
+
+In `RADB.environmental_con`:
+
+```{r}
+environmental_con |> count(sampling_duration_value, sort = TRUE) |> glimpse()
+```
+
+- No issues here.
+
+```{r}
+environmental_con |> count(sampling_duration_unit, sort = TRUE)
+
+# do all rows with a duration value have a unit?
+environmental_con |>
+  count(is.na(sampling_duration_value), sampling_duration_unit, sort = TRUE)
+```
+
+- Some rows have a unit (`d`) but no value. This shouldn't be an issue. 
+
+### `sampling_depth_value` and `sampling_depth_unit`
+
+```{r}
+environmental_con |>
+  count(sampling_depth_value, sampling_depth_unit, sort = TRUE) |>
+  glimpse()
+```
+
+- All in `m`, everything that should have a unit has a unit.
+- eData tracks depth below sl for water samples as [Sites.ALTITUDE_VALUE](https://nivanorge.github.io/eDataDRF/articles/sites_data.html?q=depth#altitude-value---numeric-free-mandatory), which may be inferior to how RADB handles this
+- in eData, core depth is tracked without controlled vocab by [Samples.SUBSAMPLE](https://nivanorge.github.io/eDataDRF/articles/samples_data.html#subsample)
+
+Some pedantry:
+- Pedantry question: does `NA` mean the same thing as `0`?
+- Also: in the case of a sediment core, how does this work?
+
+::: {.callout-important}
+Recommendations
+- Determine consistent approach for sampling depth, use across the board
+
+Priority: 2/5
+Difficulty: 2/5
+:::
+
+### `sampling_remark`
+
+```{r}
+environmental_con |> count(sampling_remark, sort = TRUE)
+```
+
+- Potentially confusing to have `environmental_con.sample_remark` and `environmental_con.sampling_remark` in same table.
+- eData tracks a [comment for each associated methodology](https://nivanorge.github.io/eDataDRF/articles/methods_data.html). This may be overkill, but it's a good place to keep extra details on e.g. the exact equipment used, while still being able to categories techniques
+
+### `sampling_protocol_id`
+
+```{r}
+environmental_con |> count(sampling_protocol_id, sort = TRUE)
+```
+
+- Unclear what this is for - there's no sampling_protocol table?
+
+::: {.callout-important}
+Recommendations
+
+- Drop column or ignore.
+
+Priority: 1/5
+Difficulty: 1/5
+:::
+
+## Sample identifiers
+
+### `subsample`
+
+```{r}
+environmental_con |> count(subsample, sort = TRUE)
+```
+
+- Numerical value for splitting samples, as needed
+- In [eData](https://nivanorge.github.io/eDataDRF/articles/samples_data.html), I turned this into a text column, as it was useful to be able to e.g. split a single sample into different tissues, core depths, etc. 
+
+::: {.callout-important}
+Recommendations
+
+- Could be replaced with text, but low priority.
+
+Priority: 1/5
+Difficulty: 2/5
+:::
+
+### `sample_id_org`
+
+```{r}
+environmental_con |> count(sample_id_org, sort = TRUE)
+```
+
+- Various original sample IDs. Often blank?
+- Seems that `V022-00179-1`, etc are Vm IDs with `V` appended
+- Captured as part of MEASUREMENT_COMMENT in eData
+
+::: {.callout-important}
+Recommendations
+
+- Keep for now
+- Determine best way to retain original sample numbers
+
+Priority: 1/5
+Difficulty: 2/5
+:::
+
+## Fractionation
+
+### `fraction_id` and `fraction`
+
+```{r}
+environmental_con |> count(fraction, sort = TRUE)
+```
+
+- Generally well-used in existing data
+
+```{r}
+fraction
+```
+
+- RADB `fraction` table collects a wide range of potential fractions (`fraction_source`) and membership of `fraction` category (`Total`, `Particles` `Dissolved`, etc.)
+- Some `fraction_source` values are potentially confusing
+- eData [fractionation_protocols_vocabulary()](https://nivanorge.github.io/eDataDRF/reference/fractionation_protocols_vocabulary.html) is based on RADB's but with some types removed.
+
+::: {.callout-important}
+Recommendations
+
+- Expert review RADB fractions and determine coverage and value of levels
+- Document intended scope of each fraction?
+- May be very important to linkage between eData and qData? 
+
+Priority: 3/5
+Difficulty: 3/5
+:::
+
+### `fraction_protocol_id`
+
+```{r}
+environmental_con |> count(fraction_protocol_id, sort = TRUE)
+```
+
+- Meaning unclear.
+
+::: {.callout-important}
+Recommendations
+
+- Drop column or ignore.
+
+Priority: 1/5
+Difficulty: 1/5
+:::
+
+## Extraction
+
+### `extraction_method_id` and `extraction_method`
+
+```{r}
+environmental_con |> count(extraction_method, extraction_method_id, sort = TRUE)
+```
+
+- Handful of extraction methods with IDs 0-9
+
+```{r}
+extraction_method
+```
+
+- Lookup generally robust, although could clarify filtration methods
+- Already partly harmonised with [extraction_protocols_vocabulary()](https://nivanorge.github.io/eDataDRF/reference/extraction_protocols_vocabulary.html), although eData is missing more specific product names (e.g. `SPE Strata X-CW`), which are captured as comments
+
+::: {.callout-important}
+Recommendations
+
+- Expert review of methods - what is needed, and how much detail?
+- Expert review of [CHMO](https://obofoundry.org/ontology/chmo) to determine if harmonisation possible
+
+Priority: 2/5
+Difficulty: 4/5
+:::
+
+### `extraction_protocol_id`
+
+```{r}
+environmental_con |> count(extraction_protocol_id, sort = TRUE)
+```
+
+- Largely `NA` or `1`, but 7 other ID values: `496` - `501`
+- Is there an extraction_protocol table that was dropped at some point?
+
+::: {.callout-important}
+Recommendations
+
+- Investigate missing table
+
+Priority: 1/5
+Difficulty: 1/5
+:::
+
+## Analysis
+
+### `analytical_method_id` and `analytical_method`
+
+```{r}
+environmental_con |>
+  count(analytical_method, analytical_method_id) |>
+  arrange(analytical_method_id)
+```
+
+- Many analytical techniques present
+- Two `Not reported` variables
+
+```{r}
+analytical_method
+```
+
+- Similar questions as to ideal level of detail as in previous method fields
+- Some redundancy? e.g. `ICP-MS` present twice, as well as `ICPMS`
+- eData's [analytical_protocols_vocabulary()](https://nivanorge.github.io/eDataDRF/reference/analytical_protocols_vocabulary.html) has relatively poor coverage (focus on copper), so this should be expanded once methods are curated
+
+::: {.callout-important}
+Recommendations
+
+- Expert review of methods - what is needed, and how much detail?
+- Expert review of [CHMO](https://obofoundry.org/ontology/chmo) to determine if harmonisation possible
+- How thorough this is should depend on actual needs
+- Expand eData vocab with new methods once curated
+
+Priority: 2/5
+Difficulty: 4/5
+:::
+
+### `analytical_protocol_id`
+
+```{r}
+environmental_con |> count(analytical_protocol_id, sort = TRUE)
+```
+
+- Appears to be a carbon copy of `extraction_protocol_id`
+
+::: {.callout-important}
+Recommendations
+
+- Determine if intentional, remove if not
+
+Priority: 1/5
+Difficulty: 1/5
+:::
+
+## Data type and measurement category
+
+### `data_type` and `data_type_sub`
+
+```{r}
+environmental_con |>
+  count(data_type, data_type_sub, sort = TRUE)
+```
+
+- Looks reasonable
+- `Blank` presumably refers to sample blanks? 
+- Two lookup tables:
+
+#### `data_type`
+
+```{r}
+data_type
+```
+
+- Nice clean table.
+- Would be good to have descriptions for each data type, esp  `Normalization`
+
+#### `data_type_sub`
+
+```{r}
+data_type_sub
+```
+
+- `data_type_sub` appears to be an important "load-bearing" table, as it distinguishes between chemicals and stressors (everything else).
+- Some redunancy (e.g. `Phosphorus`, `Oxygen level` present twice)
+- Hierachical relationship implied between `data_type` and `data_type_sub`, but it doesn't seem to actually exist? 
+- in eData, we have [PARAMETER_TYPE](https://nivanorge.github.io/eDataDRF/reference/parameter_types_vocabulary.html), which corresponds to `data_type`. This currently lacks Control + Blank levels, but they could be added if needed.
+- [PARAMETER_TYPE_SUB]https://nivanorge.github.io/eDataDRF/reference/parameter_types_sub_vocabulary.html is more complex - this uses the ChemOnt Superclasses, plus some manual sub-types for quality parameters
+- Superclasses were chosen, because when using dropdown filtering in apps, it's useful to have smaller group sizes.
+
+::: {.callout-important}
+Recommendations
+
+- Review both tables - what are likely to be future data type needs?
+- Determine source of existing RADB categorisation?
+- Implement hierachy between `data_type` and `data_type_sub` if needed.
+- Adapt RADB to use ChemOnt or eData to use existing RADB categorisation
+
+Priority: 4/5
+Difficulty: 3/5
+:::
+
+### `measured_category_id` and `measured_category`
+
+```{r}
+environmental_con |>
+  count(measured_category, measured_category_id, sort = TRUE)
+```
+
+- Always marked as external in RADB - which is curious because I would expect e.g. biota samples to be internal?
+- Corresponding lookup table:
+
+```{r}
+measured_category
+```
+
+- `measured_category` is retained with the same name in [eData](https://nivanorge.github.io/eDataDRF/reference/measured_categories_vocabulary.html), but my experience is that the name makes users find it confusing
+
+
+::: {.callout-important}
+Recommendations
+
+- Determine if needed
+- Consider renaming for clarity
+
+Priority: 1/5
+Difficulty: 1/5
+:::
+
+### `measured_type`
+
+```{r}
+environmental_con |>
+  group_by(measured_type) |>
+  reframe(
+    unique_stressors = n_distinct(stressor_name),
+    stressors_sample = str_flatten_comma(sample_n_safe(stressor_name, 5))
+  ) |>
+  arrange(desc(unique_stressors))
+```
+
+- Looks reasonable.
+- Has its own lookup table:
+
+```{r}
+measured_type
+```
+
+- eData's `Parameters.MEASURED_TYPE` [identical](https://nivanorge.github.io/eDataDRF/reference/measured_types_vocabulary.html?q=measured_type#ref-usage) expect for the fact that I took the final `NA` out
+
+## Stressors
+
+### `stressor_id` and `stressor_name`
+
+```{r}
+environmental_con |>
+  group_by(stressor_name) |>
+  reframe(
+    n_id = n_distinct(stressor_id),
+    id_sample = str_flatten_comma(sample_n_safe(stressor_id, 2))
+  ) |>
+  arrange(desc(n_id))
+```
+
+- Interesting to note that some stressors have more than one ID in the system
+
+```{r}
+environmental_con |>
+  group_by(stressor_id) |>
+  reframe(
+    n_name = n_distinct(stressor_name),
+    name_sample = str_flatten_comma(sample_n_safe(stressor_name, 2))
+  ) |>
+  arrange(desc(n_name))
+```
+
+- Likewise, some IDs have more than one name. This isn't necessarily a problem if other unique IDs (e.g. InChIKeys) are used, but it's good to know about
+- Additionally, some names seem to be corrupted (e.g. `\rdiatrizoic acid`)
+
+::: {.callout-important}
+Recommendations
+
+- Review stressors lookup table before taking future steps
+
+Priority: 4/5
+Difficulty: 3/5
+:::
+
+### `stressor_name_sub`
+
+```{r}
+environmental_con |> count(measured_type, stressor_name_sub, sort = TRUE)
+```
+
+- Currently only used for irradiance wavelengths and background dose rates
+- Mirrored by [PARAMETER_SUB_NAME](https://nivanorge.github.io/eDataDRF/articles/parameters_data.html#parameter-sub-name) in eData
+
+::: {.callout-important}
+Recommendations
+
+- No changes needed currently, but return to if background data or wavelengths become an area of focus
+
+Priority: 1/5
+Difficulty: 1/5
+:::
+
+
+### `stressor_name_org`
+
+```{r}
+set.seed(1)
+
+environmental_con |>
+  count(stressor_name, stressor_name_org, sort = TRUE) |>
+  slice_sample(n = 20)
+```
+
+- Looks reasonable. Norwegian names are translated to English, where present
+- Done by lookup?
+
+Are names converted consistently?
+
+```{r}
+environmental_con |>
+  group_by(stressor_name_org) |>
+  reframe(
+    n_stressor_name = n_distinct(stressor_name),
+    name_sample = str_flatten_comma(sample_n_safe(stressor_name, 2))
+  ) |>
+  filter(n_stressor_name > 1)
+```
+
+- It appears that original stressor names aren't always converted to the same name
+- eData doesn't track the original stressor name, but maybe should?
+
+::: {.callout-important}
+Recommendations
+
+- Review stressor name conversion logic
+- Needed in eData?
+
+Priority: 2/5
+Difficulty: 4/5
+:::
+
+## Measured values
+
+### `measured_flag`
+
+```{r}
+environmental_con |> count(measured_flag)
+```
+
+- No issues here, although I'm not sure if there's still a table controlling vocabulary in RADB
+- Some quality indices (e.g. CFU measures, I think), may have a category of > a certain level (this is the case in Vannmiljø). So it may be useful to be able to accomodate these also in `measured_flag`
+
+::: {.callout-important}
+Recommendations
+
+- Check `measured_flag` table in RADB
+- Need for greater-than flag?
+
+Priority: 1/5
+Difficulty: 1/5
+:::
+
+### `measured_value` and `measured_sd`
+
+```{r}
+environmental_con |> count(measured_flag, is.na(measured_value))
+```
+
+- `measured_flag` is used inconsistently - sometimes a `measured_value` is also provided, sometimes not
+- I doubt this is an issue in practice but it would be safer to explicitly check and constrain use of `measured_value` relative to `lod_value` and `loq_value` when `measured_flag` is set to `<LOD` or `<LOQ`
+
+```{r}
+environmental_con |>
+  count(classify_value(measured_value), classify_value(measured_sd))
+```
+
+- Most rows have no `measured_value` and no `measured_sd` - although sometimes this is marked with `0` and sometimes with `NA`
+- No row has a `measured_sd` but no `measured_value`, which is good
+- Constraints should probably be in place at import and inside the database to enforce this
+- eData [supports multiple types of uncertainty](https://nivanorge.github.io/eDataDRF/articles/measurements_data.html#uncertainty-type) (SD, SE, range, etc), and asymetrical uncertainty via the `Measurements.UNCERTAINTY_TYPE`, `UNCERTAINTY_UPPER` and `UNCERTAINTY_LOWER` fields. This was occasionally useful as most but not all copper papers reported SDs
+- However, this still isn't "enough" detail - `Geometric mean` and e.g. `Standard error` are mutually exclusive options, which means it isn't easy to report if a paper reports data with both of these
+- In practice, 90% of papers report arithmetic mean +- SD, so the current design is probably sufficient. But worth considering.
+
+::: {.callout-important}
+Recommendations
+
+- Determine preferred format for entering measurements/limits
+- Determine if need exists for more exotic uncertainty types
+- Check measurement flag/LOD/LOQ logic exists in RADB
+
+Priority: 1/5
+Difficulty: 2/5
+:::
+
+### `measured_unit`
+
+```{r}
+environmental_con |> count(measured_unit) |> glimpse()
+```
+
+- Units look reasonable, although some of them may be storing information that is better stored as a stressor/parameter (e.g. nutrient per L concentrations)
+- Presumably these units are pre-conversion (as we have e.g. cfu/100ml, cfu/L and cfu/ml) - how this this performed?
+
+Units also have a lookup table:
+
+```{r}
+units_conversion
+```
+
+- This looks very thorough, although I haven't checked it
+- Is this conversion performed on the contents of `environmental_con` before the end user sees it?
+- Units in eData use only a [narrow vocabulary](https://nivanorge.github.io/eDataDRF/reference/parameter_unit_vocabulary.html) mostly relevant to copper.
+- eData had some issues relating to using the character `µ` in units, so this needs fixing anyway 
+
+::: {.callout-important}
+Recommendations
+
+- Review unit conversion logic in RADB
+- Update eData to use RADB units table
+
+Priority: 1/5
+Difficulty: 2/5
+:::
+
+## Detection and quantification limits
+
+Assertion: Ideally, all samples should have a `measured_value` except for when their `measured_flag` identifies them as being below loq or lod. In which case, they should have an lod or loq. If a sample has a `measured_value` but still reports an lod/loq, that's good but isn't strictly necessary.
+
+### `loq_value` and `loq_unit`
+
+```{r}
+environmental_con |>
+  group_by(classify_value(loq_value)) |>
+  reframe(
+    measured_flag,
+    loq_value_type = classify_value(loq_value),
+    units_sample = str_flatten_comma(sample_n_safe(loq_unit, n = 10)),
+    n = n()
+  ) |>
+  distinct()
+```
+
+- 129 rows have a measured flag set as `<LOQ` and an `loq_unit`, but `loq_value` is set to 0. This might be ok? But worth checking if this is valid, and if it should be constrained so that the loq has to be > 0
+- eData (application) checks that at least one of LOQ, LOD, or measured value is set, but the logic could probably be firmed up to be consistent across the Db and app (it uses the same field names, so no need for changes there)
+
+### `lod_value` and `lod_unit`
+
+```{r}
+environmental_con |>
+  group_by(classify_value(lod_value)) |>
+  reframe(
+    measured_flag,
+    lod_value_type = classify_value(lod_value),
+    units_sample = str_flatten_comma(sample_n_safe(lod_unit, n = 10)),
+    n = n()
+  ) |>
+  distinct()
+```
+
+- Likewise, 3 rows are flagged as `<LOD` but have an `lod_value` of 0.
+
+::: {.callout-important}
+Recommendations
+
+- Review LOD/LOQ in table, set intentions for use of flags
+- Add relevant DB constraints
+- If needed, correct data
+- Update eData validation in format and application when decided
+
+Priority: 1/5
+Difficulty: 3/5
+:::
+
+## Reliability and referencing
+
+### `reliability_score` and `reliability_eval_sys`
+
+```{r}
+environmental_con |>
+  count(reliability_eval_sys, reliability_score)
+```
+
+- Are `NIBIO-STD`, `NIBIO_lab_QA` & `NIBIO-STD QA` identical? Ideally should be added to lookup table with reference (SOP number?) if needed
+- Technically existing rows should be marked `reliability_eval_sys` == `Not reported` rather than `NA`
+- Need to check that score is present (even if it's only 1)
+- Score is currently stored as text. Probably fine, as not guaranteed all scoring systems will have numeric scores.
+
+```{r}
+reliab_eval_sys
+```
+
+- eData doesn't currently track this, but it does have a [CREED-specific table](https://nivanorge.github.io/eDataDRF/articles/CREED_data.html)
+
+
+::: {.callout-important}
+Recommendations
+
+- Review needs for exposure data reliability classification
+- Split from qData reliability 
+- Add reference to lab SOPs?
+
+Priority: 1/5
+Difficulty: 3/5
+:::
+
+### `measured_reference_id`
+
+```{r}
+environmental_con |>
+  count(measured_reference_id) |>
+  glimpse()
+```
+
+- Where's `34171643` coming from?
+
+The lookup for references appears to be `user_ref`:
+
+```{r}
+user_ref |> glimpse()
+```
+
+- We'll take a closer look at this in its own document.
+
+## Confidentiality
+
+### `confidentiality_expiry_date`
+
+```{r}
+environmental_con |>
+  count(confidentiality_expiry_date)
+```
+
+- All studies have a `confidentiality_expiry_date` marked as `2028-12-31`
+- eData doesn't currently track this
+
+::: {.callout-important}
+Recommendations
+
+- Add `confidentiality_expiry_date` to eData `Campaign`
+
+Priority: 1/5
+Difficulty: 1/5
+:::
+
+## Provenance and entry metadata
+
+### `organisation`
+
+```{r}
+environmental_con |>
+  count(organisation) |>
+  glimpse()
+```
+
+- `organisation` looks fine, and isn't a very high-priority field anyway
+- it is [mirrored in eData](https://nivanorge.github.io/eDataDRF/articles/campaign_data.html#organisation), where it's specified as "The primary organisation responsible for conducting the campaign. In the case of academic publications, this is typically the lead author’s primary employer."
+
+::: {.callout-important}
+Recommendations
+
+- No changes required.
+
+Priority: 0/5
+Difficulty: 0/5
+:::
+
+### `entered_by` and `entered_date`
+
+```{r}
+environmental_con |>
+  count(entered_by) |>
+  glimpse()
+```
+
+- This is captured in eData as part of the [Campaign table](https://nivanorge.github.io/eDataDRF/articles/campaign_data.html)
+
+::: {.callout-important}
+Recommendations
+
+- No changes required.
+
+Priority: 0/5
+Difficulty: 0/5
+:::
+
+### `comments`
+
+```{r}
+environmental_con |>
+  count(comments)
+```
+
+- It's not immediately clear what the role of `comments` is compared to `sampling_remark` and `sample_remark`
+- I would recommend renaming this to clarify
+
+::: {.callout-important}
+Recommendations
+
+- Rename?
+
+Priority: 1/5
+Difficulty: 1/5
+:::
+
+## Keys and data warehouse columns
+
+### `environmental_con_id`
+
+```{r}
+environmental_con |>
+  count(environmental_con_id) |>
+  filter(n > 1)
+```
+
+- `environmental_con_id` is correctly unique
+- eData doesn't set a unique row ID as it is assumed this will be performed on database upload
+
+### `dwh_validfromdate`, `dwh_validtodate` and `dwh_valid`
+
+- I'm unsure the relation of these columns to `confidentiality_expiry_date`
+- None of them exist in eData
+
+```{r}
+environmental_con |>
+  count(dwh_validfromdate)
+```
+
+```{r}
+environmental_con |>
+  count(dwh_validtodate)
+```
+
+```{r}
+environmental_con |>
+  count(dwh_valid)
+```
+
+### `rnum`
+
+```{r}
+environmental_con |>
+  count(rnum) |>
+  filter(n > 1)
+```
+
+- `rnum` is also a UID column
