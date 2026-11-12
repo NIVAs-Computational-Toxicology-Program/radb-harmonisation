@@ -38,3 +38,7 @@ output/reports/*
 Thumbs.db
 .vscode/
 .idea/
+
+# Quarto
+docs/.quarto/
+**/*.quarto_ipynb

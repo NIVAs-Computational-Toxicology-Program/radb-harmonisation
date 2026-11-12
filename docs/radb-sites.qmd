@@ -1,0 +1,445 @@
+---
+title: "RADB sites Exploration"
+code-fold: true
+---
+
+Purpose: explore RADB's `sites` table with a view to harmonisation.
+
+```{r}
+#| label: setup
+library(DBI)
+library(tidyverse)
+library(glue)
+library(here)
+
+here::i_am("docs/radb-sites.qmd")
+
+# requres RPostgres to be built + installed
+# which in turn requres PSQL to be installed
+
+# read in project-specific renviron
+readRenviron(here::here(".Renviron"))
+
+# Check renviron variables exist
+pg_sysenv <- Sys.getenv(c(
+  "PGHOST",
+  "PGPORT",
+  "PGDATABASE",
+  "PGUSER",
+  "PGPASSWORD"
+))
+
+# check all exist
+stopifnot(!("" %in% pg_sysenv))
+# assign in environment
+list2env(as.list(pg_sysenv), envir = globalenv())
+
+con <- dbConnect(
+  RPostgres::Postgres(),
+  dbname = PGDATABASE,
+  host = PGHOST,
+  port = PGPORT,
+  user = PGUSER,
+  password = PGPASSWORD
+)
+
+set.seed(123)
+
+## Functions ##
+sample_n_safe <- function(x, n) {
+  x_unique <- unique(x)
+  x_unique[sample.int(length(x_unique), min(n, length(x_unique)))]
+}
+
+classify_value <- function(x) {
+  recode_values(x, c(NA, NULL) ~ "NA or NULL", 0 ~ "0", default = ">0")
+}
+
+read_or_write_parquet <- function(con, table_name, file_name) {
+  if (!file.exists(file_name)) {
+    table <- dbGetQuery(
+      con,
+      glue::glue("SELECT * FROM {table_name};")
+    )
+    nanoparquet::write_parquet(
+      table,
+      file_name
+    )
+  } else {
+    table <- nanoparquet::read_parquet(
+      file_name
+    )
+  }
+  table
+}
+
+kable_abbreviate <- function(x, n) {
+  table <- slice_head(x, n = n) |> knitr::kable()
+  nrows <- nrow(x)
+  print(table)
+  if (nrows > n) {
+    print(glue("\n\n*and {nrows - n} more rows*"))
+  }
+}
+
+kable_glimpse <- function(x, n = 20, width = 40) {
+  summary <- tibble(
+    name = names(x),
+    type = vapply(x, \(col) class(col)[1], character(1)),
+    n_na = vapply(x, \(col) sum(is.na(col)), integer(1)),
+    n_distinct = vapply(x, n_distinct, integer(1)),
+    examples = vapply(
+      x,
+      \(col) {
+        sample_n_safe(col[!is.na(col)], n) |>
+          as.character() |>
+          # \r escape in some comments needs to be removed
+          str_replace(pattern = "\\r", replacement = "") |>
+          str_trunc(width) |>
+          str_flatten_comma()
+      },
+      character(1)
+    )
+  )
+  cat(glue("{ncol(x)} cols x {nrow(x)} rows\n\n"))
+  print(knitr::kable(summary))
+}
+```
+
+
+# `sites`
+
+```{r}
+#| label: load-tables
+
+sites <- read_or_write_parquet(
+  con,
+  "sites",
+  here::here("data", "sites.parquet")
+)
+
+environmental_con <- read_or_write_parquet(
+  con,
+  "environmental_con",
+  here::here("data", "environmental_con.parquet")
+)
+```
+
+```{r}
+#| label: sites-glimpse
+sites |> kable_glimpse()
+```
+
+- There are quite a lot of sites in RADB
+- A few issues related to data integrity to check first:
+
+## `sites` data integrity check
+
+### unique IDs
+
+- Do all sites have a unique `site_id`, `site_code`, `site_name`?
+
+```{r}
+#| label: sites-ids
+
+id_all_unique <- function(table, col) {
+  all(count(table, {{ col }}, sort = TRUE) |> pull(n) == 1)
+}
+
+id_all_unique(sites, site_id)
+id_all_unique(sites, site_code)
+id_all_unique(sites, site_name)
+```
+
+- Site names aren't unique, which is not an issue as they're not expected to be
+
+### sites in `environmental-con`
+
+- Do all sites correspond to at least one sample from `environmental-con`:
+
+```{r}
+#| label: sites-all-in-env-con
+
+anti_join(sites, environmental_con, by = join_by(site_code)) |>
+  kable_abbreviate(n = 20)
+```
+
+- We can see from the above that no, 28,942 sites aren't in `environmental-con`
+- This is not immediately a problem, but we can see that some `site_code` are corrupted (e.g. `S3-VÃ˜YENBEKKEN`)
+- More details below
+
+## `site_id`
+
+```{r}
+#| label: site-id-summary
+sites |> count(site_id, sort = TRUE) |> kable_abbreviate(n = 20)
+```
+
+- eData doesn't have a `site_id` column, as it's assumed this would be set on RADB upload
+
+::: {.callout-important title="Recommendations"}
+
+- None.
+
+**Assessment**
+
+- Priority: 0/5
+- Difficulty: 0/5
+:::
+
+## `site_code`
+
+```{r}
+#| label: site-code-types
+site_code_types <- sites |>
+  count(site_code, site_name) |>
+  mutate(
+    site_code_type = case_when(
+      str_detect(site_code, "[0-9]{3}-[0-9]{5,6}") ~ "Vm Freshwater",
+      str_detect(site_code, "HAV-[0-9]{5}") ~ "Vm Ocean",
+      str_detect(site_code, "[0-9]{2}\\.[0-9]{2}-[0-9]+") ~ "Vm Transitional",
+      str_detect(site_code, "^J") ~ "JOVA?",
+      .default = "Other"
+    )
+  )
+
+site_code_types |>
+  group_by(site_code_type) |>
+  reframe(codes_sample = str_flatten_comma(sample_n_safe(site_code, n = 10))) |>
+  knitr::kable()
+```
+
+- RADB doesn't appear to have any strict constraints on `site_code`
+- since `environmental_con` contains both `site_code` and `site_id`, I presume that the tables join on `site_id`, which means that `site_code` doesn't strictly need to be unique
+- nevertheless, the current `site_code` variables are all unique
+- eData generates a [Sites - SITE_CODE](https://nivanorge.github.io/eDataDRF/articles/sites_data.html#site-code---string-free-mandatory) based on campaign, long form site name, and a serial number. This isn't necessarily a better option, but it might be good to lay down some "principles of a good site_code"
+
+::: {.callout-important title="Recommendations"}
+
+- No changes immediately needed for harmonisation between schemes
+- Review guidelines for site codes if needed
+
+**Assessment**
+
+- Priority: 1/5
+- Difficulty: 1/5
+:::
+
+## `site_name`
+
+```{r}
+#| label: site-name-summary
+site_code_types |>
+  group_by(site_code_type) |>
+  reframe(names_sample = str_flatten_comma(sample_n_safe(site_name, n = 10))) |>
+  knitr::kable()
+```
+
+- Site names are presumably also based on original site names
+- Using site names is difficult - they often make sense only in the immediate context of the study
+- In general, assigning names to arbitrary spatial points (reverse geocoding) is difficult, but this spatial information is often very important for interpreting data
+- If users search data by site name, collisions between names may be an issue?
+- How does one e.g. get all data for a specific county? 
+- eData doesn't solve any of these problems either
+
+
+::: {.callout-important title="Recommendations"}
+
+- Review geodata needs of database
+- Consider developing guidelines for naming sites depending on needs
+
+**Assessment**
+
+- Priority: 1/5
+- Difficulty: 5/5
+:::
+
+## `country`
+
+```{r}
+sites |> count(country) |> knitr::kable()
+```
+
+- Countries are a mix of two-letter codes (ISO-3166-A2?) and names
+- I believe `country` is a mandatory field in some versions of the input spreadsheet, but not all sites will be in countries (or indeed on land)
+- Out of interest, which sites have no country code?
+
+```{r}
+sites |> filter(is.na(country)) |> kable_abbreviate(n = 25)
+```
+
+- Some of these are chemical inventories, some appear to be "orphan" sites without relevant information
+- eData [Sites - COUNTRY_ISO](https://nivanorge.github.io/eDataDRF/articles/sites_data.html#iso-country---string-controlled-mandatory) standardises to ISO-3166 country names. I recommend this over two-letter codes, as some of the latter aren't obvious (e.g. `HR` for Croatia)
+
+::: {.callout-important title="Recommendations"}
+
+- Set format (ISO-3166 names?) and harmonise data
+- Enforce format in Db and applications
+- Review orphan sites and remove if necessary
+- Consider adding new column for ocean sites, based on eData [Sites - OCEAN_IHO](https://nivanorge.github.io/eDataDRF/articles/sites_data.html#iho-oceansea---string-controlled-mandatory)
+
+**Assessment**
+
+- Priority: 2/5
+- Difficulty: 2/5
+:::
+
+## `area`
+
+```{r}
+sites |> count(area) |> knitr::kable()
+```
+
+- Very useful to capture lower-level geographical information, but `area` doesn't enforce any formatting, so difficult to use
+- Alternatively, possible to reverse-geocode based on coordinate data, which may be a better solution (could be done on-demand in STOPredictor?)
+
+::: {.callout-important title="Recommendations"}
+
+- Review geographical needs for data and determine most pragmatic solution
+- Standardise based on [NUTS](https://ec.europa.eu/eurostat/web/nuts) (Europe-only) and/or FAO's [Global Administrative Unit Layers](https://openknowledge.fao.org/items/aebf0333-a0e3-4177-9d4a-bb2472d0367e)?
+
+**Assessment**
+
+- Priority: 1/5
+- Difficulty: 3/5
+:::
+
+## Coordinates
+
+### `coordinate_system`
+
+```{r}
+sites |> count(coordinate_system) |> knitr::kable()
+```
+
+- Most sites use `WGS 84`, but there doesn't appear to be a table for controlled CRS vocabulary
+- Some errors (`WGS 83`, `WGS1984 UTM Zone 32N` - should be `ETRS89 / UTM zone 32N`)
+- eData uses full ESPG dataset ([Sites - SITE_COORDINATE_SYSTEM](https://nivanorge.github.io/eDataDRF/articles/sites_data.html#coordinate-reference-system---string-controlled-mandatory)) of CRS then highlights to those relevant to Arctic
+
+::: {.callout-important title="Recommendations"}
+
+- Recommend use of eData solution as vocabulary table for consistency with ESPG
+- Check CRS in existing data are valid
+- Add constraints that all sites with lat/long must have CRS
+
+**Assessment**
+
+- Priority: 2/5
+- Difficulty: 3/5
+
+:::
+
+### `latitude` and `longitude`
+
+```{r}
+sites_wgs84 <- sites |>
+  filter(coordinate_system == "WGS 84") |>
+  sf::st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+
+ggplot() +
+  geom_sf(data = rnaturalearth::countries110) +
+  geom_sf(data = sites_wgs84, aes(geometry = geometry, colour = country)) +
+  coord_sf()
+```
+
+- Location appears to be correct for most sites, although some `NO` sites appear to be located at 0,0 and of coast of Russia
+
+::: {.callout-important title="Recommendations"}
+
+- Review db sites data for inconsistencies
+- Consider adding automated checking at data ingress for whether coordinates are reasonably for selected CRS/country/area/etc.
+
+**Assessment**
+
+- Priority: 2/5
+- Difficulty: 3/5
+:::
+
+
+## Altitude
+
+### `altitude_value` and `altitude_unit`
+
+```{r}
+sites |> count(classify_value(altitude_value), altitude_unit) |> knitr::kable()
+```
+
+- altitude values/units appear to be consistent
+- eData's implementation is very similar ([Sites - ALTITUDE_VALUE](https://nivanorge.github.io/eDataDRF/articles/sites_data.html#altitude-value---numeric-free-mandatory))
+
+::: {.callout-important title="Recommendations"}
+
+- Add guidelines for altitude, including edge cases and cases where altitude not reported
+
+**Assessment**
+
+- Priority: 1/5
+- Difficulty: 1/5
+:::
+
+## `status`
+
+```{r}
+sites |> count(status)
+```
+
+- Purpose unknown.
+
+::: {.callout-important title="Recommendations"}
+
+- Review and document purpose
+
+**Assessment**
+
+- Priority: 1/5
+- Difficulty: 1/5
+:::
+
+## Provenance and entry metadata
+
+### `entered_by` and `entered_date`
+
+```{r}
+sites |> count(entered_by, entered_date, sort = TRUE)
+```
+
+- All dates properly formatted
+- Identical to eData [Sites - ENTERED_BY](https://nivanorge.github.io/eDataDRF/articles/sites_data.html#entered-by---string-free-mandatory)
+
+::: {.callout-important title="Recommendations"}
+
+- Consider automating `entered_by` info with STOP user accounts (partially implemented in eData pp)
+
+**Assessment**
+
+- Priority: 1/5
+- Difficulty: 1/5
+:::
+
+### `comments`
+
+```{r}
+sites |> count(comments, sort = TRUE)
+```
+
+- Similar carriage return (`\r`) issue as in other comments fields
+- in eData, renamed to [Sites - SITE_COMMENT](https://nivanorge.github.io/eDataDRF/articles/sites_data.html#site-comment---string-free-optional) for clarity
+
+::: {.callout-important title="Recommendations"}
+
+- Add guidance on relevant information for comments
+
+**Assessment**
+
+- Priority: 1/5
+- Difficulty: 1/5
+:::
+
+## Keys and data warehouse columns
+
+### `dwh_validfromdate`, `dwh_validtodate`, `dwh_valid`, and `rnum`
+
+Not reviewed per-table, see [environmental_con](radb-env-con-exploration.qmd) for details.
+
+
+

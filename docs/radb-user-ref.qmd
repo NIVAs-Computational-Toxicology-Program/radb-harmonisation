@@ -1,0 +1,354 @@
+---
+title: "RADB user_ref Exploration"
+code-fold: true
+---
+
+Purpose: explore RADB's `user_ref` table with a view to harmonisation.
+
+```{r}
+#| label: setup
+library(DBI)
+library(tidyverse)
+library(glue)
+library(here)
+
+here::i_am("docs/radb-user-ref.qmd")
+
+set.seed(123)
+
+## Functions ##
+sample_n_safe <- function(x, n) {
+  x_unique <- unique(x)
+  x_unique[sample.int(length(x_unique), min(n, length(x_unique)))]
+}
+
+classify_value <- function(x) {
+  recode_values(x, c(NA, NULL) ~ "NA or NULL", 0 ~ "0", default = ">0")
+}
+
+read_or_write_parquet <- function(con, table_name, file_name) {
+  if (!file.exists(file_name)) {
+    table <- dbGetQuery(
+      con,
+      glue::glue("SELECT * FROM {table_name};")
+    )
+    nanoparquet::write_parquet(
+      table,
+      file_name
+    )
+  } else {
+    table <- nanoparquet::read_parquet(
+      file_name
+    )
+  }
+  table
+}
+
+kable_abbreviate <- function(x, n) {
+  table <- slice_head(x, n = n) |> knitr::kable()
+  nrows <- nrow(x)
+  print(table)
+  if (nrows > n) {
+    print(glue("\n\n*and {nrows - n} more rows*"))
+  }
+}
+
+kable_glimpse <- function(x, n = 20, width = 40) {
+  summary <- tibble(
+    name = names(x),
+    type = vapply(x, \(col) class(col)[1], character(1)),
+    n_na = vapply(x, \(col) sum(is.na(col)), integer(1)),
+    n_distinct = vapply(x, n_distinct, integer(1)),
+    examples = vapply(
+      x,
+      \(col) {
+        sample_n_safe(col[!is.na(col)], n) |>
+          as.character() |>
+          # \r escape in some comments needs to be removed
+          str_replace(pattern = "\\r", replacement = "") |>
+          str_trunc(width) |>
+          str_flatten_comma()
+      },
+      character(1)
+    )
+  )
+  cat(glue("{ncol(x)} cols x {nrow(x)} rows\n\n"))
+  print(knitr::kable(summary))
+}
+
+is_double_like <- function(x) {
+  x_double <- suppressWarnings(as.double(x))
+  ifelse(sum(is.na(x_double)) > sum(is.na(x)), TRUE, FALSE)
+}
+
+```
+
+# `user_ref`
+
+```{r}
+#| label: load-tables
+
+user_ref <- read_or_write_parquet(
+  con,
+  "user_ref",
+  here::here("data", "user_ref.parquet")
+)
+
+environmental_con <- read_or_write_parquet(
+  con,
+  "environmental_con",
+  here::here("data", "environmental_con.parquet")
+)
+```
+
+- `user_ref` is presumably the table of references for *all* data in RADB - both eData and qData
+- it may be based on an existing citation format ([bibtex](https://www.bibtex.org/Format/)?), although this is not currently documented
+- eData's references
+
+```{r}
+user_ref |> kable_glimpse()
+```
+
+## foreign key `environmental_con.measured_reference_id` == `user_ref.reference_id`
+
+- As we're only interested in eData and not qData, we want to know if all eData entries correspond to a single reference
+- `measured_reference_id` is stored as a character and `reference_id` as a double, which may cause issues with joining tables
+- Drilling deeper into the data several issues are apparent: many entries in `environmental_con` have no `measured_reference_id`, and some `measured_reference_id` are not integers
+
+```{r}
+environmental_con |>
+  count(measured_reference_id, sort = TRUE) |>
+  kable_abbreviate(n = 20)
+```
+
+- If we remove all non-numeric `measured_reference_id`, do the remaining IDs all match values of `user_ref.reference_id`?
+
+```{r}
+environmental_con_ref_id_double <- environmental_con |>
+  mutate(measured_reference_id = as.double(measured_reference_id)) |>
+  filter(!is.na(measured_reference_id))
+
+anti_join(
+  environmental_con_ref_id_double,
+  user_ref,
+  by = join_by(
+    measured_reference_id == reference_id
+  )
+) |>
+  select(
+    campaign,
+    environmental_con_id,
+    sample_date,
+    site_code,
+    measured_reference_id
+  ) |>
+  kable_glimpse()
+```
+
+- Yes, with the exception of `measured_reference_id` == `34171643`, which corresponds to `Multisource_Test1`
+
+- eData generates a [compact text reference ID](https://nivanorge.github.io/eDataDRF/reference/generate_reference_id.html) based on the reference date, the first author's last name, and the first three words of the title (e.g. `2018Last1AStudyOf`)
+- This is unlikely but technically might to generate non-unique IDs (i.e. if two papers are published the same year with the same first three title words and first author last name)
+- This also has the benefit of being far more more human-friendly than an integer code
+
+::: {.callout-important title="Recommendations"}
+
+- Review use of reference ID in existing data
+- Harmonise across eData/qData/RADB
+
+**Assessment**
+
+- Priority: 3/5
+- Difficulty: 4/5
+:::
+
+# `author`
+
+- Standard bibtex field
+
+```{r}
+user_ref |> count(author) |> kable_abbreviate(n = 20)
+```
+
+- Inconsistent formatting in DB, sometimes contains year, title, etc.
+- [eData](https://nivanorge.github.io/eDataDRF/articles/references_data.html) gets reference data from LLM or Crossref lookup, which mostly mitigates any such issues
+
+::: {.callout-important title="Recommendations"}
+
+- Add guidelines for formatting author info?
+- Harmonise across eData/qData/RADB
+
+**Assessment**
+
+- Priority: 2/5
+- Difficulty: 2/5
+:::
+
+# `publication_year`
+
+```{r}
+user_ref |>
+  filter(publication_year %notin% 1940:2027) |>
+  kable_glimpse()
+```
+
+- Filtered to references with "unreasonable" (i.e. not between 1940 and 2027) `publication_year`
+- Appears that in some cases, this is only stored in titles (e.g. `Pascoe ea 94`)
+- Recorded in eData as [References - YEAR](https://nivanorge.github.io/eDataDRF/articles/references_data.html#year), otherwise basically the same
+
+::: {.callout-important title="Recommendations"}
+
+- Check properly formatted for all references
+
+**Assessment**
+
+- Priority: 1/5
+- Difficulty: 1/5
+:::
+
+# `title`
+
+- show only titles with punctuation in them, as an approximation of corrupted titles
+
+```{r}
+user_ref |>
+  filter(str_detect(title, "[^\\w\\s]")) |>
+  count(title) |>
+  arrange(nchar(title)) |>
+  kable_abbreviate(n = 20)
+```
+
+- There are a handful of these corrupted titles in here
+- Entering titles via Excel is (potentially) likely to cause more issues, as Excel will automatically use the language/location settings of the Windows user profile, which may use different encoding to RADB or the importer
+- This is less likely to occur with eData/qData, as they're hosted on a specific server with specific settings. but errors may be introduced during import
+
+::: {.callout-important title="Recommendations"}
+
+- Check title formatting
+- Check if import pipelines need explicit locale set
+
+**Assessment**
+
+- Priority: 1/5
+- Difficulty: 1/5
+:::
+
+# `doi`, `url` 
+
+- DOIs are uncomplicated, and used identically in eData [References - DOI](https://nivanorge.github.io/eDataDRF/articles/references_data.html#doi)
+
+```{r}
+user_ref |>
+  count(doi) |>
+  kable_abbreviate(n = 20)
+```
+
+- Likewise [References - URL](https://nivanorge.github.io/eDataDRF/articles/references_data.html#url)
+
+```{r}
+user_ref |>
+  count(url) |>
+  kable_abbreviate(n = 20)
+```
+
+# `reference_type`
+
+```{r}
+user_ref |>
+  count(reference_type) |>
+  kable_abbreviate(n = 20)
+```
+
+- `reference_type` is always either `PRIMARY` or `REVIEW`
+- Edge cases may exist (e.g. databases), but aren't anticipated to be a real issue
+- No controlled vocabulary constraint appears to exist for this variable at this time
+- eData's [References - REFERENCE_TYPE](https://nivanorge.github.io/eDataDRF/articles/references_data.html#reference-type) variable tracks whether the reference is a book/article/etc, akin to bibtex's [entry type](https://www.bibtex.org/Format/#entry-types)
+- this is used to make various data specific to certain references conditionally mandatory (e.g. books and reports need a publisher, etc.)
+
+::: {.callout-important title="Recommendations"}
+
+- Rename eData REFERENCE_TYPE to ENTRY_TYPE for consistency with bibtex
+- Extend reference_type to include `Other` category, add controlled vocabulary
+- Harmonise across both
+
+**Assessment**
+
+- Priority: 1/5
+- Difficulty: 3/5
+:::
+
+# `series_editor`, `series_title`, `series_volume`, `number_of_volumes`, `editor_name`, `periodical_journal`, `ref_volume`, `issue`, `number_of_pages`, `ref_pages`, `epub_date`, `date_cited`, `access_date`, `ref_edition`, `publisher`, `published_date`, `published_place`, `institution`, `db_name`, `db_provider`, `accession_number`, `document_number`, `isbn_issn`, `pmcid`
+
+- These variables exist but are almost never used:
+- eData drops several of the more specific ones (`series_editor`, `series_title`, `series_volume`, `number_of_volumes`, `editor_name`, `date_cited`, `published_date`, `published_place`, `db_name`, `db_provider`, `accession_number`, `pmcid`) to reduce complexity
+
+```{r}
+user_ref |>
+  select(
+    series_editor,
+    series_title,
+    series_volume,
+    number_of_volumes,
+    editor_name,
+    periodical_journal,
+    ref_volume,
+    issue,
+    number_of_pages,
+    ref_pages,
+    epub_date,
+    date_cited,
+    access_date,
+    ref_edition,
+    publisher,
+    published_date,
+    published_place,
+    institution,
+    db_name,
+    db_provider,
+    accession_number,
+    document_number,
+    isbn_issn,
+    pmcid
+  ) |>
+  kable_glimpse()
+```
+
+
+
+::: {.callout-important title="Recommendations"}
+
+- Identify which of the above variables capture useful metadata or could be removed?
+- Consider splitting into multiple tables for different evidence types (book, database, etc) to reduce number of redundant fields
+
+**Assessment**
+
+- Priority: 1/5
+- Difficulty: 4/5
+:::
+
+# `entered_by`, `entered_date`
+
+- Not currently captured by eData
+
+::: {.callout-important title="Recommendations"}
+
+- Should be added to eData for consistency across tables (based on user account?)
+
+**Assessment**
+
+- Priority: 1/5
+- Difficulty: 2/5
+:::
+
+# `comments`
+
+- Set but never used
+- eData has a specifically named [References - REF_COMMENT](https://nivanorge.github.io/eDataDRF/articles/references_data.html#reference-comment) field for the same purpose
+
+```{r}
+user_ref |> count(comments)
+```
+
+# `rnum`
+
+Not assessed.

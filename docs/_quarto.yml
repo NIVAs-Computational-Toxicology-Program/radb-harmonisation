@@ -1,0 +1,10 @@
+project:
+  title: "RADB-eData Harmonisation"
+
+format: 
+  html: default
+number-sections: true
+toc: true
+execute: 
+  cache: true
+

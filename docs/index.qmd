@@ -1,0 +1,65 @@
+---
+title: "RADB harmonisation: exploration index"
+---
+
+Entry point to the RADB exploration documents. The recommendation tables below are
+generated automatically from the `Recommendations` callouts in each document, so they
+update whenever a document is re-rendered. Priority and difficulty are scored out of 5.
+
+```{r}
+#| label: setup
+#| echo: false
+#| output: false
+library(tidyverse)
+library(here)
+
+i_am("docs/index.qmd")
+
+source(here("R", "extract_recommendations.R"))
+
+qmd_files <- list.files(here("docs"), pattern = "\\.qmd$", full.names = TRUE) |>
+  discard(\(f) basename(f) == "index.qmd")
+
+recs <- purrr::map(qmd_files, extract_recommendations) |> list_rbind()
+```
+
+## Documents
+
+```{r}
+#| label: doc-links
+#| echo: false
+#| results: asis
+recs |>
+  distinct(doc, doc_title) |>
+  mutate(html = str_replace(doc, "\\.qmd$", ".html")) |>
+  glue::glue_data("- [{doc_title}]({html}) (`{doc}`)") |>
+  cat(sep = "\n")
+```
+
+## Recommendations by document
+
+```{r}
+#| label: rec-tables
+#| echo: false
+#| results: asis
+esc <- \(x) str_replace_all(x, "\\|", "\\\\|")
+
+for (d in unique(recs$doc)) {
+  doc_recs <- recs |> filter(doc == d)
+  html <- str_replace(d, "\\.qmd$", ".html")
+
+  cat("\n\n### ", doc_recs$doc_title[1], "\n\n", sep = "")
+
+  doc_recs |>
+    mutate(
+      table = glue::glue("[{heading}]({html}#{heading_anchor(heading)})"),
+      recommendations = map_chr(recommendations, \(r) {
+        esc(str_flatten(r, "<br>"))
+      })
+    ) |>
+    arrange(desc(priority), difficulty) |>
+    select(table, priority, difficulty, recommendations) |>
+    knitr::kable(format = "pipe", align = c("l", "c", "c", "l")) |>
+    cat(sep = "\n")
+}
+```
