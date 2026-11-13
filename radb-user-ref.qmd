@@ -12,7 +12,7 @@ library(tidyverse)
 library(glue)
 library(here)
 
-here::i_am("docs/radb-user-ref.qmd")
+here::i_am("radb-user-ref.qmd")
 
 set.seed(123)
 

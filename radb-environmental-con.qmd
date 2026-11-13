@@ -14,7 +14,7 @@ library(tidyverse)
 library(glue)
 library(here)
 
-here::i_am("docs/radb-environmental-con.qmd")
+here::i_am("radb-environmental-con.qmd")
 
 # requres RPostgres to be built + installed
 # which in turn requres PSQL to be installed

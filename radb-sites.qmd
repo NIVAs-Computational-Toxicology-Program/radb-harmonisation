@@ -12,7 +12,7 @@ library(tidyverse)
 library(glue)
 library(here)
 
-here::i_am("docs/radb-sites.qmd")
+here::i_am("radb-sites.qmd")
 
 # requres RPostgres to be built + installed
 # which in turn requres PSQL to be installed

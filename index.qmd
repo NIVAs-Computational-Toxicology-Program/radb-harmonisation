@@ -13,11 +13,11 @@ update whenever a document is re-rendered. Priority and difficulty are scored ou
 library(tidyverse)
 library(here)
 
-i_am("docs/index.qmd")
+i_am("index.qmd")
 
 source(here("R", "extract_recommendations.R"))
 
-qmd_files <- list.files(here("docs"), pattern = "\\.qmd$", full.names = TRUE) |>
+qmd_files <- list.files(here(), pattern = "\\.qmd$", full.names = TRUE) |>
   discard(\(f) basename(f) == "index.qmd")
 
 recs <- purrr::map(qmd_files, extract_recommendations) |> list_rbind()
