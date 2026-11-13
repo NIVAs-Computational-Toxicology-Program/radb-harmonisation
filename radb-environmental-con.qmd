@@ -1,5 +1,5 @@
 ---
-title: "RADB environmental_con Exploration"
+title: "RADB environmental_con"
 code-fold: true
 ---
 
@@ -837,7 +837,7 @@ environmental_con |>
 ```{r}
 #| label: sampling-duration-value-summary
 #| output: asis
-environmental_con |> count(sampling_duration_unit, sort = TRUE)
+# environmental_con |> count(sampling_duration_unit, sort = TRUE)
 
 # do all rows with a duration value have a unit?
 environmental_con |>
@@ -845,16 +845,18 @@ environmental_con |>
   kable_abbreviate(n = 20)
 ```
 
+/
 - Some rows have a unit (`d`) but no value. This shouldn't be an issue. 
+- eData collects `SAMPLING_DATE` but not sampling duration
 
 ::: {.callout-important title="Recommendations"}
 
-- No changes needed.
+- Add sampling duration to eData if needed
 
 **Assessment**
 
-- Priority: 0/5
-- Difficulty: 0/5
+- Priority: 1/5
+- Difficulty: 1/5
 :::
 
 ### `sampling_depth_value` and `sampling_depth_unit`

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>RADB user_ref Exploration – RADB-eData Harmonisation</title>
+<title>RADB user_ref – RADB-eData Harmonisation</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -112,7 +112,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="floating nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -135,15 +135,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./radb-environmental-con.html"> 
-<span class="menu-text">RADB environmental_con Exploration</span></a>
+<span class="menu-text">RADB environmental_con</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./radb-sites.html"> 
-<span class="menu-text">RADB sites Exploration</span></a>
+<span class="menu-text">RADB sites</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link active" href="./radb-user-ref.html" aria-current="page"> 
-<span class="menu-text">RADB user_ref Exploration</span></a>
+<span class="menu-text">RADB user_ref</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -155,9 +155,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="3">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -168,26 +167,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#author" id="toc-author" class="nav-link" data-scroll-target="#author"><span class="header-section-number">2</span> <code>author</code></a></li>
   <li><a href="#publication_year" id="toc-publication_year" class="nav-link" data-scroll-target="#publication_year"><span class="header-section-number">3</span> <code>publication_year</code></a></li>
   <li><a href="#title" id="toc-title" class="nav-link" data-scroll-target="#title"><span class="header-section-number">4</span> <code>title</code></a></li>
-  <li><a href="#doi-url" id="toc-doi-url" class="nav-link" data-scroll-target="#doi-url"><span class="header-section-number">5</span> <code>doi</code>, <code>url</code></a></li>
-  <li><a href="#reference_type" id="toc-reference_type" class="nav-link" data-scroll-target="#reference_type"><span class="header-section-number">6</span> <code>reference_type</code></a></li>
-  <li><a href="#series_editor-series_title-series_volume-number_of_volumes-editor_name-periodical_journal-ref_volume-issue-number_of_pages-ref_pages-epub_date-date_cited-access_date-ref_edition-publisher-published_date-published_place-institution-db_name-db_provider-accession_number-document_number-isbn_issn-pmcid" id="toc-series_editor-series_title-series_volume-number_of_volumes-editor_name-periodical_journal-ref_volume-issue-number_of_pages-ref_pages-epub_date-date_cited-access_date-ref_edition-publisher-published_date-published_place-institution-db_name-db_provider-accession_number-document_number-isbn_issn-pmcid" class="nav-link" data-scroll-target="#series_editor-series_title-series_volume-number_of_volumes-editor_name-periodical_journal-ref_volume-issue-number_of_pages-ref_pages-epub_date-date_cited-access_date-ref_edition-publisher-published_date-published_place-institution-db_name-db_provider-accession_number-document_number-isbn_issn-pmcid"><span class="header-section-number">7</span> <code>series_editor</code>, <code>series_title</code>, <code>series_volume</code>, <code>number_of_volumes</code>, <code>editor_name</code>, <code>periodical_journal</code>, <code>ref_volume</code>, <code>issue</code>, <code>number_of_pages</code>, <code>ref_pages</code>, <code>epub_date</code>, <code>date_cited</code>, <code>access_date</code>, <code>ref_edition</code>, <code>publisher</code>, <code>published_date</code>, <code>published_place</code>, <code>institution</code>, <code>db_name</code>, <code>db_provider</code>, <code>accession_number</code>, <code>document_number</code>, <code>isbn_issn</code>, <code>pmcid</code></a></li>
-  <li><a href="#entered_by-entered_date" id="toc-entered_by-entered_date" class="nav-link" data-scroll-target="#entered_by-entered_date"><span class="header-section-number">8</span> <code>entered_by</code>, <code>entered_date</code></a></li>
-  <li><a href="#comments" id="toc-comments" class="nav-link" data-scroll-target="#comments"><span class="header-section-number">9</span> <code>comments</code></a></li>
-  <li><a href="#rnum" id="toc-rnum" class="nav-link" data-scroll-target="#rnum"><span class="header-section-number">10</span> <code>rnum</code></a></li>
+  <li><a href="#a-data-frame-20-2" id="toc-a-data-frame-20-2" class="nav-link" data-scroll-target="#a-data-frame-20-2"><span class="header-section-number">5</span> A data frame: 20 × 2</a></li>
+  <li><a href="#doi-url" id="toc-doi-url" class="nav-link" data-scroll-target="#doi-url"><span class="header-section-number">6</span> <code>doi</code>, <code>url</code></a></li>
+  <li><a href="#reference_type" id="toc-reference_type" class="nav-link" data-scroll-target="#reference_type"><span class="header-section-number">7</span> <code>reference_type</code></a></li>
+  <li><a href="#series_editor-series_title-series_volume-number_of_volumes-editor_name-periodical_journal-ref_volume-issue-number_of_pages-ref_pages-epub_date-date_cited-access_date-ref_edition-publisher-published_date-published_place-institution-db_name-db_provider-accession_number-document_number-isbn_issn-pmcid" id="toc-series_editor-series_title-series_volume-number_of_volumes-editor_name-periodical_journal-ref_volume-issue-number_of_pages-ref_pages-epub_date-date_cited-access_date-ref_edition-publisher-published_date-published_place-institution-db_name-db_provider-accession_number-document_number-isbn_issn-pmcid" class="nav-link" data-scroll-target="#series_editor-series_title-series_volume-number_of_volumes-editor_name-periodical_journal-ref_volume-issue-number_of_pages-ref_pages-epub_date-date_cited-access_date-ref_edition-publisher-published_date-published_place-institution-db_name-db_provider-accession_number-document_number-isbn_issn-pmcid"><span class="header-section-number">8</span> <code>series_editor</code>, <code>series_title</code>, <code>series_volume</code>, <code>number_of_volumes</code>, <code>editor_name</code>, <code>periodical_journal</code>, <code>ref_volume</code>, <code>issue</code>, <code>number_of_pages</code>, <code>ref_pages</code>, <code>epub_date</code>, <code>date_cited</code>, <code>access_date</code>, <code>ref_edition</code>, <code>publisher</code>, <code>published_date</code>, <code>published_place</code>, <code>institution</code>, <code>db_name</code>, <code>db_provider</code>, <code>accession_number</code>, <code>document_number</code>, <code>isbn_issn</code>, <code>pmcid</code></a></li>
+  <li><a href="#entered_by-entered_date" id="toc-entered_by-entered_date" class="nav-link" data-scroll-target="#entered_by-entered_date"><span class="header-section-number">9</span> <code>entered_by</code>, <code>entered_date</code></a></li>
+  <li><a href="#comments" id="toc-comments" class="nav-link" data-scroll-target="#comments"><span class="header-section-number">10</span> <code>comments</code></a></li>
+  <li><a href="#rnum" id="toc-rnum" class="nav-link" data-scroll-target="#rnum"><span class="header-section-number">11</span> <code>rnum</code></a></li>
   </ul>
 </nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content column-page-right" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">RADB user_ref Exploration</h1>
+<h1 class="title">RADB user_ref</h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta column-page-right">
 
     
   
@@ -832,9 +836,52 @@ Caused by warning:
 </table>
 <p><em>and 129 more rows</em></p>
 <ul>
-<li>Inconsistent formatting in DB, sometimes contains year, title, etc.</li>
-<li><a href="https://nivanorge.github.io/eDataDRF/articles/references_data.html">eData</a> gets reference data from LLM or Crossref lookup, which mostly mitigates any such issues</li>
+<li><p>Inconsistent formatting in DB, sometimes contains year, title, etc.</p></li>
+<li><p><a href="https://nivanorge.github.io/eDataDRF/articles/references_data.html">eData</a> gets reference data from LLM or Crossref lookup, which mostly mitigates any such issues</p></li>
+<li><p>Some authors also have newline characters (<code>\r</code> carriage return, <code>\n</code> newline), which may cause issues with the data and should be replaced with spaces on import</p></li>
 </ul>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(author, <span class="st">"</span><span class="sc">\\</span><span class="st">R"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(author, title), <span class="at">.fns =</span> \(x) {</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace</span>(<span class="at">string =</span> x, <span class="at">pattern =</span> <span class="st">"/"</span>, <span class="at">replacement =</span> <span class="st">"//"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  })) <span class="sc">|&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(reference_id, author, title) <span class="sc">|&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 45%">
+<col style="width: 48%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">reference_id</th>
+<th style="text-align: left;">author</th>
+<th style="text-align: left;">title</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">104</td>
+<td style="text-align: left;">Pany B K and Mitra G N</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">fixation by three cyanobacteria. Environmental Ecology, 16, No.&nbsp;4, 783â€“787.</td>
+<td style="text-align: left;">Effect of iron enrichment on the growth and nitrogen fixation by three cyanobacteria</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">107</td>
+<td style="text-align: left;">De Schamphelaere KAC, Stubble</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<p>fi eld W, Rodriguez P, Vleminckx K, Janssen CR. |he chronic toxicity of molybdate to freshwater organisms. I. Generating reliable ef- fects data | | 665|Freitas, E. C. Rocha, O. |Acute and chronic effects of sodium and potassium on the tropical freshwater cladoceran Pseudosida ramosa | | 512|Sauvant, M. P. Pepin, D. Bohatier, J. Groliere, C. A. |Microplate technique for screening and assessing cytotoxicity of xenobiotics with Tetrahymena pyriformis | | 576|Pany B K and Mitra G N fixation by three cyanobacteria. Environmental Ecology, 16, No.&nbsp;4, 783â€“787. |Effect of iron enrichment on the growth and nitrogen fixation by three cyanobacteria |</p>
 <div class="callout callout-style-default callout-important callout-titled" title="Recommendations">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -847,6 +894,7 @@ Caused by warning:
 <div class="callout-body-container callout-body">
 <ul>
 <li>Add guidelines for formatting author info?</li>
+<li>Remove any stray newline characters; ensure this is also performed at data upload</li>
 <li>Harmonise across eData/qData/RADB</li>
 </ul>
 <p><strong>Assessment</strong></p>
@@ -861,9 +909,9 @@ Caused by warning:
 <h1 data-number="3"><span class="header-section-number">3</span> <code>publication_year</code></h1>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(publication_year <span class="sc">%notin%</span> <span class="dv">1940</span><span class="sc">:</span><span class="dv">2027</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(publication_year <span class="sc">%notin%</span> <span class="dv">1940</span><span class="sc">:</span><span class="dv">2027</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <p>35 cols x 471 rows</p>
 <table class="caption-top table">
@@ -1164,11 +1212,11 @@ Caused by warning:
 </ul>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(title, <span class="st">"[^</span><span class="sc">\\</span><span class="st">w</span><span class="sc">\\</span><span class="st">s]"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(title) <span class="sc">|&gt;</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">nchar</span>(title)) <span class="sc">|&gt;</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(title, <span class="st">"[^</span><span class="sc">\\</span><span class="st">w</span><span class="sc">\\</span><span class="st">s]"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(title) <span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">nchar</span>(title)) <span class="sc">|&gt;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <table class="caption-top table">
 <thead>
@@ -1262,10 +1310,21 @@ Caused by warning:
 </table>
 <p><em>and 88 more rows</em></p>
 <ul>
-<li>There are a handful of these corrupted titles in here</li>
-<li>Entering titles via Excel is (potentially) likely to cause more issues, as Excel will automatically use the language/location settings of the Windows user profile, which may use different encoding to RADB or the importer</li>
-<li>This is less likely to occur with eData/qData, as they’re hosted on a specific server with specific settings. but errors may be introduced during import</li>
+<li><p>There are a handful of these corrupted titles in here</p></li>
+<li><p>Entering titles via Excel is (potentially) likely to cause more issues, as Excel will automatically use the language/location settings of the Windows user profile, which may use different encoding to RADB or the importer</p></li>
+<li><p>This is less likely to occur with eData/qData, as they’re hosted on a specific server with specific settings. but errors may be introduced during import</p></li>
+<li><p>Some titles are also duplicated. Although we wouldn’t expect titles to be a unique key, it’s good to check if references are being double-counted (it also raises the possibility that measurements are double-counted)</p></li>
 </ul>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(title) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</section>
+<section id="a-data-frame-20-2" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> A data frame: 20 × 2</h1>
+<p>title n <chr> <int> 1 “Canadian Environmental Quality Guidelines” 2 2 “Development of biochemical methods to estimate the subcellular impact… 2 3”ENDNOTE KPE” 9 4 “Effect of iron enrichment on the growth and nitrogen fixation by thre… 2 5”Effects of arsenate on growth and phosphorus metabolism of phytoplank… 2 6 “Effects of artificial ultraviolet B radiation on the macrophyte Lemna… 3 7”Effects of depleted uranium on the reproductive success and F1 genera… 2 8 “Effects of waterborne uranium on survival, growth, reproduction and p… 2 9”Endnote” 2 10 “Gamma irradiation during gametogenesis in young adult zebrafish cause… 2 11”Growth responses of selected freshwater algae to trace elements and s… 2 12 “Integrative assessment of UV-B radiation effects on Daphnia magna” 3 13 “Modes of action and adverse effects of gamma radiation in an aquatic … 2 14”Sensitivity of the green algae Chlamydomonas reinhardtii to gamma rad… 3 15 “Sub-lethal UV radiation during early life stages alters the behaviour… 2 16”The effects of lesser known metals and one organic to fathead minnows… 2 17 “Tribenuron-metyl 20.11.2007” 2 18 “effets of depleted uranium on Lemna minor” 2 19 “historical backgroud UV data in Norway (DSA)” 2 20 <na> 13</na></int></chr></p>
 <div class="callout callout-style-default callout-important callout-titled" title="Recommendations">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1278,26 +1337,27 @@ Caused by warning:
 <div class="callout-body-container callout-body">
 <ul>
 <li>Check title formatting</li>
+<li>Remove duplicate papers</li>
 <li>Check if import pipelines need explicit locale set</li>
 </ul>
 <p><strong>Assessment</strong></p>
 <ul>
 <li>Priority: 1/5</li>
-<li>Difficulty: 1/5</li>
+<li>Difficulty: 2/5</li>
 </ul>
 </div>
 </div>
 </section>
-<section id="doi-url" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> <code>doi</code>, <code>url</code></h1>
+<section id="doi-url" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> <code>doi</code>, <code>url</code></h1>
 <ul>
 <li>DOIs are uncomplicated, and used identically in eData <a href="https://nivanorge.github.io/eDataDRF/articles/references_data.html#doi">References - DOI</a></li>
 </ul>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(doi) <span class="sc">|&gt;</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(doi) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <table class="caption-top table">
 <thead>
@@ -1395,9 +1455,9 @@ Caused by warning:
 </ul>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(url) <span class="sc">|&gt;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(url) <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <table class="caption-top table">
 <thead>
@@ -1418,13 +1478,13 @@ Caused by warning:
 </tbody>
 </table>
 </section>
-<section id="reference_type" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> <code>reference_type</code></h1>
+<section id="reference_type" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> <code>reference_type</code></h1>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(reference_type) <span class="sc">|&gt;</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(reference_type) <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <table class="caption-top table">
 <thead>
@@ -1474,42 +1534,42 @@ Caused by warning:
 </div>
 </div>
 </section>
-<section id="series_editor-series_title-series_volume-number_of_volumes-editor_name-periodical_journal-ref_volume-issue-number_of_pages-ref_pages-epub_date-date_cited-access_date-ref_edition-publisher-published_date-published_place-institution-db_name-db_provider-accession_number-document_number-isbn_issn-pmcid" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> <code>series_editor</code>, <code>series_title</code>, <code>series_volume</code>, <code>number_of_volumes</code>, <code>editor_name</code>, <code>periodical_journal</code>, <code>ref_volume</code>, <code>issue</code>, <code>number_of_pages</code>, <code>ref_pages</code>, <code>epub_date</code>, <code>date_cited</code>, <code>access_date</code>, <code>ref_edition</code>, <code>publisher</code>, <code>published_date</code>, <code>published_place</code>, <code>institution</code>, <code>db_name</code>, <code>db_provider</code>, <code>accession_number</code>, <code>document_number</code>, <code>isbn_issn</code>, <code>pmcid</code></h1>
+<section id="series_editor-series_title-series_volume-number_of_volumes-editor_name-periodical_journal-ref_volume-issue-number_of_pages-ref_pages-epub_date-date_cited-access_date-ref_edition-publisher-published_date-published_place-institution-db_name-db_provider-accession_number-document_number-isbn_issn-pmcid" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> <code>series_editor</code>, <code>series_title</code>, <code>series_volume</code>, <code>number_of_volumes</code>, <code>editor_name</code>, <code>periodical_journal</code>, <code>ref_volume</code>, <code>issue</code>, <code>number_of_pages</code>, <code>ref_pages</code>, <code>epub_date</code>, <code>date_cited</code>, <code>access_date</code>, <code>ref_edition</code>, <code>publisher</code>, <code>published_date</code>, <code>published_place</code>, <code>institution</code>, <code>db_name</code>, <code>db_provider</code>, <code>accession_number</code>, <code>document_number</code>, <code>isbn_issn</code>, <code>pmcid</code></h1>
 <ul>
 <li>These variables exist but are almost never used:</li>
 <li>eData drops several of the more specific ones (<code>series_editor</code>, <code>series_title</code>, <code>series_volume</code>, <code>number_of_volumes</code>, <code>editor_name</code>, <code>date_cited</code>, <code>published_date</code>, <code>published_place</code>, <code>db_name</code>, <code>db_provider</code>, <code>accession_number</code>, <code>pmcid</code>) to reduce complexity</li>
 </ul>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    series_editor,</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    series_title,</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    series_volume,</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    number_of_volumes,</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    editor_name,</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    periodical_journal,</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    ref_volume,</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    issue,</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    number_of_pages,</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    ref_pages,</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    epub_date,</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    date_cited,</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    access_date,</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    ref_edition,</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    publisher,</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    published_date,</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    published_place,</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    institution,</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    db_name,</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    db_provider,</span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    accession_number,</span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>    document_number,</span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    isbn_issn,</span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    pmcid</span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    series_editor,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    series_title,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    series_volume,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    number_of_volumes,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    editor_name,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    periodical_journal,</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    ref_volume,</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    issue,</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    number_of_pages,</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    ref_pages,</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    epub_date,</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    date_cited,</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    access_date,</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    ref_edition,</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    publisher,</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    published_date,</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    published_place,</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    institution,</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    db_name,</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>    db_provider,</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>    accession_number,</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    document_number,</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>    isbn_issn,</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    pmcid</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <p>24 cols x 699 rows</p>
 <table class="caption-top table">
@@ -1722,8 +1782,8 @@ Caused by warning:
 </div>
 </div>
 </section>
-<section id="entered_by-entered_date" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> <code>entered_by</code>, <code>entered_date</code></h1>
+<section id="entered_by-entered_date" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> <code>entered_by</code>, <code>entered_date</code></h1>
 <ul>
 <li>Not currently captured by eData</li>
 </ul>
@@ -1748,8 +1808,8 @@ Caused by warning:
 </div>
 </div>
 </section>
-<section id="comments" class="level1" data-number="9">
-<h1 data-number="9"><span class="header-section-number">9</span> <code>comments</code></h1>
+<section id="comments" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> <code>comments</code></h1>
 <ul>
 <li>Set but never used</li>
 <li>eData has a specifically named <a href="https://nivanorge.github.io/eDataDRF/articles/references_data.html#reference-comment">References - REF_COMMENT</a> field for the same purpose</li>
@@ -1757,7 +1817,7 @@ Caused by warning:
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span> <span class="fu">count</span>(comments)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span> <span class="fu">count</span>(comments)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A data frame: 1 × 2
@@ -1767,8 +1827,8 @@ Caused by warning:
 </div>
 </div>
 </section>
-<section id="rnum" class="level1" data-number="10">
-<h1 data-number="10"><span class="header-section-number">10</span> <code>rnum</code></h1>
+<section id="rnum" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> <code>rnum</code></h1>
 <p>Not assessed.</p>
 
 

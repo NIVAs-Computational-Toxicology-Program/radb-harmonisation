@@ -7,6 +7,9 @@ format:
     page-layout: full
 number-sections: true
 toc: true
+toc-location: left
+toc-depth: 3
+toc-expand: 3
 execute: 
   cache: true
 

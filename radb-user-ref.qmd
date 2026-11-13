@@ -1,5 +1,5 @@
 ---
-title: "RADB user_ref Exploration"
+title: "RADB user_ref"
 code-fold: true
 ---
 
@@ -66,8 +66,8 @@ kable_glimpse <- function(x, n = 20, width = 40) {
       \(col) {
         sample_n_safe(col[!is.na(col)], n) |>
           as.character() |>
-          # \r escape in some comments needs to be removed
-          str_replace(pattern = "\\r", replacement = "") |>
+          # \r & \n escape in some comments needs to be removed
+          str_replace_all(pattern = "\\R", replacement = "") |>
           str_trunc(width) |>
           str_flatten_comma()
       },
@@ -183,9 +183,24 @@ user_ref |> count(author) |> kable_abbreviate(n = 20)
 - Inconsistent formatting in DB, sometimes contains year, title, etc.
 - [eData](https://nivanorge.github.io/eDataDRF/articles/references_data.html) gets reference data from LLM or Crossref lookup, which mostly mitigates any such issues
 
+- Some authors also have newline characters (`\r` carriage return, `\n` newline), which may cause issues with the data and should be replaced with spaces on import
+
+```{r}
+#| label: author-newline
+#| output: asis
+user_ref |>
+  filter(str_detect(author, "\\R")) |>
+  mutate(across(c(author, title), .fns = \(x) {
+    str_replace(string = x, pattern = "/", replacement = "//")
+  })) |>
+  select(reference_id, author, title) |>
+  kable_abbreviate(n = 10)
+```
+
 ::: {.callout-important title="Recommendations"}
 
 - Add guidelines for formatting author info?
+- Remove any stray newline characters; ensure this is also performed at data upload
 - Harmonise across eData/qData/RADB
 
 **Assessment**
@@ -236,15 +251,26 @@ user_ref |>
 - Entering titles via Excel is (potentially) likely to cause more issues, as Excel will automatically use the language/location settings of the Windows user profile, which may use different encoding to RADB or the importer
 - This is less likely to occur with eData/qData, as they're hosted on a specific server with specific settings. but errors may be introduced during import
 
+- Some titles are also duplicated. Although we wouldn't expect titles to be a unique key, it's good to check if references are being double-counted (it also raises the possibility that measurements are double-counted)
+
+```{r}
+#| label: title-duplicates
+#| output: asis
+user_ref |>
+  count(title) |>
+  filter(n > 1)
+```
+
 ::: {.callout-important title="Recommendations"}
 
 - Check title formatting
+- Remove duplicate papers
 - Check if import pipelines need explicit locale set
 
 **Assessment**
 
 - Priority: 1/5
-- Difficulty: 1/5
+- Difficulty: 2/5
 :::
 
 # `doi`, `url` 

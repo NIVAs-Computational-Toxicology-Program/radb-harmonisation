@@ -1,5 +1,5 @@
 ---
-title: "RADB sites Exploration"
+title: "RADB sites"
 code-fold: true
 ---
 
@@ -177,9 +177,13 @@ anti_join(sites, environmental_con, by = join_by(site_code)) |>
 ```{r}
 #| label: site-id-summary
 #| output: asis
-sites |> count(site_id, sort = TRUE) |> kable_abbreviate(n = 20)
+sites |>
+  count(site_id, sort = TRUE) |>
+  count(n, sort = TRUE) |>
+  kable_abbreviate(n = 20)
 ```
 
+- All `site_id` values are only used once
 - eData doesn't have a `site_id` column, as it's assumed this would be set on RADB upload
 
 ::: {.callout-important title="Recommendations"}
@@ -276,7 +280,7 @@ sites |> count(country) |> knitr::kable()
 ```{r}
 #| label: country-2
 #| output: asis
-sites |> filter(is.na(country)) |> kable_abbreviate(n = 25)
+sites |> filter(is.na(country)) |> kable_abbreviate(n = 10)
 ```
 
 - Some of these are chemical inventories, some appear to be "orphan" sites without relevant information
@@ -300,7 +304,7 @@ sites |> filter(is.na(country)) |> kable_abbreviate(n = 25)
 ```{r}
 #| label: area
 #| output: asis
-sites |> count(area) |> knitr::kable()
+sites |> count(area) |> kable_abbreviate(n = 15)
 ```
 
 - Very useful to capture lower-level geographical information, but `area` doesn't enforce any formatting, so difficult to use
@@ -399,7 +403,7 @@ sites |> count(classify_value(altitude_value), altitude_unit) |> knitr::kable()
 
 ```{r}
 #| label: status
-sites |> count(status)
+sites |> count(status) |> knitr::kable()
 ```
 
 - Purpose unknown.
@@ -420,7 +424,10 @@ sites |> count(status)
 
 ```{r}
 #| label: entered-by-and-entered-date
-sites |> count(entered_by, entered_date, sort = TRUE)
+#| output: asis
+sites |>
+  count(entered_by, entered_date, sort = TRUE) |>
+  kable_abbreviate(n = 10)
 ```
 
 - All dates properly formatted
@@ -449,6 +456,7 @@ sites |> count(comments, sort = TRUE)
 ::: {.callout-important title="Recommendations"}
 
 - Add guidance on relevant information for comments
+- Remove newline characters
 
 **Assessment**
 
@@ -460,7 +468,7 @@ sites |> count(comments, sort = TRUE)
 
 ### `dwh_validfromdate`, `dwh_validtodate`, `dwh_valid`, and `rnum`
 
-Not reviewed per-table, see [environmental_con](radb-env-con-exploration.qmd) for details.
+Not reviewed per-table, see [environmental_con](radb-environmental-con.qmd) for details.
 
 
 
