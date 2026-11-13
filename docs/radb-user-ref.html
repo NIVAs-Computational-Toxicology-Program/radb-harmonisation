@@ -65,6 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
@@ -79,13 +80,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d0cfe7a3482e0d49a74229a8f3b76718.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-b978b5a48b788a4339b89597eba50e38.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
+  "panel-placement": "end",
+  "type": "overlay",
   "limit": 50,
   "keyboard-shortcut": [
     "f",
@@ -111,11 +112,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">RADB-eData Harmonisation</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Index</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./radb-environmental-con.html"> 
+<span class="menu-text">RADB environmental_con Exploration</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./radb-sites.html"> 
+<span class="menu-text">RADB sites Exploration</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./radb-user-ref.html" aria-current="page"> 
+<span class="menu-text">RADB user_ref Exploration</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -140,7 +178,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -149,7 +187,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-page-left">
 
     
   
@@ -162,125 +200,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Purpose: explore RADB’s <code>user_ref</code> table with a view to harmonisation.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.2.1     ✔ readr     2.2.0
-✔ forcats   1.0.1     ✔ stringr   1.6.0
-✔ ggplot2   4.0.3     ✔ tibble    3.3.1
-✔ lubridate 1.9.5     ✔ tidyr     1.3.2
-✔ purrr     1.2.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glue)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>here() starts at C:/Users/SAW/Local Documents/radb-harmonisation</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>here<span class="sc">::</span><span class="fu">i_am</span>(<span class="st">"radb-user-ref.qmd"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>here() starts at C:/Users/SAW/Local Documents/radb-harmonisation</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Functions ##</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>sample_n_safe <span class="ot">&lt;-</span> <span class="cf">function</span>(x, n) {</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  x_unique <span class="ot">&lt;-</span> <span class="fu">unique</span>(x)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  x_unique[<span class="fu">sample.int</span>(<span class="fu">length</span>(x_unique), <span class="fu">min</span>(n, <span class="fu">length</span>(x_unique)))]</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>classify_value <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recode_values</span>(x, <span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">NULL</span>) <span class="sc">~</span> <span class="st">"NA or NULL"</span>, <span class="dv">0</span> <span class="sc">~</span> <span class="st">"0"</span>, <span class="at">default =</span> <span class="st">"&gt;0"</span>)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>read_or_write_parquet <span class="ot">&lt;-</span> <span class="cf">function</span>(con, table_name, file_name) {</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(file_name)) {</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    table <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>      con,</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"SELECT * FROM {table_name};"</span>)</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    nanoparquet<span class="sc">::</span><span class="fu">write_parquet</span>(</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>      table,</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>      file_name</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    table <span class="ot">&lt;-</span> nanoparquet<span class="sc">::</span><span class="fu">read_parquet</span>(</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>      file_name</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  table</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>kable_abbreviate <span class="ot">&lt;-</span> <span class="cf">function</span>(x, n) {</span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  table <span class="ot">&lt;-</span> <span class="fu">slice_head</span>(x, <span class="at">n =</span> n) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  nrows <span class="ot">&lt;-</span> <span class="fu">nrow</span>(x)</span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(table)</span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (nrows <span class="sc">&gt;</span> n) {</span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">glue</span>(<span class="st">"</span><span class="sc">\n\n</span><span class="st">*and {nrows - n} more rows*"</span>))</span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>kable_glimpse <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">n =</span> <span class="dv">20</span>, <span class="at">width =</span> <span class="dv">40</span>) {</span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>  summary <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="fu">names</span>(x),</span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="fu">vapply</span>(x, \(col) <span class="fu">class</span>(col)[<span class="dv">1</span>], <span class="fu">character</span>(<span class="dv">1</span>)),</span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_na =</span> <span class="fu">vapply</span>(x, \(col) <span class="fu">sum</span>(<span class="fu">is.na</span>(col)), <span class="fu">integer</span>(<span class="dv">1</span>)),</span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_distinct =</span> <span class="fu">vapply</span>(x, n_distinct, <span class="fu">integer</span>(<span class="dv">1</span>)),</span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">examples =</span> <span class="fu">vapply</span>(</span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>      x,</span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>      \(col) {</span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sample_n_safe</span>(col[<span class="sc">!</span><span class="fu">is.na</span>(col)], n) <span class="sc">|&gt;</span></span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>          <span class="fu">as.character</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>          <span class="co"># \r escape in some comments needs to be removed</span></span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>          <span class="fu">str_replace</span>(<span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">r"</span>, <span class="at">replacement =</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>          <span class="fu">str_trunc</span>(width) <span class="sc">|&gt;</span></span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>          <span class="fu">str_flatten_comma</span>()</span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>      },</span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>      <span class="fu">character</span>(<span class="dv">1</span>)</span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">glue</span>(<span class="st">"{ncol(x)} cols x {nrow(x)} rows</span><span class="sc">\n\n</span><span class="st">"</span>))</span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(knitr<span class="sc">::</span><span class="fu">kable</span>(summary))</span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>is_double_like <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>  x_double <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(<span class="fu">as.double</span>(x))</span>
-<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(<span class="fu">sum</span>(<span class="fu">is.na</span>(x_double)) <span class="sc">&gt;</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(x)), <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
 <section id="user_ref" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> <code>user_ref</code></h1>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="ot">&lt;-</span> <span class="fu">read_or_write_parquet</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  con,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"user_ref"</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"user_ref.parquet"</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>environmental_con <span class="ot">&lt;-</span> <span class="fu">read_or_write_parquet</span>(</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  con,</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"environmental_con"</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"environmental_con.parquet"</span>)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="ot">&lt;-</span> <span class="fu">read_or_write_parquet</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  con,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"user_ref"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"user_ref.parquet"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>environmental_con <span class="ot">&lt;-</span> <span class="fu">read_or_write_parquet</span>(</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  con,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"environmental_con"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"environmental_con.parquet"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <ul>
@@ -288,56 +223,290 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>it may be based on an existing citation format (<a href="https://www.bibtex.org/Format/">bibtex</a>?), although this is not currently documented</li>
 <li>eData’s references</li>
 </ul>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span> <span class="fu">kable_glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span> <span class="fu">kable_glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>35 cols x 699 rows
-
-
-|name               |type      | n_na| n_distinct|examples                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-|:------------------|:---------|----:|----------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|reference_id       |numeric   |    0|        698|99, 497, 341, 501, 357, 171, 78, 391, 406, 287, 270, 593, 530, 531, 144, 244, 577, 251, 299, 649                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|author             |character |  458|        149|Xie et al., Egami et al., 1984, Kubotaet al1992, Pany B K and Mitra G N
-fixation by th..., Cheng, K. L., Hogan, A. C., Parry, D...., Parent et al 1994, Engel et al., 1966, Faust et al., Vukov, O., Smith, D. S., McGeer, J. C., European Food Safety Authority (EFSA), Zeman, F. A., Gilbin, R., Alonzo, F.,..., Templeton, 1966, Kirby and Sheahan, Brain et al., Almeida, A.C. ; Gomes, T.; Langford, ..., Backhaus et al., Egami et al., 1983, Frank et al 1971, Xie, L., Solhaug, K. A., Song, Y., Br..., {Gehrs, 1975 }                                                                                                                                                                                                                                                       |
-|publication_year   |numeric   |  470|         49|2003, 2007, 1971, 1976, 1991, 1970, 1997, 1994, 2016, 1983, 1977, 1966, 2000, 2005, 1980, 1955, 2015, 1962, 1988, 2004                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-|title              |character |   13|        658|Pickering and Gast 72, Kane Driscoll ea 98, Conclusion regarding the peer review
-..., Hunt ea 81, Anderson ea 94, Canadian Environmental Quality Guidel..., Proposed EQS for Water Framework Dire..., Potential toxic effect of trifloxystr..., Blockwell ea 98, registration dosier strontium chloride, Modeling the concentration-response f..., Metamitron, Comparative sensitivity of green alga..., Cook ea 2000, Canli and Furgess 93, Knothe and van Riper 88, Alexander ea 78, On the influence of gamma-ray radiati..., Radiation-induced gynogenesis and and..., Frequency of y-ray induced specific l...                                                                                                                                                                  |
-|series_editor      |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|series_title       |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|series_volume      |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|number_of_volumes  |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|editor_name        |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|periodical_journal |character |  495|        180|Water Research 41, 4497-4503, http://echa.europa.eu/registration-do..., https://apps.webofknowledge.com/full_..., EFSA Journal 2010; 8(10)-1719, EFSA Scientific Report 79, 1-82, http://echa.europa.eu/documents/10162..., http://echa.europa.eu/en/registration..., Env. Toxic. And chemistry 27-2, 461-470, EFSA Journal 8 (11) 1891, http://www.sciencedirect.com/science/..., http://echa.europa.eu/en/registration..., https://www.env.go.jp/en/chemi/chemic..., http://www.osti.gov/scitech/biblio/40..., Ecotoxicology 18, 440-446, Department of Entomology, Fisheries a..., Bioforsk faktaark Boskalid 06.01.12, Ecotoxicol Environ Saf. 32: 159-165, https://apps.webofknowledge.com/full_..., EFSA Scientific Report (2007) 122, 1-84, Science of the Total Environment |
-|ref_volume         |numeric   |  680|         11|166, 210, 154, 183, 7, 37, 680, 38, 40, 86                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-|issue              |numeric   |  697|          3|4, 43862                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-|number_of_pages    |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|ref_pages          |character |  680|         12|1-11, 25-35, 23-34, 359-365, 370-378, 1-10, 275-290, 19-26, 105-115, 163-168, 117-128                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-|epub_date          |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|date_cited         |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|access_date        |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|ref_edition        |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|publisher          |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|published_date     |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|published_place    |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|institution        |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|db_name            |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|db_provider        |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|accession_number   |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|document_number    |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|isbn_issn          |character |  681|          7|0141-1136, ISSN 0166-445X, 0033-8451, 0166-445X, 0048-9697, 0147-6513                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-|doi                |character |  646|         45|http://www.pesticides.gov.uk/Resource..., http://www.efsa.europa.eu/en/efsajour..., 10.1007/s00128-006-1001-3, 10.1016/j.ecoenv.2013.05.018, https://doi.org/10.1016/j.scitotenv.2..., http://www.efsa.europa.eu/fr/scdocs/d..., http://www.efsa.europa.eu/en/efsajour..., 0, https://doi.org/10.1016/0141-1136(94)..., 10.1897/03-246, 10.1016/j.chemosphere.2004.01.038, 10.1897/02-497, 10.1016/S0269-7491(01)00196-8, 10.1007/2FBF00205148, https://doi.org/10.1016/j.aquatox.201..., 10.1016/j.watres.2007.06.025, Bioforsk (NIBIO) PNEC database, http://www.efsa.europa.eu/en/search/d..., 10.1016/j.ecoenv.2018.02.031, http://www.ccme.ca/en/resources/canad...                                                                                                            |
-|pmcid              |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|url                |character |  697|          2|https://github.com/uvnrpa/Hourly_Data                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-|reference_type     |character |    0|          2|REVIEW, PRIMARY                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-|entered_by         |character |  110|          4|KET, TOH, LIX                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-|entered_date       |POSIXct   |  110|         14|2020-02-15, 2019-05-14 16:46:24, 2016-06-09 14:39:27, 2018-12-21 08:04:06, 2016-05-02 09:17:15, 2020-01-21, 2016-05-02 09:17:11, 2016-05-02 09:17:12, 2019-10-18, 2020-03-03, 2016-05-02 09:17:14, 2016-05-02 09:17:13, 2016-06-09 14:39:26                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|comments           |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|rnum               |numeric   |    0|        699|428, 672, 250, 429, 398, 523, 381, 540, 40, 519, 472, 200, 125, 265, 186, 568, 252, 458, 152, 54                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |</code></pre>
-</div>
-</div>
+<p>35 cols x 699 rows</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 2%">
+<col style="width: 1%">
+<col style="width: 0%">
+<col style="width: 1%">
+<col style="width: 94%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">type</th>
+<th style="text-align: right;">n_na</th>
+<th style="text-align: right;">n_distinct</th>
+<th style="text-align: left;">examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">reference_id</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">698</td>
+<td style="text-align: left;">99, 497, 341, 501, 357, 171, 78, 391, 406, 287, 270, 593, 530, 531, 144, 244, 577, 251, 299, 649</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">author</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">458</td>
+<td style="text-align: right;">149</td>
+<td style="text-align: left;">Xie et al., Egami et al., 1984, Kubotaet al1992, Pany B K and Mitra G N</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fixation by th…, Cheng, K. L., Hogan, A. C., Parry, D…., Parent et al 1994, Engel et al., 1966, Faust et al., Vukov, O., Smith, D. S., McGeer, J. C., European Food Safety Authority (EFSA), Zeman, F. A., Gilbin, R., Alonzo, F.,…, Templeton, 1966, Kirby and Sheahan, Brain et al., Almeida, A.C. ; Gomes, T.; Langford, …, Backhaus et al., Egami et al., 1983, Frank et al 1971, Xie, L., Solhaug, K. A., Song, Y., Br…, {Gehrs, 1975 }</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">publication_year</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">470</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: left;">2003, 2007, 1971, 1976, 1991, 1970, 1997, 1994, 2016, 1983, 1977, 1966, 2000, 2005, 1980, 1955, 2015, 1962, 1988, 2004</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">title</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">658</td>
+<td style="text-align: left;">Pickering and Gast 72, Kane Driscoll ea 98, Conclusion regarding the peer review</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">…, Hunt ea 81, Anderson ea 94, Canadian Environmental Quality Guidel…, Proposed EQS for Water Framework Dire…, Potential toxic effect of trifloxystr…, Blockwell ea 98, registration dosier strontium chloride, Modeling the concentration-response f…, Metamitron, Comparative sensitivity of green alga…, Cook ea 2000, Canli and Furgess 93, Knothe and van Riper 88, Alexander ea 78, On the influence of gamma-ray radiati…, Radiation-induced gynogenesis and and…, Frequency of y-ray induced specific l…</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">series_editor</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">series_title</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">series_volume</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">number_of_volumes</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">editor_name</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">periodical_journal</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">495</td>
+<td style="text-align: right;">180</td>
+<td style="text-align: left;">Water Research 41, 4497-4503, http://echa.europa.eu/registration-do…, https://apps.webofknowledge.com/full_…, EFSA Journal 2010; 8(10)-1719, EFSA Scientific Report 79, 1-82, http://echa.europa.eu/documents/10162…, http://echa.europa.eu/en/registration…, Env. Toxic. And chemistry 27-2, 461-470, EFSA Journal 8 (11) 1891, http://www.sciencedirect.com/science/…, http://echa.europa.eu/en/registration…, https://www.env.go.jp/en/chemi/chemic…, http://www.osti.gov/scitech/biblio/40…, Ecotoxicology 18, 440-446, Department of Entomology, Fisheries a…, Bioforsk faktaark Boskalid 06.01.12, Ecotoxicol Environ Saf. 32: 159-165, https://apps.webofknowledge.com/full_…, EFSA Scientific Report (2007) 122, 1-84, Science of the Total Environment</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ref_volume</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">680</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: left;">166, 210, 154, 183, 7, 37, 680, 38, 40, 86</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">issue</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">697</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">4, 43862</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">number_of_pages</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ref_pages</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">680</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">1-11, 25-35, 23-34, 359-365, 370-378, 1-10, 275-290, 19-26, 105-115, 163-168, 117-128</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">epub_date</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">date_cited</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">access_date</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ref_edition</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">publisher</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">published_date</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">published_place</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">institution</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">db_name</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">db_provider</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">accession_number</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">document_number</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">isbn_issn</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">681</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">0141-1136, ISSN 0166-445X, 0033-8451, 0166-445X, 0048-9697, 0147-6513</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">doi</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">646</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: left;">http://www.pesticides.gov.uk/Resource…, http://www.efsa.europa.eu/en/efsajour…, 10.1007/s00128-006-1001-3, 10.1016/j.ecoenv.2013.05.018, https://doi.org/10.1016/j.scitotenv.2…, http://www.efsa.europa.eu/fr/scdocs/d…, http://www.efsa.europa.eu/en/efsajour…, 0, https://doi.org/10.1016/0141-1136(94)…, 10.1897/03-246, 10.1016/j.chemosphere.2004.01.038, 10.1897/02-497, 10.1016/S0269-7491(01)00196-8, 10.1007/2FBF00205148, https://doi.org/10.1016/j.aquatox.201…, 10.1016/j.watres.2007.06.025, Bioforsk (NIBIO) PNEC database, http://www.efsa.europa.eu/en/search/d…, 10.1016/j.ecoenv.2018.02.031, http://www.ccme.ca/en/resources/canad…</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pmcid</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">url</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">697</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">https://github.com/uvnrpa/Hourly_Data</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">reference_type</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">REVIEW, PRIMARY</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">entered_by</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">KET, TOH, LIX</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">entered_date</td>
+<td style="text-align: left;">POSIXct</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: left;">2020-02-15, 2019-05-14 16:46:24, 2016-06-09 14:39:27, 2018-12-21 08:04:06, 2016-05-02 09:17:15, 2020-01-21, 2016-05-02 09:17:11, 2016-05-02 09:17:12, 2019-10-18, 2020-03-03, 2016-05-02 09:17:14, 2016-05-02 09:17:13, 2016-06-09 14:39:26</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">comments</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rnum</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: left;">428, 672, 250, 429, 398, 523, 381, 540, 40, 519, 472, 200, 125, 265, 186, 568, 252, 458, 152, 54</td>
+</tr>
+</tbody>
+</table>
 <section id="foreign-key-environmental_con.measured_reference_id-user_ref.reference_id" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="foreign-key-environmental_con.measured_reference_id-user_ref.reference_id"><span class="header-section-number">1.1</span> foreign key <code>environmental_con.measured_reference_id</code> == <code>user_ref.reference_id</code></h2>
 <ul>
@@ -345,89 +514,190 @@ fixation by th..., Cheng, K. L., Hogan, A. C., Parry, D...., Parent et al 1994, 
 <li><code>measured_reference_id</code> is stored as a character and <code>reference_id</code> as a double, which may cause issues with joining tables</li>
 <li>Drilling deeper into the data several issues are apparent: many entries in <code>environmental_con</code> have no <code>measured_reference_id</code>, and some <code>measured_reference_id</code> are not integers</li>
 </ul>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>environmental_con <span class="sc">|&gt;</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(measured_reference_id, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>environmental_con <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(measured_reference_id, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-|measured_reference_id |      n|
-|:---------------------|------:|
-|NA                    | 108153|
-|2                     |  28025|
-|1                     |  10272|
-|12                    |   4270|
-|MULTI_WW              |   2240|
-|34171643              |    780|
-|6                     |    598|
-|9                     |    497|
-|Not reported          |    235|
-|3                     |    109|
-|10                    |     87|
-|4                     |     59|
-|5                     |     56|
-|13                    |     53|
-|7                     |     53|
-|8                     |     53|
-|11                    |     51|
-|14                    |     47|
-|15                    |     42|
-|18                    |     39|
-
-*and 56 more rows*</code></pre>
-</div>
-</div>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">measured_reference_id</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">108153</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">28025</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">10272</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12</td>
+<td style="text-align: right;">4270</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">MULTI_WW</td>
+<td style="text-align: right;">2240</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">34171643</td>
+<td style="text-align: right;">780</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">6</td>
+<td style="text-align: right;">598</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">9</td>
+<td style="text-align: right;">497</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Not reported</td>
+<td style="text-align: right;">235</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3</td>
+<td style="text-align: right;">109</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10</td>
+<td style="text-align: right;">87</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4</td>
+<td style="text-align: right;">59</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5</td>
+<td style="text-align: right;">56</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">13</td>
+<td style="text-align: right;">53</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">7</td>
+<td style="text-align: right;">53</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">8</td>
+<td style="text-align: right;">53</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">11</td>
+<td style="text-align: right;">51</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">14</td>
+<td style="text-align: right;">47</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">15</td>
+<td style="text-align: right;">42</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">18</td>
+<td style="text-align: right;">39</td>
+</tr>
+</tbody>
+</table>
+<p><em>and 56 more rows</em></p>
 <ul>
 <li>If we remove all non-numeric <code>measured_reference_id</code>, do the remaining IDs all match values of <code>user_ref.reference_id</code>?</li>
 </ul>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>environmental_con_ref_id_double <span class="ot">&lt;-</span> environmental_con <span class="sc">|&gt;</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">measured_reference_id =</span> <span class="fu">as.double</span>(measured_reference_id)) <span class="sc">|&gt;</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(measured_reference_id))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>environmental_con_ref_id_double <span class="ot">&lt;-</span> environmental_con <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">measured_reference_id =</span> <span class="fu">as.double</span>(measured_reference_id)) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(measured_reference_id))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stderr">
 <pre><code>Warning: There was 1 warning in `mutate()`.
 ℹ In argument: `measured_reference_id = as.double(measured_reference_id)`.
 Caused by warning:
 ! NAs introduced by coercion</code></pre>
-</div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anti_join</span>(</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  environmental_con_ref_id_double,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  user_ref,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">by =</span> <span class="fu">join_by</span>(</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    measured_reference_id <span class="sc">==</span> reference_id</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    campaign,</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    environmental_con_id,</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    sample_date,</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    site_code,</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    measured_reference_id</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anti_join</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  environmental_con_ref_id_double,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  user_ref,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">by =</span> <span class="fu">join_by</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    measured_reference_id <span class="sc">==</span> reference_id</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    campaign,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    environmental_con_id,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    sample_date,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    site_code,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    measured_reference_id</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>5 cols x 780 rows
-
-
-|name                  |type      | n_na| n_distinct|examples                                                                                                                                                                                                                                       |
-|:---------------------|:---------|----:|----------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|campaign              |character |    0|          1|Multisource_Test1                                                                                                                                                                                                                              |
-|environmental_con_id  |numeric   |    0|        780|576120, 576242, 576261, 576221, 575922, 575808, 575886, 575849, 576026, 575631, 575974, 576119, 575857, 575650, 575804, 575918, 576046, 575958, 575829, 575837                                                                                 |
-|sample_date           |POSIXct   |    0|         39|2019-03-05, 2018-06-04, 2018-10-29, 2019-02-19, 2019-04-16, 2018-06-19, 2018-07-24, 2018-05-02, 2018-08-07, 2018-11-19, 2018-12-17, 2018-09-04, 2018-08-13, 2019-03-26, 2019-02-12, 2018-07-03, 2019-03-19, 2018-11-06, 2019-02-05, 2018-09-25 |
-|site_code             |character |    0|          2|LG-HAp, LG-H50p                                                                                                                                                                                                                                |
-|measured_reference_id |numeric   |    0|          1|34171643                                                                                                                                                                                                                                       |</code></pre>
-</div>
-</div>
+<p>5 cols x 780 rows</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 3%">
+<col style="width: 1%">
+<col style="width: 3%">
+<col style="width: 83%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">type</th>
+<th style="text-align: right;">n_na</th>
+<th style="text-align: right;">n_distinct</th>
+<th style="text-align: left;">examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">campaign</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Multisource_Test1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">environmental_con_id</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">780</td>
+<td style="text-align: left;">576120, 576242, 576261, 576221, 575922, 575808, 575886, 575849, 576026, 575631, 575974, 576119, 575857, 575650, 575804, 575918, 576046, 575958, 575829, 575837</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sample_date</td>
+<td style="text-align: left;">POSIXct</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: left;">2019-03-05, 2018-06-04, 2018-10-29, 2019-02-19, 2019-04-16, 2018-06-19, 2018-07-24, 2018-05-02, 2018-08-07, 2018-11-19, 2018-12-17, 2018-09-04, 2018-08-13, 2019-03-26, 2019-02-12, 2018-07-03, 2019-03-19, 2018-11-06, 2019-02-05, 2018-09-25</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">site_code</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">LG-HAp, LG-H50p</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">measured_reference_id</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">34171643</td>
+</tr>
+</tbody>
+</table>
 <ul>
 <li><p>Yes, with the exception of <code>measured_reference_id</code> == <code>34171643</code>, which corresponds to <code>Multisource_Test1</code></p></li>
 <li><p>eData generates a <a href="https://nivanorge.github.io/eDataDRF/reference/generate_reference_id.html">compact text reference ID</a> based on the reference date, the first author’s last name, and the first three words of the title (e.g.&nbsp;<code>2018Last1AStudyOf</code>)</p></li>
@@ -462,40 +732,105 @@ Caused by warning:
 <ul>
 <li>Standard bibtex field</li>
 </ul>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span> <span class="fu">count</span>(author) <span class="sc">|&gt;</span> <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span> <span class="fu">count</span>(author) <span class="sc">|&gt;</span> <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-|author                                                                                                                                                                                                  |  n|
-|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--:|
-|Almeida, A.C. ; Gomes, T.; Langford, K.; Thomas, K.V; Tollefsen, K.E.                                                                                                                                   |  1|
-|BIOFORSK                                                                                                                                                                                                |  1|
-|Backhaus et al.                                                                                                                                                                                         |  1|
-|Bardill, E. A., Blaylock, B.G., Gehrs, C.W., Trabalka, J.R., , Ed. (1977). The effects of acute ionising radiation on selected life stages of the calanoid copepod Diaptomus clavipes Schacht.          |  1|
-|Barescut, J. C., Gariel, J. C., Péres, J. M., Pradines, C., Wiktor, V., Camilleri, V., &amp; Gilbin, R.&nbsp;                                                                                                    |  2|
-|Barry, M. J., Meehan, B. J.                                                                                                                                                                             |  1|
-|Beketov &amp; Liess                                                                                                                                                                                         |  1|
-|Biesinger, K.E. and G.M. Christensen                                                                                                                                                                    |  1|
-|Bioforsk                                                                                                                                                                                                | 18|
-|Bioforsk (NIBIO) PNEC database                                                                                                                                                                          |  1|
-|Birge W J, 1978 Aquatic toxicology of trace elements of coal and fly ash. In Department of Energy (DOE) Symposium Series Energy and Environmental Stress in Aquatic Systems (Augusta, GA, 1977), edited |  1|
-|Bisewska et al.                                                                                                                                                                                         |  1|
-|Bjørn Johnsen                                                                                                                                                                                           |  2|
-|Blaylock and Griffith 1971                                                                                                                                                                              |  1|
-|Borgman, et al.                                                                                                                                                                                         |  1|
-|Bosnir, J., Puntaric, D., Cvetkovic, Z., Pollak, L., Barusic, L., Klaric, I., Miskulin, M., Puntaric, I., Puntaric, E., Milosevic, M.,                                                                  |  1|
-|Bourrachot S, Brion F, Pereira S, Floriani M, Camilleri V, CavaliÃ© I, Palluel O, Adam-Guillermin C.                                                                                                    |  1|
-|Bourrachot, S., Brion, F., Pereira, S., Floriani, M., Camilleri, V., Cavalié, I., ... &amp; Adam-Guillermin, C.                                                                                             |  2|
-|Brain et al.                                                                                                                                                                                            |  1|
-|Buckler et al 1995                                                                                                                                                                                      |  1|
-
-*and 129 more rows*</code></pre>
-</div>
-</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 98%">
+<col style="width: 1%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">author</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Almeida, A.C. ; Gomes, T.; Langford, K.; Thomas, K.V; Tollefsen, K.E.</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BIOFORSK</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Backhaus et al.</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bardill, E. A., Blaylock, B.G., Gehrs, C.W., Trabalka, J.R., , Ed. (1977). The effects of acute ionising radiation on selected life stages of the calanoid copepod Diaptomus clavipes Schacht.</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Barescut, J. C., Gariel, J. C., Péres, J. M., Pradines, C., Wiktor, V., Camilleri, V., &amp; Gilbin, R.&nbsp;</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Barry, M. J., Meehan, B. J.</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Beketov &amp; Liess</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Biesinger, K.E. and G.M. Christensen</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bioforsk</td>
+<td style="text-align: right;">18</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bioforsk (NIBIO) PNEC database</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Birge W J, 1978 Aquatic toxicology of trace elements of coal and fly ash. In Department of Energy (DOE) Symposium Series Energy and Environmental Stress in Aquatic Systems (Augusta, GA, 1977), edited</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bisewska et al.</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bjørn Johnsen</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Blaylock and Griffith 1971</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Borgman, et al.</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bosnir, J., Puntaric, D., Cvetkovic, Z., Pollak, L., Barusic, L., Klaric, I., Miskulin, M., Puntaric, I., Puntaric, E., Milosevic, M.,</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bourrachot S, Brion F, Pereira S, Floriani M, Camilleri V, CavaliÃ© I, Palluel O, Adam-Guillermin C.</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bourrachot, S., Brion, F., Pereira, S., Floriani, M., Camilleri, V., Cavalié, I., … &amp; Adam-Guillermin, C.</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Brain et al.</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Buckler et al 1995</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+<p><em>and 129 more rows</em></p>
 <ul>
 <li>Inconsistent formatting in DB, sometimes contains year, title, etc.</li>
 <li><a href="https://nivanorge.github.io/eDataDRF/articles/references_data.html">eData</a> gets reference data from LLM or Crossref lookup, which mostly mitigates any such issues</li>
@@ -524,56 +859,278 @@ Caused by warning:
 </section>
 <section id="publication_year" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> <code>publication_year</code></h1>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(publication_year <span class="sc">%notin%</span> <span class="dv">1940</span><span class="sc">:</span><span class="dv">2027</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(publication_year <span class="sc">%notin%</span> <span class="dv">1940</span><span class="sc">:</span><span class="dv">2027</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>35 cols x 471 rows
-
-
-|name               |type      | n_na| n_distinct|examples                                                                                                                                                                                                                                                                                                                                                                                                                                |
-|:------------------|:---------|----:|----------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|reference_id       |numeric   |    0|        471|458, 207, 549, 522, 119, 210, 334, 409, 332, 128, 277, 439, 396, 484, 179, 298, 198, 117, 388, 147                                                                                                                                                                                                                                                                                                                                      |
-|author             |character |  458|         10|BIOFORSK, env.go, Simmons, xxx, EU, Bioforsk (NIBIO) PNEC database, Canadian Council of Ministers of the ..., EFSA, echa                                                                                                                                                                                                                                                                                                                |
-|publication_year   |numeric   |  470|          2|0                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-|title              |character |    3|        468|Waiwood and Beamish 78, Herman ea 90, Chaisuksant ea 98, Woodworth and Pascoe 82, Holcombe ea 76, Martin ea 89, McKim ea 76, Roux ea 95, Spacie ea 81, Munkittrick and Dixon 88, Phipps ea 95, Lewis and Wee 83, Serrano ea 95, Ferrando ea 96, Johansen ea 85, Urrestarazu Ramos ea 99, Wang 87, Drzyzga ea 95, KÃ¼hn ea 89, Maki 79b                                                                                                  |
-|series_editor      |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|series_title       |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|series_volume      |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|number_of_volumes  |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|editor_name        |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|periodical_journal |character |  458|         12|http://echa.europa.eu/registration-do..., http://echa.europa.eu/registration-do..., http://onlinelibrary.wiley.com/doi/10..., http://www.efsa.europa.eu/en/efsajour..., http://echa.europa.eu/registration-do..., https://www.env.go.jp/en/chemi/chemic..., http://echa.europa.eu/documents/10162..., xxx, http://www.ccme.ca/en/resources/canad..., http://echa.europa.eu/registration-do..., http://www.bioforsk.no/ikbViewer/page... |
-|ref_volume         |numeric   |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|issue              |numeric   |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|number_of_pages    |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|ref_pages          |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|epub_date          |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|date_cited         |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|access_date        |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|ref_edition        |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|publisher          |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|published_date     |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|published_place    |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|institution        |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|db_name            |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|db_provider        |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|accession_number   |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|document_number    |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|isbn_issn          |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|doi                |character |  468|          4|0, Bioforsk (NIBIO) PNEC database, http://www.ccme.ca/en/resources/canad...                                                                                                                                                                                                                                                                                                                                                             |
-|pmcid              |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|url                |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|reference_type     |character |    0|          2|PRIMARY, REVIEW                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|entered_by         |character |    4|          3|TOH, KET                                                                                                                                                                                                                                                                                                                                                                                                                                |
-|entered_date       |POSIXct   |    4|          9|2016-05-02 09:17:11, 2019-05-14 16:46:24, 2016-05-02 09:17:12, 2016-05-02 09:17:13, 2016-05-02 09:17:15, 2016-06-09 14:39:27, 2016-06-09 14:39:26, 2016-05-02 09:17:14                                                                                                                                                                                                                                                                  |
-|comments           |character |  471|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|rnum               |numeric   |    0|        471|231, 82, 347, 235, 332, 546, 181, 352, 403, 102, 134, 354, 40, 246, 174, 116, 34, 92, 564, 409                                                                                                                                                                                                                                                                                                                                          |</code></pre>
-</div>
-</div>
+<p>35 cols x 471 rows</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 4%">
+<col style="width: 2%">
+<col style="width: 1%">
+<col style="width: 2%">
+<col style="width: 90%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">type</th>
+<th style="text-align: right;">n_na</th>
+<th style="text-align: right;">n_distinct</th>
+<th style="text-align: left;">examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">reference_id</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: left;">458, 207, 549, 522, 119, 210, 334, 409, 332, 128, 277, 439, 396, 484, 179, 298, 198, 117, 388, 147</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">author</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">458</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">BIOFORSK, env.go, Simmons, xxx, EU, Bioforsk (NIBIO) PNEC database, Canadian Council of Ministers of the …, EFSA, echa</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">publication_year</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">470</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">title</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">468</td>
+<td style="text-align: left;">Waiwood and Beamish 78, Herman ea 90, Chaisuksant ea 98, Woodworth and Pascoe 82, Holcombe ea 76, Martin ea 89, McKim ea 76, Roux ea 95, Spacie ea 81, Munkittrick and Dixon 88, Phipps ea 95, Lewis and Wee 83, Serrano ea 95, Ferrando ea 96, Johansen ea 85, Urrestarazu Ramos ea 99, Wang 87, Drzyzga ea 95, KÃ¼hn ea 89, Maki 79b</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">series_editor</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">series_title</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">series_volume</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">number_of_volumes</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">editor_name</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">periodical_journal</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">458</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">http://echa.europa.eu/registration-do…, http://echa.europa.eu/registration-do…, http://onlinelibrary.wiley.com/doi/10…, http://www.efsa.europa.eu/en/efsajour…, http://echa.europa.eu/registration-do…, https://www.env.go.jp/en/chemi/chemic…, http://echa.europa.eu/documents/10162…, xxx, http://www.ccme.ca/en/resources/canad…, http://echa.europa.eu/registration-do…, http://www.bioforsk.no/ikbViewer/page…</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ref_volume</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">issue</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">number_of_pages</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ref_pages</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">epub_date</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">date_cited</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">access_date</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ref_edition</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">publisher</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">published_date</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">published_place</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">institution</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">db_name</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">db_provider</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">accession_number</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">document_number</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">isbn_issn</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">doi</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">468</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">0, Bioforsk (NIBIO) PNEC database, http://www.ccme.ca/en/resources/canad…</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pmcid</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">url</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">reference_type</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">PRIMARY, REVIEW</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">entered_by</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">TOH, KET</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">entered_date</td>
+<td style="text-align: left;">POSIXct</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">2016-05-02 09:17:11, 2019-05-14 16:46:24, 2016-05-02 09:17:12, 2016-05-02 09:17:13, 2016-05-02 09:17:15, 2016-06-09 14:39:27, 2016-06-09 14:39:26, 2016-05-02 09:17:14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">comments</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rnum</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: left;">231, 82, 347, 235, 332, 546, 181, 352, 403, 102, 134, 354, 40, 246, 174, 116, 34, 92, 564, 409</td>
+</tr>
+</tbody>
+</table>
 <ul>
 <li>Filtered to references with “unreasonable” (i.e.&nbsp;not between 1940 and 2027) <code>publication_year</code></li>
 <li>Appears that in some cases, this is only stored in titles (e.g.&nbsp;<code>Pascoe ea 94</code>)</li>
@@ -605,44 +1162,105 @@ Caused by warning:
 <ul>
 <li>show only titles with punctuation in them, as an approximation of corrupted titles</li>
 </ul>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(title, <span class="st">"[^</span><span class="sc">\\</span><span class="st">w</span><span class="sc">\\</span><span class="st">s]"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(title) <span class="sc">|&gt;</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">nchar</span>(title)) <span class="sc">|&gt;</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(title, <span class="st">"[^</span><span class="sc">\\</span><span class="st">w</span><span class="sc">\\</span><span class="st">s]"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(title) <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">nchar</span>(title)) <span class="sc">|&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-|title                                  |  n|
-|:--------------------------------------|--:|
-|U`Ren 83                               |  1|
-|SolbÃ© 74                              |  1|
-|KÃ¼hn ea 89                            |  1|
-|SolbÃ© ea 85                           |  1|
-|MÃ¸ller ea 94                          |  1|
-|KlÃ¼ttgen ea 96                        |  1|
-|Lamda-cyhalotrin                       |  1|
-|SteinhÃ¤user ea 85                     |  1|
-|Brecken-Folse ea 94                    |  1|
-|GÃ¶rge and Nagel 90                    |  1|
-|SolbÃ© and Flook 75                    |  1|
-|SolbÃ© and Cooper 76                   |  1|
-|SolbÃ© and Shurben 89                  |  1|
-|SchÃ¤fers and Nagel 93                 |  1|
-|Frias-Espericueta ea 99                |  1|
-|Schubauer-Berigan ea 93                |  1|
-|Tribenuron-metyl 20.11.2007            |  2|
-|Risk assessment report, copper         |  1|
-|Risk assessment report, Cadmium        |  1|
-|voluntary risk assessment report, LEAD |  1|
-
-*and 88 more rows*</code></pre>
-</div>
-</div>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">title</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">U`Ren 83</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SolbÃ© 74</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">KÃ¼hn ea 89</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SolbÃ© ea 85</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">MÃ¸ller ea 94</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">KlÃ¼ttgen ea 96</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lamda-cyhalotrin</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SteinhÃ¤user ea 85</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Brecken-Folse ea 94</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GÃ¶rge and Nagel 90</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SolbÃ© and Flook 75</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SolbÃ© and Cooper 76</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SolbÃ© and Shurben 89</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SchÃ¤fers and Nagel 93</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Frias-Espericueta ea 99</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Schubauer-Berigan ea 93</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Tribenuron-metyl 20.11.2007</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Risk assessment report, copper</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Risk assessment report, Cadmium</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">voluntary risk assessment report, LEAD</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+<p><em>and 88 more rows</em></p>
 <ul>
 <li>There are a handful of these corrupted titles in here</li>
 <li>Entering titles via Excel is (potentially) likely to cause more issues, as Excel will automatically use the language/location settings of the Windows user profile, which may use different encoding to RADB or the importer</li>
@@ -675,80 +1293,157 @@ Caused by warning:
 <ul>
 <li>DOIs are uncomplicated, and used identically in eData <a href="https://nivanorge.github.io/eDataDRF/articles/references_data.html#doi">References - DOI</a></li>
 </ul>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(doi) <span class="sc">|&gt;</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(doi) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-|doi                               |  n|
-|:---------------------------------|--:|
-|0                                 |  1|
-|10.1002/ps.1117                   |  1|
-|10.1002/ps.735                    |  1|
-|10.1007/2FBF00205148              |  1|
-|10.1007/s00128-003-8521-x         |  1|
-|10.1007/s00128-006-1001-3         |  1|
-|10.1007/s10646-010-0537-5         |  1|
-|10.1016/0048-3575(77)90011-6      |  1|
-|10.1016/S0166-445X(01)00187-4     |  1|
-|10.1016/S0269-7491(01)00196-8     |  1|
-|10.1016/j.aquatox.2016.12.001     |  3|
-|10.1016/j.chemosphere.2004.01.038 |  1|
-|10.1016/j.ecoenv.2004.08.001      |  2|
-|10.1016/j.ecoenv.2004.12.001      |  1|
-|10.1016/j.ecoenv.2013.05.018      |  1|
-|10.1016/j.ecoenv.2018.02.031      |  2|
-|10.1016/j.watres.2007.06.025      |  1|
-|10.1080/03601234.2012.676443      |  1|
-|10.1897/02-497                    |  1|
-|10.1897/03-246                    |  1|
-
-*and 25 more rows*</code></pre>
-</div>
-</div>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">doi</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10.1002/ps.1117</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10.1002/ps.735</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10.1007/2FBF00205148</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10.1007/s00128-003-8521-x</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10.1007/s00128-006-1001-3</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10.1007/s10646-010-0537-5</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10.1016/0048-3575(77)90011-6</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10.1016/S0166-445X(01)00187-4</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10.1016/S0269-7491(01)00196-8</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10.1016/j.aquatox.2016.12.001</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10.1016/j.chemosphere.2004.01.038</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10.1016/j.ecoenv.2004.08.001</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10.1016/j.ecoenv.2004.12.001</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10.1016/j.ecoenv.2013.05.018</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10.1016/j.ecoenv.2018.02.031</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10.1016/j.watres.2007.06.025</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10.1080/03601234.2012.676443</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10.1897/02-497</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10.1897/03-246</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+<p><em>and 25 more rows</em></p>
 <ul>
 <li>Likewise <a href="https://nivanorge.github.io/eDataDRF/articles/references_data.html#url">References - URL</a></li>
 </ul>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(url) <span class="sc">|&gt;</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(url) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-|url                                   |   n|
-|:-------------------------------------|---:|
-|https://github.com/uvnrpa/Hourly_Data |   2|
-|NA                                    | 697|</code></pre>
-</div>
-</div>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">url</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">https://github.com/uvnrpa/Hourly_Data</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">697</td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="reference_type" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> <code>reference_type</code></h1>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(reference_type) <span class="sc">|&gt;</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(reference_type) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-|reference_type |   n|
-|:--------------|---:|
-|PRIMARY        | 598|
-|REVIEW         | 101|</code></pre>
-</div>
-</div>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">reference_type</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">PRIMARY</td>
+<td style="text-align: right;">598</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">REVIEW</td>
+<td style="text-align: right;">101</td>
+</tr>
+</tbody>
+</table>
 <ul>
 <li><code>reference_type</code> is always either <code>PRIMARY</code> or <code>REVIEW</code></li>
 <li>Edge cases may exist (e.g.&nbsp;databases), but aren’t anticipated to be a real issue</li>
@@ -785,70 +1480,226 @@ Caused by warning:
 <li>These variables exist but are almost never used:</li>
 <li>eData drops several of the more specific ones (<code>series_editor</code>, <code>series_title</code>, <code>series_volume</code>, <code>number_of_volumes</code>, <code>editor_name</code>, <code>date_cited</code>, <code>published_date</code>, <code>published_place</code>, <code>db_name</code>, <code>db_provider</code>, <code>accession_number</code>, <code>pmcid</code>) to reduce complexity</li>
 </ul>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    series_editor,</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    series_title,</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    series_volume,</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    number_of_volumes,</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    editor_name,</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    periodical_journal,</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    ref_volume,</span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    issue,</span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    number_of_pages,</span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    ref_pages,</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    epub_date,</span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    date_cited,</span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    access_date,</span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>    ref_edition,</span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>    publisher,</span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>    published_date,</span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>    published_place,</span>
-<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>    institution,</span>
-<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>    db_name,</span>
-<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>    db_provider,</span>
-<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>    accession_number,</span>
-<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>    document_number,</span>
-<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>    isbn_issn,</span>
-<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>    pmcid</span>
-<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    series_editor,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    series_title,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    series_volume,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    number_of_volumes,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    editor_name,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    periodical_journal,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    ref_volume,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    issue,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    number_of_pages,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    ref_pages,</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    epub_date,</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    date_cited,</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    access_date,</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    ref_edition,</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    publisher,</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    published_date,</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    published_place,</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    institution,</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    db_name,</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    db_provider,</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    accession_number,</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>    document_number,</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    isbn_issn,</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    pmcid</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>24 cols x 699 rows
-
-
-|name               |type      | n_na| n_distinct|examples                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-|:------------------|:---------|----:|----------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|series_editor      |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|series_title       |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|series_volume      |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|number_of_volumes  |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|editor_name        |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|periodical_journal |character |  495|        180|Chemosphere 52, 1125-1133, EFSA Journal 8(10) 1828, EFSA Scientific Report (2007) 122, 1-84, Water research 41, 4497-4503, Ecotoxicology 19, 1523-1535, https://www.jstage.jst.go.jp/article/..., Water Research 41, 4497-4503, http://www.sciencedirect.com/science/..., http://nmbl.org/cgi-bin/koha/opac-det..., EFSA Scientific Report 50, 1-65, http://echa.europa.eu/en/registration..., http://echa.europa.eu/en/registration..., https://echa.europa.eu/.../trd_rar_sw..., Pest management science 59, 1101-1110, Hyacinth control journal p. 45-48, http://echa.europa.eu/registration-do..., UK ENVIRONMENT AGENCY, Ecotoxicology and environmental safety, http://echa.europa.eu/en/registration..., EFSA Scientific Report (2008) 201, 1-107 |
-|ref_volume         |numeric   |  680|         11|37, 166, 183, 86, 40, 210, 38, 154, 7, 680                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-|issue              |numeric   |  697|          3|4, 43862                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-|number_of_pages    |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|ref_pages          |character |  680|         12|1-10, 23-34, 25-35, 275-290, 105-115, 117-128, 359-365, 1-11, 163-168, 19-26, 370-378                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|epub_date          |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|date_cited         |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|access_date        |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|ref_edition        |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|publisher          |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|published_date     |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|published_place    |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|institution        |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|db_name            |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|db_provider        |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|accession_number   |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|document_number    |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|isbn_issn          |character |  681|          7|0166-445X, 0048-9697, 0141-1136, 0147-6513, ISSN 0166-445X, 0033-8451                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|pmcid              |character |  699|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |</code></pre>
-</div>
-</div>
+<p>24 cols x 699 rows</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 2%">
+<col style="width: 1%">
+<col style="width: 0%">
+<col style="width: 1%">
+<col style="width: 94%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">type</th>
+<th style="text-align: right;">n_na</th>
+<th style="text-align: right;">n_distinct</th>
+<th style="text-align: left;">examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">series_editor</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">series_title</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">series_volume</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">number_of_volumes</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">editor_name</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">periodical_journal</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">495</td>
+<td style="text-align: right;">180</td>
+<td style="text-align: left;">Chemosphere 52, 1125-1133, EFSA Journal 8(10) 1828, EFSA Scientific Report (2007) 122, 1-84, Water research 41, 4497-4503, Ecotoxicology 19, 1523-1535, https://www.jstage.jst.go.jp/article/…, Water Research 41, 4497-4503, http://www.sciencedirect.com/science/…, http://nmbl.org/cgi-bin/koha/opac-det…, EFSA Scientific Report 50, 1-65, http://echa.europa.eu/en/registration…, http://echa.europa.eu/en/registration…, https://echa.europa.eu/…/trd_rar_sw…, Pest management science 59, 1101-1110, Hyacinth control journal p.&nbsp;45-48, http://echa.europa.eu/registration-do…, UK ENVIRONMENT AGENCY, Ecotoxicology and environmental safety, http://echa.europa.eu/en/registration…, EFSA Scientific Report (2008) 201, 1-107</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ref_volume</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">680</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: left;">37, 166, 183, 86, 40, 210, 38, 154, 7, 680</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">issue</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">697</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">4, 43862</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">number_of_pages</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ref_pages</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">680</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">1-10, 23-34, 25-35, 275-290, 105-115, 117-128, 359-365, 1-11, 163-168, 19-26, 370-378</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">epub_date</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">date_cited</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">access_date</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ref_edition</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">publisher</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">published_date</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">published_place</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">institution</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">db_name</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">db_provider</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">accession_number</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">document_number</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">isbn_issn</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">681</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">0166-445X, 0048-9697, 0141-1136, 0147-6513, ISSN 0166-445X, 0033-8451</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">pmcid</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">699</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
 <div class="callout callout-style-default callout-important callout-titled" title="Recommendations">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -906,7 +1757,7 @@ Caused by warning:
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span> <span class="fu">count</span>(comments)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>user_ref <span class="sc">|&gt;</span> <span class="fu">count</span>(comments)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A data frame: 1 × 2

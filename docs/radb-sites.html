@@ -65,6 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
@@ -79,13 +80,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d0cfe7a3482e0d49a74229a8f3b76718.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-b978b5a48b788a4339b89597eba50e38.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
+  "panel-placement": "end",
+  "type": "overlay",
   "limit": 50,
   "keyboard-shortcut": [
     "f",
@@ -111,11 +112,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">RADB-eData Harmonisation</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Index</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./radb-environmental-con.html"> 
+<span class="menu-text">RADB environmental_con Exploration</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./radb-sites.html" aria-current="page"> 
+<span class="menu-text">RADB sites Exploration</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./radb-user-ref.html"> 
+<span class="menu-text">RADB user_ref Exploration</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -159,7 +197,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -168,7 +206,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-page-left">
 
     
   
@@ -181,187 +219,175 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Purpose: explore RADB’s <code>sites</code> table with a view to harmonisation.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.2.1     ✔ readr     2.2.0
-✔ forcats   1.0.1     ✔ stringr   1.6.0
-✔ ggplot2   4.0.3     ✔ tibble    3.3.1
-✔ lubridate 1.9.5     ✔ tidyr     1.3.2
-✔ purrr     1.2.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glue)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>here() starts at C:/Users/SAW/Local Documents/radb-harmonisation</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>here<span class="sc">::</span><span class="fu">i_am</span>(<span class="st">"radb-sites.qmd"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>here() starts at C:/Users/SAW/Local Documents/radb-harmonisation</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># requres RPostgres to be built + installed</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># which in turn requres PSQL to be installed</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># read in project-specific renviron</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">readRenviron</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">".Renviron"</span>))</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Check renviron variables exist</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>pg_sysenv <span class="ot">&lt;-</span> <span class="fu">Sys.getenv</span>(<span class="fu">c</span>(</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"PGHOST"</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"PGPORT"</span>,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"PGDATABASE"</span>,</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"PGUSER"</span>,</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"PGPASSWORD"</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># check all exist</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="sc">!</span>(<span class="st">""</span> <span class="sc">%in%</span> pg_sysenv))</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co"># assign in environment</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="fu">list2env</span>(<span class="fu">as.list</span>(pg_sysenv), <span class="at">envir =</span> <span class="fu">globalenv</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>&lt;environment: R_GlobalEnv&gt;</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  RPostgres<span class="sc">::</span><span class="fu">Postgres</span>(),</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dbname =</span> PGDATABASE,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">host =</span> PGHOST,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">port =</span> PGPORT,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">user =</span> PGUSER,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">password =</span> PGPASSWORD</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Functions ##</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>sample_n_safe <span class="ot">&lt;-</span> <span class="cf">function</span>(x, n) {</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  x_unique <span class="ot">&lt;-</span> <span class="fu">unique</span>(x)</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  x_unique[<span class="fu">sample.int</span>(<span class="fu">length</span>(x_unique), <span class="fu">min</span>(n, <span class="fu">length</span>(x_unique)))]</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>classify_value <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recode_values</span>(x, <span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">NULL</span>) <span class="sc">~</span> <span class="st">"NA or NULL"</span>, <span class="dv">0</span> <span class="sc">~</span> <span class="st">"0"</span>, <span class="at">default =</span> <span class="st">"&gt;0"</span>)</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>read_or_write_parquet <span class="ot">&lt;-</span> <span class="cf">function</span>(con, table_name, file_name) {</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(file_name)) {</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    table <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>      con,</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>      glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"SELECT * FROM {table_name};"</span>)</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    nanoparquet<span class="sc">::</span><span class="fu">write_parquet</span>(</span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>      table,</span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>      file_name</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    table <span class="ot">&lt;-</span> nanoparquet<span class="sc">::</span><span class="fu">read_parquet</span>(</span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>      file_name</span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>  table</span>
-<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>kable_abbreviate <span class="ot">&lt;-</span> <span class="cf">function</span>(x, n) {</span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>  table <span class="ot">&lt;-</span> <span class="fu">slice_head</span>(x, <span class="at">n =</span> n) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span>
-<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>  nrows <span class="ot">&lt;-</span> <span class="fu">nrow</span>(x)</span>
-<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(table)</span>
-<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (nrows <span class="sc">&gt;</span> n) {</span>
-<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">glue</span>(<span class="st">"</span><span class="sc">\n\n</span><span class="st">*and {nrows - n} more rows*"</span>))</span>
-<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>kable_glimpse <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">n =</span> <span class="dv">20</span>, <span class="at">width =</span> <span class="dv">40</span>) {</span>
-<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>  summary <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="fu">names</span>(x),</span>
-<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="fu">vapply</span>(x, \(col) <span class="fu">class</span>(col)[<span class="dv">1</span>], <span class="fu">character</span>(<span class="dv">1</span>)),</span>
-<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_na =</span> <span class="fu">vapply</span>(x, \(col) <span class="fu">sum</span>(<span class="fu">is.na</span>(col)), <span class="fu">integer</span>(<span class="dv">1</span>)),</span>
-<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_distinct =</span> <span class="fu">vapply</span>(x, n_distinct, <span class="fu">integer</span>(<span class="dv">1</span>)),</span>
-<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">examples =</span> <span class="fu">vapply</span>(</span>
-<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>      x,</span>
-<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>      \(col) {</span>
-<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sample_n_safe</span>(col[<span class="sc">!</span><span class="fu">is.na</span>(col)], n) <span class="sc">|&gt;</span></span>
-<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>          <span class="fu">as.character</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>          <span class="co"># \r escape in some comments needs to be removed</span></span>
-<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>          <span class="fu">str_replace</span>(<span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">r"</span>, <span class="at">replacement =</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>          <span class="fu">str_trunc</span>(width) <span class="sc">|&gt;</span></span>
-<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>          <span class="fu">str_flatten_comma</span>()</span>
-<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>      },</span>
-<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>      <span class="fu">character</span>(<span class="dv">1</span>)</span>
-<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">glue</span>(<span class="st">"{ncol(x)} cols x {nrow(x)} rows</span><span class="sc">\n\n</span><span class="st">"</span>))</span>
-<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(knitr<span class="sc">::</span><span class="fu">kable</span>(summary))</span>
-<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
 <section id="sites" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> <code>sites</code></h1>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sites <span class="ot">&lt;-</span> <span class="fu">read_or_write_parquet</span>(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  con,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"sites"</span>,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"sites.parquet"</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>environmental_con <span class="ot">&lt;-</span> <span class="fu">read_or_write_parquet</span>(</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  con,</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"environmental_con"</span>,</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"environmental_con.parquet"</span>)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>sites <span class="ot">&lt;-</span> <span class="fu">read_or_write_parquet</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  con,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"sites"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"sites.parquet"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>environmental_con <span class="ot">&lt;-</span> <span class="fu">read_or_write_parquet</span>(</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  con,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"environmental_con"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"environmental_con.parquet"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">kable_glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">kable_glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>18 cols x 29149 rows
-
-
-|name              |type      |  n_na| n_distinct|examples                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-|:-----------------|:---------|-----:|----------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|site_id           |numeric   |     0|      29149|64892, 65748, 73499, 67300, 72128, 81289, 76246, 72296, 83249, 59408, 82699, 76592, 72421, 60403, 81242, 67360, 73151, 59569, 77228, 77486                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-|site_code         |character |     0|      29149|006-54543, 164-38041, 156-111173, 02.61-89697, 044-44677, 03.61-100572, 002-95971, 02.60-107318, 072-40212, 012-29032, 012-81461, 02.61-84372, 01.10-56059, 04.22-86361, 03.03-111340, 03.61-92870, 02.81-106950, 04.03-108497, 04.20-86252, 01.30-93291                                                                                                                                                                                                                                                                                                                            |
-|site_name         |character |    19|      25817|Kalhag, Ref, Reiraklakken, REI-1, Humla, HM-SED-E-1, Sireaana ved Akerhus (TVO-15), Visnesvatnet, Bear Island 07-2, Horten Indre havn, SK 9, Boerfjord, BOeR-REF, Tollaksholmen, TOL-5, Bjoernskjaeret - Slokkholmen, Mjogsjoeen, Bygdesundet, Hilderkleiva St 5, Hjortholman, st. 3, Hobbestad fyllplass (Nedenfor riksveien), Store Ljosvatnet, Aasefjorden-Holmeskjaervika slipp, Bekk ved Smila, Bergen havn GP24, Puddefjorden, Duesund, C3, Astafjord Tr St.2                                                                                                                 |
-|country           |character |    25|         18|Germany, RS, France, ES, Belgium, BG, SK, HR, DK, Spain, HU, NO, RO, Italy, DE, AT, USA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-|area              |character |   111|         40|BjÃ¸rnbÃ¦rvika, Oslo, NMBU, Hasle, Oslo, West Flanders, Province of Barcelona, Barcelona, Kautokeino (Finnmark), Moholmen,  Nedre Vats, Rogaland, Nes, Akershus, Lombardia Region, Time, Rogaland, Leipzig, Mainland Norway, Toraneskaia, Braanaasdalen, Taasen, Oslo, Grimstad, Aust-Agder, Craponne                                                                                                                                                                                                                                                                               |
-|latitude          |numeric   |    52|      28958|70.0722500036945, 63.4135273099053, 60.7835800014194, 59.0628700013705, 60.751714939291, 60.3972907191026, 59.4632600014095, 59.9525000011384, 63.7352500004912, 59.8781600016839, 63.5323300086798, 67.1034200007533, 60.473407160669, 58.2929983182665, 58.0303700374623, 59.3966607181919, 64.1086133343685, 60.5592245632908, 59.43135113357, 62.3824240269406                                                                                                                                                                                                                  |
-|longitude         |numeric   |    52|      28958|10.7586831173402, 10.2448299995259, 21.7954699987227, 9.06759923922288, 18.8708857057404, 7.96007779072141, 10.411072432319, 10.625858, 5.95322826678008, 16.5515726141343, 5.26998001116075, 4.91770001583853, 15.2905496402062, 9.39353999965799, 10.3217442968732, 8.3354000011606, 10.6131832149149, 23.6621832663181, 10.9831678072947, 7.99000000131628                                                                                                                                                                                                                       |
-|coordinate_system |character |   152|          5|WGS 83, WGS 84, WGS 84 (grader), WGS1984 UTM Zone 32N                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-|altitude_value    |numeric   |   232|         18|201, 136, 81.29, 81.25, 188, 225, 1420, 315, 0, 230, 205.2, 41, 300, 92, 285, 2025, 245                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-|altitude_unit     |character |   232|          3|m, NR                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-|entered_by        |character |     0|         16|Max, CKM, HCT, RAS, LIX, SAW, MGJ/ASH, AR, KPE, RAW, MM, EGL, MST, TOH, KET, MCL                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|entered_date      |POSIXct   |     0|         73|2021-02-25, 2016-04-12 14:08:50, 2021-02-28, 2016-04-12 14:04:23, 2019-12-04, 2023-06-08, 2023-11-17, 2019-03-06 15:01:56, 2016-10-23 09:09:51, 2021-02-26, 2017-05-03, 2021-03-23, 2022-03-16 15:06:54, 2016-06-03 11:59:00, 2021-02-24, 2016-07-13 23:48:16, 2016-08-24 10:55:10, 2016-10-23 09:09:56, 2018-01-09, 2024-01-05                                                                                                                                                                                                                                                     |
-|comments          |character |    22|         22|"Case study ""Kaldvellfjorden"" (1639..., Test Multisource, The greenwall is located in a facade ..., , Test, Multisource pilot sites, Multisource pilot sites, blank, not c..., "Case study ""Sorfjorden"" (16396 MIX..., "Case study ""Oslofjorden"" (16396 MI..., Multisource pilot sites, Blank (B) sa..., Multisource pilot sites, Used as a proxy for the country of No..., Multisource pilot sites (Blanks, dist...,  , Converted from WG S84, Simulation, Undefined sampling location, Test EARTHRESQ, Converted from UTM Zone 32, Original site code (02.80.00.00.31-10... |
-|status            |character | 29149|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|dwh_validfromdate |POSIXct   |     0|         17|2023-01-17, 2021-06-25, 2021-09-07, 2024-01-04, 2024-08-26, 2024-02-22, 2022-04-17, 2019-12-04, 2022-03-16, 2019-11-06, 2024-02-28, 2019-05-02, 2024-02-23, 2023-10-06, 2024-08-29, 2021-03-29, 2024-02-09                                                                                                                                                                                                                                                                                                                                                                          |
-|dwh_validtodate   |POSIXct   |     0|          2|2999-12-31, 2099-12-31                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-|dwh_valid         |numeric   |     0|          1|1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|rnum              |numeric   |     0|      29149|6790, 6491, 19584, 18650, 618, 18289, 15034, 8529, 10265, 539, 25532, 13978, 3624, 23252, 19846, 22002, 15582, 23199, 23389, 23185                                                                                                                                                                                                                                                                                                                                                                                                                                                  |</code></pre>
-</div>
-</div>
+<p>18 cols x 29149 rows</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 2%">
+<col style="width: 1%">
+<col style="width: 0%">
+<col style="width: 1%">
+<col style="width: 92%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">type</th>
+<th style="text-align: right;">n_na</th>
+<th style="text-align: right;">n_distinct</th>
+<th style="text-align: left;">examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">site_id</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">29149</td>
+<td style="text-align: left;">64892, 65748, 73499, 67300, 72128, 81289, 76246, 72296, 83249, 59408, 82699, 76592, 72421, 60403, 81242, 67360, 73151, 59569, 77228, 77486</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">site_code</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">29149</td>
+<td style="text-align: left;">006-54543, 164-38041, 156-111173, 02.61-89697, 044-44677, 03.61-100572, 002-95971, 02.60-107318, 072-40212, 012-29032, 012-81461, 02.61-84372, 01.10-56059, 04.22-86361, 03.03-111340, 03.61-92870, 02.81-106950, 04.03-108497, 04.20-86252, 01.30-93291</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">site_name</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">25817</td>
+<td style="text-align: left;">Kalhag, Ref, Reiraklakken, REI-1, Humla, HM-SED-E-1, Sireaana ved Akerhus (TVO-15), Visnesvatnet, Bear Island 07-2, Horten Indre havn, SK 9, Boerfjord, BOeR-REF, Tollaksholmen, TOL-5, Bjoernskjaeret - Slokkholmen, Mjogsjoeen, Bygdesundet, Hilderkleiva St 5, Hjortholman, st. 3, Hobbestad fyllplass (Nedenfor riksveien), Store Ljosvatnet, Aasefjorden-Holmeskjaervika slipp, Bekk ved Smila, Bergen havn GP24, Puddefjorden, Duesund, C3, Astafjord Tr St.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">country</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: left;">Germany, RS, France, ES, Belgium, BG, SK, HR, DK, Spain, HU, NO, RO, Italy, DE, AT, USA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">area</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">111</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: left;">BjÃ¸rnbÃ¦rvika, Oslo, NMBU, Hasle, Oslo, West Flanders, Province of Barcelona, Barcelona, Kautokeino (Finnmark), Moholmen, Nedre Vats, Rogaland, Nes, Akershus, Lombardia Region, Time, Rogaland, Leipzig, Mainland Norway, Toraneskaia, Braanaasdalen, Taasen, Oslo, Grimstad, Aust-Agder, Craponne</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">latitude</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">28958</td>
+<td style="text-align: left;">70.0722500036945, 63.4135273099053, 60.7835800014194, 59.0628700013705, 60.751714939291, 60.3972907191026, 59.4632600014095, 59.9525000011384, 63.7352500004912, 59.8781600016839, 63.5323300086798, 67.1034200007533, 60.473407160669, 58.2929983182665, 58.0303700374623, 59.3966607181919, 64.1086133343685, 60.5592245632908, 59.43135113357, 62.3824240269406</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">longitude</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">28958</td>
+<td style="text-align: left;">10.7586831173402, 10.2448299995259, 21.7954699987227, 9.06759923922288, 18.8708857057404, 7.96007779072141, 10.411072432319, 10.625858, 5.95322826678008, 16.5515726141343, 5.26998001116075, 4.91770001583853, 15.2905496402062, 9.39353999965799, 10.3217442968732, 8.3354000011606, 10.6131832149149, 23.6621832663181, 10.9831678072947, 7.99000000131628</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">coordinate_system</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">152</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">WGS 83, WGS 84, WGS 84 (grader), WGS1984 UTM Zone 32N</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">altitude_value</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">232</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: left;">201, 136, 81.29, 81.25, 188, 225, 1420, 315, 0, 230, 205.2, 41, 300, 92, 285, 2025, 245</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">altitude_unit</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">232</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">m, NR</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">entered_by</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: left;">Max, CKM, HCT, RAS, LIX, SAW, MGJ/ASH, AR, KPE, RAW, MM, EGL, MST, TOH, KET, MCL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">entered_date</td>
+<td style="text-align: left;">POSIXct</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: left;">2021-02-25, 2016-04-12 14:08:50, 2021-02-28, 2016-04-12 14:04:23, 2019-12-04, 2023-06-08, 2023-11-17, 2019-03-06 15:01:56, 2016-10-23 09:09:51, 2021-02-26, 2017-05-03, 2021-03-23, 2022-03-16 15:06:54, 2016-06-03 11:59:00, 2021-02-24, 2016-07-13 23:48:16, 2016-08-24 10:55:10, 2016-10-23 09:09:56, 2018-01-09, 2024-01-05</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">comments</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: left;">“Case study”“Kaldvellfjorden”” (1639…, Test Multisource, The greenwall is located in a facade …, , Test, Multisource pilot sites, Multisource pilot sites, blank, not c…, “Case study”“Sorfjorden”” (16396 MIX…, “Case study”“Oslofjorden”” (16396 MI…, Multisource pilot sites, Blank (B) sa…, Multisource pilot sites, Used as a proxy for the country of No…, Multisource pilot sites (Blanks, dist…, , Converted from WG S84, Simulation, Undefined sampling location, Test EARTHRESQ, Converted from UTM Zone 32, Original site code (02.80.00.00.31-10…</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">status</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">29149</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">dwh_validfromdate</td>
+<td style="text-align: left;">POSIXct</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: left;">2023-01-17, 2021-06-25, 2021-09-07, 2024-01-04, 2024-08-26, 2024-02-22, 2022-04-17, 2019-12-04, 2022-03-16, 2019-11-06, 2024-02-28, 2019-05-02, 2024-02-23, 2023-10-06, 2024-08-29, 2021-03-29, 2024-02-09</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">dwh_validtodate</td>
+<td style="text-align: left;">POSIXct</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">2999-12-31, 2099-12-31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">dwh_valid</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rnum</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">29149</td>
+<td style="text-align: left;">6790, 6491, 19584, 18650, 618, 18289, 15034, 8529, 10265, 539, 25532, 13978, 3624, 23252, 19846, 22002, 15582, 23199, 23389, 23185</td>
+</tr>
+</tbody>
+</table>
 <ul>
 <li>There are quite a lot of sites in RADB</li>
 <li>A few issues related to data integrity to check first:</li>
@@ -376,25 +402,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>id_all_unique <span class="ot">&lt;-</span> <span class="cf">function</span>(table, col) {</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">all</span>(<span class="fu">count</span>(table, {{ col }}, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(n) <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">id_all_unique</span>(sites, site_id)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>id_all_unique <span class="ot">&lt;-</span> <span class="cf">function</span>(table, col) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">all</span>(<span class="fu">count</span>(table, {{ col }}, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(n) <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">id_all_unique</span>(sites, site_id)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">id_all_unique</span>(sites, site_code)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">id_all_unique</span>(sites, site_code)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">id_all_unique</span>(sites, site_name)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">id_all_unique</span>(sites, site_name)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] FALSE</code></pre>
@@ -409,41 +435,458 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>Do all sites correspond to at least one sample from <code>environmental-con</code>:</li>
 </ul>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anti_join</span>(sites, environmental_con, <span class="at">by =</span> <span class="fu">join_by</span>(site_code)) <span class="sc">|&gt;</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anti_join</span>(sites, environmental_con, <span class="at">by =</span> <span class="fu">join_by</span>(site_code)) <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-| site_id|site_code           |site_name                |country |area                  | latitude| longitude|coordinate_system | altitude_value|altitude_unit |entered_by |entered_date        |comments |status |dwh_validfromdate |dwh_validtodate | dwh_valid| rnum|
-|-------:|:-------------------|:------------------------|:-------|:---------------------|--------:|---------:|:-----------------|--------------:|:-------------|:----------|:-------------------|:--------|:------|:-----------------|:---------------|---------:|----:|
-|     109|Novi Sad            |NA                       |NA      |NA                    |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   22|
-|     110|Vienna              |NA                       |NA      |NA                    |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   23|
-|     111|Vienna/Wien         |NA                       |NA      |NA                    |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   24|
-|     121|Empty               |NA                       |NA      |NA                    |       NA|        NA|NA                |             NA|NA            |TOH        |2015-11-17 09:47:34 |         |NA     |2019-05-02        |2999-12-31      |         1|   25|
-|     122|S6B-VIGGA (MONITOR) |Vigga monitoring station |NO      |NA                    |       NA|        NA|NA                |             NA|NA            |TOH        |2015-11-17 09:47:35 |         |NA     |2019-05-02        |2999-12-31      |         1|   26|
-|     123|S8-JARENVANNET      |Jarenvannet              |NO      |NA                    |       NA|        NA|NA                |             NA|NA            |TOH        |2015-11-17 09:47:36 |         |NA     |2019-05-02        |2999-12-31      |         1|   27|
-|     124|S1-DISPOSAL SITE    |Disposal site (road)     |NO      |NA                    |       NA|        NA|NA                |             NA|NA            |TOH        |2015-11-17 09:47:37 |         |NA     |2019-05-02        |2999-12-31      |         1|   28|
-|     141|S2-VIGGA            |Vigga (upstream)         |NO      |NA                    |       NA|        NA|NA                |             NA|NA            |KET        |2016-04-12 09:33:50 |         |NA     |2019-05-02        |2999-12-31      |         1|   29|
-|     142|S3-VÃ˜YENBEKKEN     |VÃ¸yenbekken             |NO      |Hadeland              | 60.34528|  10.57583|NA                |             NA|NA            |KET        |2016-04-12 14:04:23 |         |NA     |2019-05-02        |2999-12-31      |         1|   30|
-|     143|S4-GRAN VGS         |Gran High School         |NO      |Hadeland              | 60.35556|  10.58083|NA                |             NA|NA            |KET        |2016-04-12 14:04:57 |         |NA     |2019-05-02        |2999-12-31      |         1|   31|
-|     144|S6A-VIGGA (COOP)    |Vigga (Coop)             |NO      |Hadeland              | 60.36056|  10.56278|NA                |             NA|NA            |KET        |2016-04-12 14:05:41 |         |NA     |2019-05-02        |2999-12-31      |         1|   32|
-|     145|S7-NORDTANGEN       |Nordtangen               |NO      |Hadeland              | 60.37583|  10.56333|NA                |             NA|NA            |KET        |2016-04-12 14:08:50 |         |NA     |2019-05-02        |2999-12-31      |         1|   33|
-|     146|S9-HORGENBEKKEN     |Horgenbekken             |NO      |Hadeland              | 60.36417|  10.57111|NA                |             NA|NA            |KET        |2016-04-12 14:09:57 |         |NA     |2019-05-02        |2999-12-31      |         1|   34|
-|     147|S10-VIGGA (REF)     |Vigga (Reference)        |NO      |Hadeland              | 60.29444|  10.61056|NA                |             NA|NA            |KET        |2016-04-12 14:10:14 |         |NA     |2019-05-02        |2999-12-31      |         1|   35|
-|     150|S1-RÃ˜SSVASSBUKTA   |RÃ¸ssvassbukta           |NO      |Hemnes (Nordland)     | 66.03139|  14.29167|NA                |             NA|NA            |KET        |2016-06-03 11:59:00 |         |NA     |2019-05-02        |2999-12-31      |         1|   36|
-|     151|S2-NERSUND          |Nersundet                |NO      |Hemnes (Nordland)     | 66.07861|  13.99944|NA                |             NA|NA            |KET        |2016-06-03 11:59:00 |         |NA     |2019-05-02        |2999-12-31      |         1|   37|
-|     152|S3-BLEIKVANN        |Lille Bleikvatn          |NO      |Hemnes (Nordland)     | 65.93917|  14.03083|NA                |             NA|NA            |KET        |2016-06-03 14:45:30 |         |NA     |2019-05-02        |2999-12-31      |         1|   38|
-|     153|S4-BLEIKVASSELVA    |Bleikvasselva            |NO      |Hemnes (Nordland)     | 65.94361|  13.90361|NA                |             NA|NA            |KET        |2016-06-03 11:59:00 |         |NA     |2019-05-02        |2999-12-31      |         1|   39|
-|     154|S5-KJÃ˜KKENBUKTA    |KjÃ¸kkenbukta            |NO      |Hemnes (Nordland)     | 66.03472|  14.08500|NA                |             NA|NA            |KET        |2016-06-03 11:59:00 |         |NA     |2019-05-02        |2999-12-31      |         1|   40|
-|     155|S6-BID1             |Biddjovagge 1            |NO      |Kautokeino (Finnmark) | 69.54667|  22.69528|NA                |             NA|NA            |KET        |2016-06-03 11:59:00 |         |NA     |2019-05-02        |2999-12-31      |         1|   41|
-
-*and 28922 more rows*</code></pre>
-</div>
-</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 3%">
+<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 3%">
+<col style="width: 8%">
+<col style="width: 3%">
+<col style="width: 4%">
+<col style="width: 7%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 8%">
+<col style="width: 3%">
+<col style="width: 2%">
+<col style="width: 7%">
+<col style="width: 6%">
+<col style="width: 4%">
+<col style="width: 2%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">site_id</th>
+<th style="text-align: left;">site_code</th>
+<th style="text-align: left;">site_name</th>
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">area</th>
+<th style="text-align: right;">latitude</th>
+<th style="text-align: right;">longitude</th>
+<th style="text-align: left;">coordinate_system</th>
+<th style="text-align: right;">altitude_value</th>
+<th style="text-align: left;">altitude_unit</th>
+<th style="text-align: left;">entered_by</th>
+<th style="text-align: left;">entered_date</th>
+<th style="text-align: left;">comments</th>
+<th style="text-align: left;">status</th>
+<th style="text-align: left;">dwh_validfromdate</th>
+<th style="text-align: left;">dwh_validtodate</th>
+<th style="text-align: right;">dwh_valid</th>
+<th style="text-align: right;">rnum</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">109</td>
+<td style="text-align: left;">Novi Sad</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2014-11-25 11:29:08</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">22</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">110</td>
+<td style="text-align: left;">Vienna</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2014-11-25 11:29:08</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">111</td>
+<td style="text-align: left;">Vienna/Wien</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2014-11-25 11:29:08</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">121</td>
+<td style="text-align: left;">Empty</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2015-11-17 09:47:34</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">122</td>
+<td style="text-align: left;">S6B-VIGGA (MONITOR)</td>
+<td style="text-align: left;">Vigga monitoring station</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2015-11-17 09:47:35</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">26</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">123</td>
+<td style="text-align: left;">S8-JARENVANNET</td>
+<td style="text-align: left;">Jarenvannet</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2015-11-17 09:47:36</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">27</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">124</td>
+<td style="text-align: left;">S1-DISPOSAL SITE</td>
+<td style="text-align: left;">Disposal site (road)</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2015-11-17 09:47:37</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">141</td>
+<td style="text-align: left;">S2-VIGGA</td>
+<td style="text-align: left;">Vigga (upstream)</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-04-12 09:33:50</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">29</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">142</td>
+<td style="text-align: left;">S3-VÃ˜YENBEKKEN</td>
+<td style="text-align: left;">VÃ¸yenbekken</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Hadeland</td>
+<td style="text-align: right;">60.34528</td>
+<td style="text-align: right;">10.57583</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-04-12 14:04:23</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">143</td>
+<td style="text-align: left;">S4-GRAN VGS</td>
+<td style="text-align: left;">Gran High School</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Hadeland</td>
+<td style="text-align: right;">60.35556</td>
+<td style="text-align: right;">10.58083</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-04-12 14:04:57</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">144</td>
+<td style="text-align: left;">S6A-VIGGA (COOP)</td>
+<td style="text-align: left;">Vigga (Coop)</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Hadeland</td>
+<td style="text-align: right;">60.36056</td>
+<td style="text-align: right;">10.56278</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-04-12 14:05:41</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">32</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">145</td>
+<td style="text-align: left;">S7-NORDTANGEN</td>
+<td style="text-align: left;">Nordtangen</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Hadeland</td>
+<td style="text-align: right;">60.37583</td>
+<td style="text-align: right;">10.56333</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-04-12 14:08:50</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">33</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">146</td>
+<td style="text-align: left;">S9-HORGENBEKKEN</td>
+<td style="text-align: left;">Horgenbekken</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Hadeland</td>
+<td style="text-align: right;">60.36417</td>
+<td style="text-align: right;">10.57111</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-04-12 14:09:57</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">34</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">147</td>
+<td style="text-align: left;">S10-VIGGA (REF)</td>
+<td style="text-align: left;">Vigga (Reference)</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Hadeland</td>
+<td style="text-align: right;">60.29444</td>
+<td style="text-align: right;">10.61056</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-04-12 14:10:14</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">150</td>
+<td style="text-align: left;">S1-RÃ˜SSVASSBUKTA</td>
+<td style="text-align: left;">RÃ¸ssvassbukta</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Hemnes (Nordland)</td>
+<td style="text-align: right;">66.03139</td>
+<td style="text-align: right;">14.29167</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-06-03 11:59:00</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">36</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">151</td>
+<td style="text-align: left;">S2-NERSUND</td>
+<td style="text-align: left;">Nersundet</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Hemnes (Nordland)</td>
+<td style="text-align: right;">66.07861</td>
+<td style="text-align: right;">13.99944</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-06-03 11:59:00</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">37</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">152</td>
+<td style="text-align: left;">S3-BLEIKVANN</td>
+<td style="text-align: left;">Lille Bleikvatn</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Hemnes (Nordland)</td>
+<td style="text-align: right;">65.93917</td>
+<td style="text-align: right;">14.03083</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-06-03 14:45:30</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">38</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">153</td>
+<td style="text-align: left;">S4-BLEIKVASSELVA</td>
+<td style="text-align: left;">Bleikvasselva</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Hemnes (Nordland)</td>
+<td style="text-align: right;">65.94361</td>
+<td style="text-align: right;">13.90361</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-06-03 11:59:00</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">39</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">154</td>
+<td style="text-align: left;">S5-KJÃ˜KKENBUKTA</td>
+<td style="text-align: left;">KjÃ¸kkenbukta</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Hemnes (Nordland)</td>
+<td style="text-align: right;">66.03472</td>
+<td style="text-align: right;">14.08500</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-06-03 11:59:00</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">40</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">155</td>
+<td style="text-align: left;">S6-BID1</td>
+<td style="text-align: left;">Biddjovagge 1</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Kautokeino (Finnmark)</td>
+<td style="text-align: right;">69.54667</td>
+<td style="text-align: right;">22.69528</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-06-03 11:59:00</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">41</td>
+</tr>
+</tbody>
+</table>
+<p><em>and 28922 more rows</em></p>
 <ul>
 <li>We can see from the above that no, 28,942 sites aren’t in <code>environmental-con</code></li>
 <li>This is not immediately a problem, but we can see that some <code>site_code</code> are corrupted (e.g.&nbsp;<code>S3-VÃ˜YENBEKKEN</code>)</li>
@@ -453,40 +896,101 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="site_id" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="site_id"><span class="header-section-number">1.2</span> <code>site_id</code></h2>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(site_id, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(site_id, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-| site_id|  n|
-|-------:|--:|
-|       2|  1|
-|       3|  1|
-|       4|  1|
-|       5|  1|
-|       6|  1|
-|       7|  1|
-|       8|  1|
-|       9|  1|
-|      10|  1|
-|      25|  1|
-|      26|  1|
-|      33|  1|
-|      38|  1|
-|      39|  1|
-|      40|  1|
-|      41|  1|
-|      42|  1|
-|      43|  1|
-|      44|  1|
-|      45|  1|
-
-*and 29129 more rows*</code></pre>
-</div>
-</div>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">site_id</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+<p><em>and 29129 more rows</em></p>
 <ul>
 <li>eData doesn’t have a <code>site_id</code> column, as it’s assumed this would be set on RADB upload</li>
 </ul>
@@ -513,28 +1017,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="site_code" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="site_code"><span class="header-section-number">1.3</span> <code>site_code</code></h2>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>site_code_types <span class="ot">&lt;-</span> sites <span class="sc">|&gt;</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(site_code, site_name) <span class="sc">|&gt;</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">site_code_type =</span> <span class="fu">case_when</span>(</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(site_code, <span class="st">"[0-9]{3}-[0-9]{5,6}"</span>) <span class="sc">~</span> <span class="st">"Vm Freshwater"</span>,</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(site_code, <span class="st">"HAV-[0-9]{5}"</span>) <span class="sc">~</span> <span class="st">"Vm Ocean"</span>,</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(site_code, <span class="st">"[0-9]{2}</span><span class="sc">\\</span><span class="st">.[0-9]{2}-[0-9]+"</span>) <span class="sc">~</span> <span class="st">"Vm Transitional"</span>,</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(site_code, <span class="st">"^J"</span>) <span class="sc">~</span> <span class="st">"JOVA?"</span>,</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">.default =</span> <span class="st">"Other"</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>site_code_types <span class="sc">|&gt;</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site_code_type) <span class="sc">|&gt;</span></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="at">codes_sample =</span> <span class="fu">str_flatten_comma</span>(<span class="fu">sample_n_safe</span>(site_code, <span class="at">n =</span> <span class="dv">10</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>site_code_types <span class="ot">&lt;-</span> sites <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(site_code, site_name) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">site_code_type =</span> <span class="fu">case_when</span>(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(site_code, <span class="st">"[0-9]{3}-[0-9]{5,6}"</span>) <span class="sc">~</span> <span class="st">"Vm Freshwater"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(site_code, <span class="st">"HAV-[0-9]{5}"</span>) <span class="sc">~</span> <span class="st">"Vm Ocean"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(site_code, <span class="st">"[0-9]{2}</span><span class="sc">\\</span><span class="st">.[0-9]{2}-[0-9]+"</span>) <span class="sc">~</span> <span class="st">"Vm Transitional"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(site_code, <span class="st">"^J"</span>) <span class="sc">~</span> <span class="st">"JOVA?"</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">.default =</span> <span class="st">"Other"</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>site_code_types <span class="sc">|&gt;</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site_code_type) <span class="sc">|&gt;</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="at">codes_sample =</span> <span class="fu">str_flatten_comma</span>(<span class="fu">sample_n_safe</span>(site_code, <span class="at">n =</span> <span class="dv">10</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 10%">
 <col style="width: 89%">
@@ -568,8 +1070,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 <ul>
 <li>RADB doesn’t appear to have any strict constraints on <code>site_code</code></li>
 <li>since <code>environmental_con</code> contains both <code>site_code</code> and <code>site_id</code>, I presume that the tables join on <code>site_id</code>, which means that <code>site_code</code> doesn’t strictly need to be unique</li>
@@ -600,16 +1100,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="site_name" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="site_name"><span class="header-section-number">1.4</span> <code>site_name</code></h2>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>site_code_types <span class="sc">|&gt;</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site_code_type) <span class="sc">|&gt;</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="at">names_sample =</span> <span class="fu">str_flatten_comma</span>(<span class="fu">sample_n_safe</span>(site_name, <span class="at">n =</span> <span class="dv">10</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>site_code_types <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site_code_type) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="at">names_sample =</span> <span class="fu">str_flatten_comma</span>(<span class="fu">sample_n_safe</span>(site_name, <span class="at">n =</span> <span class="dv">10</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 5%">
 <col style="width: 94%">
@@ -643,8 +1141,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 <ul>
 <li>Site names are presumably also based on original site names</li>
 <li>Using site names is difficult - they often make sense only in the immediate context of the study</li>
@@ -677,13 +1173,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="country" class="level2" data-number="1.5">
 <h2 data-number="1.5" class="anchored" data-anchor-id="country"><span class="header-section-number">1.5</span> <code>country</code></h2>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(country) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(country) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th style="text-align: left;">country</th>
@@ -765,50 +1259,561 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 <ul>
 <li>Countries are a mix of two-letter codes (ISO-3166-A2?) and names</li>
 <li>I believe <code>country</code> is a mandatory field in some versions of the input spreadsheet, but not all sites will be in countries (or indeed on land)</li>
 <li>Out of interest, which sites have no country code?</li>
 </ul>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(country)) <span class="sc">|&gt;</span> <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(country)) <span class="sc">|&gt;</span> <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-| site_id|site_code      |site_name                                            |country |area | latitude| longitude|coordinate_system | altitude_value|altitude_unit |entered_by |entered_date        |comments |status |dwh_validfromdate |dwh_validtodate | dwh_valid| rnum|
-|-------:|:--------------|:----------------------------------------------------|:-------|:----|--------:|---------:|:-----------------|--------------:|:-------------|:----------|:-------------------|:--------|:------|:-----------------|:---------------|---------:|----:|
-|     109|Novi Sad       |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   22|
-|     110|Vienna         |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   23|
-|     111|Vienna/Wien    |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   24|
-|     121|Empty          |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2015-11-17 09:47:34 |         |NA     |2019-05-02        |2999-12-31      |         1|   25|
-|     201|EPA Toxcast    |Chemical inventory                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2016-07-13 23:48:16 |         |NA     |2019-05-02        |2999-12-31      |         1|   47|
-|     202|ECHA database  |Chemical inventory                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2016-07-13 23:53:32 |         |NA     |2019-05-02        |2999-12-31      |         1|   48|
-|     203|Japan MWHL     |Chemical inventory                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2016-07-13 23:54:00 |         |NA     |2019-05-02        |2999-12-31      |         1|   49|
-|     204|EPA ECOTOX     |Chemical inventory                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2016-07-13 23:54:35 |         |NA     |2019-05-02        |2999-12-31      |         1|   50|
-|     205|ECHA CHEM      |Chemical inventory                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2016-07-13 23:54:43 |         |NA     |2019-05-02        |2999-12-31      |         1|   51|
-|     221|S18            |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2016-08-24 10:53:52 |         |NA     |2019-05-02        |2999-12-31      |         1|   52|
-|       2|Bratislava     |Bratislava                                           |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   60|
-|       3|FB_1           |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   61|
-|       4|FB_2           |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   62|
-|       5|FB_3           |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   63|
-|       6|FB_4           |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   64|
-|       7|Inn            |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   65|
-|       8|INN_L          |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   66|
-|       9|INN_M          |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   67|
-|      10|INN_R          |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   68|
-|     242|empty1         |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |KET        |2016-10-23 09:09:41 |         |NA     |2019-05-02        |2999-12-31      |         1|  136|
-|     243|empty3         |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |KET        |2016-10-23 09:09:46 |         |NA     |2019-05-02        |2999-12-31      |         1|  137|
-|     244|empty4         |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |KET        |2016-10-23 09:09:51 |         |NA     |2019-05-02        |2999-12-31      |         1|  138|
-|     245|empty5         |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |KET        |2016-10-23 09:09:56 |         |NA     |2019-05-02        |2999-12-31      |         1|  139|
-|     246|empty6         |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |KET        |2016-10-23 09:10:02 |         |NA     |2019-05-02        |2999-12-31      |         1|  140|
-|     286|HEIA-SYNT MIX1 |JOVA2015, Heiabekken (10.07-27.07) synthetic mixture |NA      |NA   |       NA|        NA|NA                |             NA|NA            |KET        |2017-05-03 00:00:00 |         |NA     |2019-05-02        |2999-12-31      |         1|  148|</code></pre>
-</div>
-</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 3%">
+<col style="width: 5%">
+<col style="width: 21%">
+<col style="width: 3%">
+<col style="width: 1%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 7%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 7%">
+<col style="width: 3%">
+<col style="width: 2%">
+<col style="width: 7%">
+<col style="width: 6%">
+<col style="width: 3%">
+<col style="width: 1%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">site_id</th>
+<th style="text-align: left;">site_code</th>
+<th style="text-align: left;">site_name</th>
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">area</th>
+<th style="text-align: right;">latitude</th>
+<th style="text-align: right;">longitude</th>
+<th style="text-align: left;">coordinate_system</th>
+<th style="text-align: right;">altitude_value</th>
+<th style="text-align: left;">altitude_unit</th>
+<th style="text-align: left;">entered_by</th>
+<th style="text-align: left;">entered_date</th>
+<th style="text-align: left;">comments</th>
+<th style="text-align: left;">status</th>
+<th style="text-align: left;">dwh_validfromdate</th>
+<th style="text-align: left;">dwh_validtodate</th>
+<th style="text-align: right;">dwh_valid</th>
+<th style="text-align: right;">rnum</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">109</td>
+<td style="text-align: left;">Novi Sad</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2014-11-25 11:29:08</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">22</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">110</td>
+<td style="text-align: left;">Vienna</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2014-11-25 11:29:08</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">23</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">111</td>
+<td style="text-align: left;">Vienna/Wien</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2014-11-25 11:29:08</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">121</td>
+<td style="text-align: left;">Empty</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2015-11-17 09:47:34</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">201</td>
+<td style="text-align: left;">EPA Toxcast</td>
+<td style="text-align: left;">Chemical inventory</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2016-07-13 23:48:16</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">47</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">202</td>
+<td style="text-align: left;">ECHA database</td>
+<td style="text-align: left;">Chemical inventory</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2016-07-13 23:53:32</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">48</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">203</td>
+<td style="text-align: left;">Japan MWHL</td>
+<td style="text-align: left;">Chemical inventory</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2016-07-13 23:54:00</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">49</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">204</td>
+<td style="text-align: left;">EPA ECOTOX</td>
+<td style="text-align: left;">Chemical inventory</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2016-07-13 23:54:35</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">205</td>
+<td style="text-align: left;">ECHA CHEM</td>
+<td style="text-align: left;">Chemical inventory</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2016-07-13 23:54:43</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">51</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">221</td>
+<td style="text-align: left;">S18</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2016-08-24 10:53:52</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">52</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Bratislava</td>
+<td style="text-align: left;">Bratislava</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2014-11-25 11:29:08</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">60</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">FB_1</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2014-11-25 11:29:08</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">61</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">FB_2</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2014-11-25 11:29:08</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">62</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">FB_3</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2014-11-25 11:29:08</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">63</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">FB_4</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2014-11-25 11:29:08</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">64</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">Inn</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2014-11-25 11:29:08</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">65</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">INN_L</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2014-11-25 11:29:08</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">66</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">INN_M</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2014-11-25 11:29:08</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">67</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">INN_R</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">TOH</td>
+<td style="text-align: left;">2014-11-25 11:29:08</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">68</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">242</td>
+<td style="text-align: left;">empty1</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-10-23 09:09:41</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">136</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">243</td>
+<td style="text-align: left;">empty3</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-10-23 09:09:46</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">137</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">244</td>
+<td style="text-align: left;">empty4</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-10-23 09:09:51</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">138</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">245</td>
+<td style="text-align: left;">empty5</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-10-23 09:09:56</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">139</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">246</td>
+<td style="text-align: left;">empty6</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2016-10-23 09:10:02</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">140</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">286</td>
+<td style="text-align: left;">HEIA-SYNT MIX1</td>
+<td style="text-align: left;">JOVA2015, Heiabekken (10.07-27.07) synthetic mixture</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">KET</td>
+<td style="text-align: left;">2017-05-03 00:00:00</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">2019-05-02</td>
+<td style="text-align: left;">2999-12-31</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">148</td>
+</tr>
+</tbody>
+</table>
 <ul>
 <li>Some of these are chemical inventories, some appear to be “orphan” sites without relevant information</li>
 <li>eData <a href="https://nivanorge.github.io/eDataDRF/articles/sites_data.html#iso-country---string-controlled-mandatory">Sites - COUNTRY_ISO</a> standardises to ISO-3166 country names. I recommend this over two-letter codes, as some of the latter aren’t obvious (e.g.&nbsp;<code>HR</code> for Croatia)</li>
@@ -839,13 +1844,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="area" class="level2" data-number="1.6">
 <h2 data-number="1.6" class="anchored" data-anchor-id="area"><span class="header-section-number">1.6</span> <code>area</code></h2>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(area) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(area) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th style="text-align: left;">area</th>
@@ -1015,8 +2018,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 <ul>
 <li>Very useful to capture lower-level geographical information, but <code>area</code> doesn’t enforce any formatting, so difficult to use</li>
 <li>Alternatively, possible to reverse-geocode based on coordinate data, which may be a better solution (could be done on-demand in STOPredictor?)</li>
@@ -1047,13 +2048,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="1.7" class="anchored" data-anchor-id="coordinates"><span class="header-section-number">1.7</span> Coordinates</h2>
 <section id="coordinate_system" class="level3" data-number="1.7.1">
 <h3 data-number="1.7.1" class="anchored" data-anchor-id="coordinate_system"><span class="header-section-number">1.7.1</span> <code>coordinate_system</code></h3>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(coordinate_system) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(coordinate_system) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th style="text-align: left;">coordinate_system</th>
@@ -1083,8 +2082,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 <ul>
 <li>Most sites use <code>WGS 84</code>, but there doesn’t appear to be a table for controlled CRS vocabulary</li>
 <li>Some errors (<code>WGS 83</code>, <code>WGS1984 UTM Zone 32N</code> - should be <code>ETRS89 / UTM zone 32N</code>)</li>
@@ -1118,19 +2115,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>sites_wgs84 <span class="ot">&lt;-</span> sites <span class="sc">|&gt;</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(coordinate_system <span class="sc">==</span> <span class="st">"WGS 84"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"longitude"</span>, <span class="st">"latitude"</span>), <span class="at">crs =</span> <span class="dv">4326</span>)</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> rnaturalearth<span class="sc">::</span>countries110) <span class="sc">+</span></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> sites_wgs84, <span class="fu">aes</span>(<span class="at">geometry =</span> geometry, <span class="at">colour =</span> country)) <span class="sc">+</span></span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sites_wgs84 <span class="ot">&lt;-</span> sites <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(coordinate_system <span class="sc">==</span> <span class="st">"WGS 84"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"longitude"</span>, <span class="st">"latitude"</span>), <span class="at">crs =</span> <span class="dv">4326</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> rnaturalearth<span class="sc">::</span>countries110) <span class="sc">+</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> sites_wgs84, <span class="fu">aes</span>(<span class="at">geometry =</span> geometry, <span class="at">colour =</span> country)) <span class="sc">+</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="radb-sites_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="radb-sites_files/figure-html/latitude-and-longitude-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1165,13 +2162,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="1.8" class="anchored" data-anchor-id="altitude"><span class="header-section-number">1.8</span> Altitude</h2>
 <section id="altitude_value-and-altitude_unit" class="level3" data-number="1.8.1">
 <h3 data-number="1.8.1" class="anchored" data-anchor-id="altitude_value-and-altitude_unit"><span class="header-section-number">1.8.1</span> <code>altitude_value</code> and <code>altitude_unit</code></h3>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(<span class="fu">classify_value</span>(altitude_value), altitude_unit) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(<span class="fu">classify_value</span>(altitude_value), altitude_unit) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th style="text-align: left;">classify_value(altitude_value)</th>
@@ -1202,8 +2197,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 <ul>
 <li>altitude values/units appear to be consistent</li>
 <li>eData’s implementation is very similar (<a href="https://nivanorge.github.io/eDataDRF/articles/sites_data.html#altitude-value---numeric-free-mandatory">Sites - ALTITUDE_VALUE</a>)</li>
@@ -1235,7 +2228,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(status)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(status)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A data frame: 1 × 2
@@ -1275,7 +2268,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(entered_by, entered_date, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(entered_by, entered_date, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A data frame: 74 × 3
@@ -1324,7 +2317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(comments, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(comments, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A data frame: 22 × 2

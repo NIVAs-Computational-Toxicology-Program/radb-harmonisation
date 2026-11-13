@@ -7,6 +7,8 @@ Purpose: explore RADB's `user_ref` table with a view to harmonisation.
 
 ```{r}
 #| label: setup
+#| echo: false
+#| output: false
 library(DBI)
 library(tidyverse)
 library(glue)
@@ -106,6 +108,8 @@ environmental_con <- read_or_write_parquet(
 - eData's references
 
 ```{r}
+#| label: user-ref
+#| output: asis
 user_ref |> kable_glimpse()
 ```
 
@@ -116,6 +120,8 @@ user_ref |> kable_glimpse()
 - Drilling deeper into the data several issues are apparent: many entries in `environmental_con` have no `measured_reference_id`, and some `measured_reference_id` are not integers
 
 ```{r}
+#| label: fk-environmental-con-measured-reference
+#| output: asis
 environmental_con |>
   count(measured_reference_id, sort = TRUE) |>
   kable_abbreviate(n = 20)
@@ -124,6 +130,8 @@ environmental_con |>
 - If we remove all non-numeric `measured_reference_id`, do the remaining IDs all match values of `user_ref.reference_id`?
 
 ```{r}
+#| label: fk-environmental-con-measured-reference-2
+#| output: asis
 environmental_con_ref_id_double <- environmental_con |>
   mutate(measured_reference_id = as.double(measured_reference_id)) |>
   filter(!is.na(measured_reference_id))
@@ -167,6 +175,8 @@ anti_join(
 - Standard bibtex field
 
 ```{r}
+#| label: author
+#| output: asis
 user_ref |> count(author) |> kable_abbreviate(n = 20)
 ```
 
@@ -187,6 +197,8 @@ user_ref |> count(author) |> kable_abbreviate(n = 20)
 # `publication_year`
 
 ```{r}
+#| label: publication-year
+#| output: asis
 user_ref |>
   filter(publication_year %notin% 1940:2027) |>
   kable_glimpse()
@@ -211,6 +223,8 @@ user_ref |>
 - show only titles with punctuation in them, as an approximation of corrupted titles
 
 ```{r}
+#| label: title
+#| output: asis
 user_ref |>
   filter(str_detect(title, "[^\\w\\s]")) |>
   count(title) |>
@@ -238,6 +252,8 @@ user_ref |>
 - DOIs are uncomplicated, and used identically in eData [References - DOI](https://nivanorge.github.io/eDataDRF/articles/references_data.html#doi)
 
 ```{r}
+#| label: doi-url
+#| output: asis
 user_ref |>
   count(doi) |>
   kable_abbreviate(n = 20)
@@ -246,6 +262,8 @@ user_ref |>
 - Likewise [References - URL](https://nivanorge.github.io/eDataDRF/articles/references_data.html#url)
 
 ```{r}
+#| label: doi-url-2
+#| output: asis
 user_ref |>
   count(url) |>
   kable_abbreviate(n = 20)
@@ -254,6 +272,8 @@ user_ref |>
 # `reference_type`
 
 ```{r}
+#| label: reference-type
+#| output: asis
 user_ref |>
   count(reference_type) |>
   kable_abbreviate(n = 20)
@@ -283,6 +303,8 @@ user_ref |>
 - eData drops several of the more specific ones (`series_editor`, `series_title`, `series_volume`, `number_of_volumes`, `editor_name`, `date_cited`, `published_date`, `published_place`, `db_name`, `db_provider`, `accession_number`, `pmcid`) to reduce complexity
 
 ```{r}
+#| label: series-editor-series-title-series
+#| output: asis
 user_ref |>
   select(
     series_editor,
@@ -346,6 +368,7 @@ user_ref |>
 - eData has a specifically named [References - REF_COMMENT](https://nivanorge.github.io/eDataDRF/articles/references_data.html#reference-comment) field for the same purpose
 
 ```{r}
+#| label: comments
 user_ref |> count(comments)
 ```
 

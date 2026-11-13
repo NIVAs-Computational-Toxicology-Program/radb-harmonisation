@@ -2,11 +2,21 @@ project:
   title: "RADB-eData Harmonisation"
   type: website
   output-dir: docs
-
 format: 
-  html: default
+  html: 
+    page-layout: full
 number-sections: true
 toc: true
 execute: 
   cache: true
 
+website:
+  navbar:
+    background: primary
+    search: true
+    left:
+      - text: "Index"
+        href: index.qmd
+      - radb-environmental-con.qmd
+      - radb-sites.qmd
+      - radb-user-ref.qmd

@@ -7,6 +7,8 @@ Purpose: explore RADB's `sites` table with a view to harmonisation.
 
 ```{r}
 #| label: setup
+#| echo: false
+#| output: false
 library(DBI)
 library(tidyverse)
 library(glue)
@@ -127,6 +129,7 @@ environmental_con <- read_or_write_parquet(
 
 ```{r}
 #| label: sites-glimpse
+#| output: asis
 sites |> kable_glimpse()
 ```
 
@@ -159,6 +162,7 @@ id_all_unique(sites, site_name)
 
 ```{r}
 #| label: sites-all-in-env-con
+#| output: asis
 
 anti_join(sites, environmental_con, by = join_by(site_code)) |>
   kable_abbreviate(n = 20)
@@ -172,6 +176,7 @@ anti_join(sites, environmental_con, by = join_by(site_code)) |>
 
 ```{r}
 #| label: site-id-summary
+#| output: asis
 sites |> count(site_id, sort = TRUE) |> kable_abbreviate(n = 20)
 ```
 
@@ -191,6 +196,7 @@ sites |> count(site_id, sort = TRUE) |> kable_abbreviate(n = 20)
 
 ```{r}
 #| label: site-code-types
+#| output: asis
 site_code_types <- sites |>
   count(site_code, site_name) |>
   mutate(
@@ -229,6 +235,7 @@ site_code_types |>
 
 ```{r}
 #| label: site-name-summary
+#| output: asis
 site_code_types |>
   group_by(site_code_type) |>
   reframe(names_sample = str_flatten_comma(sample_n_safe(site_name, n = 10))) |>
@@ -257,6 +264,8 @@ site_code_types |>
 ## `country`
 
 ```{r}
+#| label: country
+#| output: asis
 sites |> count(country) |> knitr::kable()
 ```
 
@@ -265,6 +274,8 @@ sites |> count(country) |> knitr::kable()
 - Out of interest, which sites have no country code?
 
 ```{r}
+#| label: country-2
+#| output: asis
 sites |> filter(is.na(country)) |> kable_abbreviate(n = 25)
 ```
 
@@ -287,6 +298,8 @@ sites |> filter(is.na(country)) |> kable_abbreviate(n = 25)
 ## `area`
 
 ```{r}
+#| label: area
+#| output: asis
 sites |> count(area) |> knitr::kable()
 ```
 
@@ -309,6 +322,8 @@ sites |> count(area) |> knitr::kable()
 ### `coordinate_system`
 
 ```{r}
+#| label: coordinate-system
+#| output: asis
 sites |> count(coordinate_system) |> knitr::kable()
 ```
 
@@ -332,6 +347,7 @@ sites |> count(coordinate_system) |> knitr::kable()
 ### `latitude` and `longitude`
 
 ```{r}
+#| label: latitude-and-longitude
 sites_wgs84 <- sites |>
   filter(coordinate_system == "WGS 84") |>
   sf::st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
@@ -361,6 +377,8 @@ ggplot() +
 ### `altitude_value` and `altitude_unit`
 
 ```{r}
+#| label: altitude-value-and-altitude-unit
+#| output: asis
 sites |> count(classify_value(altitude_value), altitude_unit) |> knitr::kable()
 ```
 
@@ -380,6 +398,7 @@ sites |> count(classify_value(altitude_value), altitude_unit) |> knitr::kable()
 ## `status`
 
 ```{r}
+#| label: status
 sites |> count(status)
 ```
 
@@ -400,6 +419,7 @@ sites |> count(status)
 ### `entered_by` and `entered_date`
 
 ```{r}
+#| label: entered-by-and-entered-date
 sites |> count(entered_by, entered_date, sort = TRUE)
 ```
 
@@ -419,6 +439,7 @@ sites |> count(entered_by, entered_date, sort = TRUE)
 ### `comments`
 
 ```{r}
+#| label: comments
 sites |> count(comments, sort = TRUE)
 ```
 

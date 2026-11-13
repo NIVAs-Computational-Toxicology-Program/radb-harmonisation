@@ -30,6 +30,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
@@ -44,13 +45,13 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d0cfe7a3482e0d49a74229a8f3b76718.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-b978b5a48b788a4339b89597eba50e38.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
+  "panel-placement": "end",
+  "type": "overlay",
   "limit": 50,
   "keyboard-shortcut": [
     "f",
@@ -76,11 +77,48 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">RADB-eData Harmonisation</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Index</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./radb-environmental-con.html"> 
+<span class="menu-text">RADB environmental_con Exploration</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./radb-sites.html"> 
+<span class="menu-text">RADB sites Exploration</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./radb-user-ref.html"> 
+<span class="menu-text">RADB user_ref Exploration</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -99,7 +137,7 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -108,7 +146,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-page-left">
 
     
   
@@ -120,7 +158,25 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Entry point to the RADB exploration documents. The recommendation tables below are generated automatically from the <code>Recommendations</code> callouts in each document, so they update whenever a document is re-rendered. Priority and difficulty are scored out of 5.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="The Brief">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>The Brief
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Explore barriers to harmonisation of RADB and eData exposure data format</li>
+<li>Compare existing vocabulary (both in format and practice) used in RADB</li>
+<li>Develop recommendations for prioritisation based on anticipated needs</li>
+</ul>
+</div>
+</div>
+<p>This site contains exploration of and recommendations for harmonisations of RADB’s <code>environmental_con</code> table (and dependent tables) with eData’s format. I have reviewed both controlled vocabulary tables and the actual data in RADB and developed a set of recommendations. Each table column or group of columns is also assigned a priority and difficulty score /5. Depending on the planned use of the format in future (e.g.&nbsp;our discussion around using eData for particle-based stressors), these scores may change, but I have assumed that use will continue to focus largely on conventional chemical stressors in water.</p>
+<p>Tables below summarise my recommendations and score - click on a variable in the left-hand column for a more detailed exploration. So far I have focused on what I believe are the main tables:</p>
 <section id="documents" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="documents"><span class="header-section-number">1</span> Documents</h2>
 <ul>

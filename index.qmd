@@ -2,9 +2,17 @@
 title: "RADB harmonisation: exploration index"
 ---
 
-Entry point to the RADB exploration documents. The recommendation tables below are
-generated automatically from the `Recommendations` callouts in each document, so they
-update whenever a document is re-rendered. Priority and difficulty are scored out of 5.
+
+::: {.callout-note title="The Brief"}
+- Explore barriers to harmonisation of RADB and eData exposure data format
+- Compare existing vocabulary (both in format and practice) used in RADB
+- Develop recommendations for prioritisation based on anticipated needs
+:::
+
+This site contains exploration of and recommendations for harmonisations of RADB's `environmental_con` table (and dependent tables) with eData's format. I have reviewed both controlled vocabulary tables and the actual data in RADB and developed a set of recommendations. Each table column or group of columns is also assigned a priority and difficulty score /5. Depending on the planned use of the format in future (e.g. our discussion around using eData for particle-based stressors), these scores may change, but I have assumed that use will continue to focus largely on conventional chemical stressors in water.
+
+Tables below summarise my recommendations and score - click on a variable in the left-hand column for a more detailed exploration. So far I have focused on what I believe are the main tables:
+
 
 ```{r}
 #| label: setup

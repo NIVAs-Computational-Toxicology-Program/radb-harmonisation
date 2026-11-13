@@ -11,9 +11,7 @@ renv/lock/
 renv/python/
 renv/sandbox/
 renv/staging/
-.quarto/
 *_cache/
-*_files/
 
 # Secrets / credentials
 .Renviron
@@ -40,7 +38,6 @@ Thumbs.db
 .idea/
 
 # Quarto
-docs/.quarto/
 **/*.quarto_ipynb
 
 /.quarto/
