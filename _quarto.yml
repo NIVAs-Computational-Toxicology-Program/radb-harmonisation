@@ -1,5 +1,7 @@
 project:
   title: "RADB-eData Harmonisation"
+  type: website
+  output-dir: docs
 
 format: 
   html: default

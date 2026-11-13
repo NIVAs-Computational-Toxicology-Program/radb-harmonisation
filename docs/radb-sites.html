@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>RADB sites Exploration</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="radb-sites_files/libs/clipboard/clipboard.min.js"></script>
+<script src="radb-sites_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="radb-sites_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="radb-sites_files/libs/quarto-html/popper.min.js"></script>
+<script src="radb-sites_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="radb-sites_files/libs/quarto-html/anchor.min.js"></script>
+<link href="radb-sites_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="radb-sites_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="radb-sites_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="radb-sites_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="radb-sites_files/libs/bootstrap/bootstrap-215b371544c282197b31c8aa00ce3677.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sites" id="toc-sites" class="nav-link active" data-scroll-target="#sites"><span class="header-section-number">1</span> <code>sites</code></a>
+  <ul class="collapse">
+  <li><a href="#sites-data-integrity-check" id="toc-sites-data-integrity-check" class="nav-link" data-scroll-target="#sites-data-integrity-check"><span class="header-section-number">1.1</span> <code>sites</code> data integrity check</a>
+  <ul class="collapse">
+  <li><a href="#unique-ids" id="toc-unique-ids" class="nav-link" data-scroll-target="#unique-ids"><span class="header-section-number">1.1.1</span> unique IDs</a></li>
+  <li><a href="#sites-in-environmental-con" id="toc-sites-in-environmental-con" class="nav-link" data-scroll-target="#sites-in-environmental-con"><span class="header-section-number">1.1.2</span> sites in <code>environmental-con</code></a></li>
+  </ul></li>
+  <li><a href="#site_id" id="toc-site_id" class="nav-link" data-scroll-target="#site_id"><span class="header-section-number">1.2</span> <code>site_id</code></a></li>
+  <li><a href="#site_code" id="toc-site_code" class="nav-link" data-scroll-target="#site_code"><span class="header-section-number">1.3</span> <code>site_code</code></a></li>
+  <li><a href="#site_name" id="toc-site_name" class="nav-link" data-scroll-target="#site_name"><span class="header-section-number">1.4</span> <code>site_name</code></a></li>
+  <li><a href="#country" id="toc-country" class="nav-link" data-scroll-target="#country"><span class="header-section-number">1.5</span> <code>country</code></a></li>
+  <li><a href="#area" id="toc-area" class="nav-link" data-scroll-target="#area"><span class="header-section-number">1.6</span> <code>area</code></a></li>
+  <li><a href="#coordinates" id="toc-coordinates" class="nav-link" data-scroll-target="#coordinates"><span class="header-section-number">1.7</span> Coordinates</a>
+  <ul class="collapse">
+  <li><a href="#coordinate_system" id="toc-coordinate_system" class="nav-link" data-scroll-target="#coordinate_system"><span class="header-section-number">1.7.1</span> <code>coordinate_system</code></a></li>
+  <li><a href="#latitude-and-longitude" id="toc-latitude-and-longitude" class="nav-link" data-scroll-target="#latitude-and-longitude"><span class="header-section-number">1.7.2</span> <code>latitude</code> and <code>longitude</code></a></li>
+  </ul></li>
+  <li><a href="#altitude" id="toc-altitude" class="nav-link" data-scroll-target="#altitude"><span class="header-section-number">1.8</span> Altitude</a>
+  <ul class="collapse">
+  <li><a href="#altitude_value-and-altitude_unit" id="toc-altitude_value-and-altitude_unit" class="nav-link" data-scroll-target="#altitude_value-and-altitude_unit"><span class="header-section-number">1.8.1</span> <code>altitude_value</code> and <code>altitude_unit</code></a></li>
+  </ul></li>
+  <li><a href="#status" id="toc-status" class="nav-link" data-scroll-target="#status"><span class="header-section-number">1.9</span> <code>status</code></a></li>
+  <li><a href="#provenance-and-entry-metadata" id="toc-provenance-and-entry-metadata" class="nav-link" data-scroll-target="#provenance-and-entry-metadata"><span class="header-section-number">1.10</span> Provenance and entry metadata</a>
+  <ul class="collapse">
+  <li><a href="#entered_by-and-entered_date" id="toc-entered_by-and-entered_date" class="nav-link" data-scroll-target="#entered_by-and-entered_date"><span class="header-section-number">1.10.1</span> <code>entered_by</code> and <code>entered_date</code></a></li>
+  <li><a href="#comments" id="toc-comments" class="nav-link" data-scroll-target="#comments"><span class="header-section-number">1.10.2</span> <code>comments</code></a></li>
+  </ul></li>
+  <li><a href="#keys-and-data-warehouse-columns" id="toc-keys-and-data-warehouse-columns" class="nav-link" data-scroll-target="#keys-and-data-warehouse-columns"><span class="header-section-number">1.11</span> Keys and data warehouse columns</a>
+  <ul class="collapse">
+  <li><a href="#dwh_validfromdate-dwh_validtodate-dwh_valid-and-rnum" id="toc-dwh_validfromdate-dwh_validtodate-dwh_valid-and-rnum" class="nav-link" data-scroll-target="#dwh_validfromdate-dwh_validtodate-dwh_valid-and-rnum"><span class="header-section-number">1.11.1</span> <code>dwh_validfromdate</code>, <code>dwh_validtodate</code>, <code>dwh_valid</code>, and <code>rnum</code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">RADB sites Exploration</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Purpose: explore RADB’s <code>sites</code> table with a view to harmonisation.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.2.1     ✔ readr     2.2.0
+✔ forcats   1.0.1     ✔ stringr   1.6.0
+✔ ggplot2   4.0.3     ✔ tibble    3.3.1
+✔ lubridate 1.9.5     ✔ tidyr     1.3.2
+✔ purrr     1.2.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glue)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at C:/Users/SAW/Local Documents/radb-harmonisation/docs</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>here<span class="sc">::</span><span class="fu">i_am</span>(<span class="st">"docs/radb-sites.qmd"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at C:/Users/SAW/Local Documents/radb-harmonisation</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># requres RPostgres to be built + installed</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># which in turn requres PSQL to be installed</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># read in project-specific renviron</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">readRenviron</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">".Renviron"</span>))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Check renviron variables exist</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>pg_sysenv <span class="ot">&lt;-</span> <span class="fu">Sys.getenv</span>(<span class="fu">c</span>(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"PGHOST"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"PGPORT"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"PGDATABASE"</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"PGUSER"</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"PGPASSWORD"</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># check all exist</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="sc">!</span>(<span class="st">""</span> <span class="sc">%in%</span> pg_sysenv))</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co"># assign in environment</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="fu">list2env</span>(<span class="fu">as.list</span>(pg_sysenv), <span class="at">envir =</span> <span class="fu">globalenv</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;environment: R_GlobalEnv&gt;</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  RPostgres<span class="sc">::</span><span class="fu">Postgres</span>(),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dbname =</span> PGDATABASE,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">host =</span> PGHOST,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">port =</span> PGPORT,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">user =</span> PGUSER,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">password =</span> PGPASSWORD</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Functions ##</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>sample_n_safe <span class="ot">&lt;-</span> <span class="cf">function</span>(x, n) {</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  x_unique <span class="ot">&lt;-</span> <span class="fu">unique</span>(x)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  x_unique[<span class="fu">sample.int</span>(<span class="fu">length</span>(x_unique), <span class="fu">min</span>(n, <span class="fu">length</span>(x_unique)))]</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>classify_value <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recode_values</span>(x, <span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">NULL</span>) <span class="sc">~</span> <span class="st">"NA or NULL"</span>, <span class="dv">0</span> <span class="sc">~</span> <span class="st">"0"</span>, <span class="at">default =</span> <span class="st">"&gt;0"</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>read_or_write_parquet <span class="ot">&lt;-</span> <span class="cf">function</span>(con, table_name, file_name) {</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(file_name)) {</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    table <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>      con,</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>      glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"SELECT * FROM {table_name};"</span>)</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    nanoparquet<span class="sc">::</span><span class="fu">write_parquet</span>(</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>      table,</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>      file_name</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    table <span class="ot">&lt;-</span> nanoparquet<span class="sc">::</span><span class="fu">read_parquet</span>(</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>      file_name</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>  table</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>kable_abbreviate <span class="ot">&lt;-</span> <span class="cf">function</span>(x, n) {</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>  table <span class="ot">&lt;-</span> <span class="fu">slice_head</span>(x, <span class="at">n =</span> n) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>  nrows <span class="ot">&lt;-</span> <span class="fu">nrow</span>(x)</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(table)</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (nrows <span class="sc">&gt;</span> n) {</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">glue</span>(<span class="st">"</span><span class="sc">\n\n</span><span class="st">*and {nrows - n} more rows*"</span>))</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>kable_glimpse <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">n =</span> <span class="dv">20</span>, <span class="at">width =</span> <span class="dv">40</span>) {</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>  summary <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="fu">names</span>(x),</span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="fu">vapply</span>(x, \(col) <span class="fu">class</span>(col)[<span class="dv">1</span>], <span class="fu">character</span>(<span class="dv">1</span>)),</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_na =</span> <span class="fu">vapply</span>(x, \(col) <span class="fu">sum</span>(<span class="fu">is.na</span>(col)), <span class="fu">integer</span>(<span class="dv">1</span>)),</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_distinct =</span> <span class="fu">vapply</span>(x, n_distinct, <span class="fu">integer</span>(<span class="dv">1</span>)),</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">examples =</span> <span class="fu">vapply</span>(</span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>      x,</span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>      \(col) {</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sample_n_safe</span>(col[<span class="sc">!</span><span class="fu">is.na</span>(col)], n) <span class="sc">|&gt;</span></span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>          <span class="fu">as.character</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>          <span class="co"># \r escape in some comments needs to be removed</span></span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>          <span class="fu">str_replace</span>(<span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">r"</span>, <span class="at">replacement =</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>          <span class="fu">str_trunc</span>(width) <span class="sc">|&gt;</span></span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>          <span class="fu">str_flatten_comma</span>()</span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>      },</span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>      <span class="fu">character</span>(<span class="dv">1</span>)</span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">glue</span>(<span class="st">"{ncol(x)} cols x {nrow(x)} rows</span><span class="sc">\n\n</span><span class="st">"</span>))</span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(knitr<span class="sc">::</span><span class="fu">kable</span>(summary))</span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="sites" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> <code>sites</code></h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sites <span class="ot">&lt;-</span> <span class="fu">read_or_write_parquet</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  con,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"sites"</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"sites.parquet"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>environmental_con <span class="ot">&lt;-</span> <span class="fu">read_or_write_parquet</span>(</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  con,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"environmental_con"</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"environmental_con.parquet"</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">kable_glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>18 cols x 29149 rows
+
+
+|name              |type      |  n_na| n_distinct|examples                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|:-----------------|:---------|-----:|----------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|site_id           |numeric   |     0|      29149|64892, 65748, 73499, 67300, 72128, 81289, 76246, 72296, 83249, 59408, 82699, 76592, 72421, 60403, 81242, 67360, 73151, 59569, 77228, 77486                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|site_code         |character |     0|      29149|006-54543, 164-38041, 156-111173, 02.61-89697, 044-44677, 03.61-100572, 002-95971, 02.60-107318, 072-40212, 012-29032, 012-81461, 02.61-84372, 01.10-56059, 04.22-86361, 03.03-111340, 03.61-92870, 02.81-106950, 04.03-108497, 04.20-86252, 01.30-93291                                                                                                                                                                                                                                                                                                                            |
+|site_name         |character |    19|      25817|Kalhag, Ref, Reiraklakken, REI-1, Humla, HM-SED-E-1, Sireaana ved Akerhus (TVO-15), Visnesvatnet, Bear Island 07-2, Horten Indre havn, SK 9, Boerfjord, BOeR-REF, Tollaksholmen, TOL-5, Bjoernskjaeret - Slokkholmen, Mjogsjoeen, Bygdesundet, Hilderkleiva St 5, Hjortholman, st. 3, Hobbestad fyllplass (Nedenfor riksveien), Store Ljosvatnet, Aasefjorden-Holmeskjaervika slipp, Bekk ved Smila, Bergen havn GP24, Puddefjorden, Duesund, C3, Astafjord Tr St.2                                                                                                                 |
+|country           |character |    25|         18|Germany, RS, France, ES, Belgium, BG, SK, HR, DK, Spain, HU, NO, RO, Italy, DE, AT, USA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+|area              |character |   111|         40|BjÃ¸rnbÃ¦rvika, Oslo, NMBU, Hasle, Oslo, West Flanders, Province of Barcelona, Barcelona, Kautokeino (Finnmark), Moholmen,  Nedre Vats, Rogaland, Nes, Akershus, Lombardia Region, Time, Rogaland, Leipzig, Mainland Norway, Toraneskaia, Braanaasdalen, Taasen, Oslo, Grimstad, Aust-Agder, Craponne                                                                                                                                                                                                                                                                               |
+|latitude          |numeric   |    52|      28958|70.0722500036945, 63.4135273099053, 60.7835800014194, 59.0628700013705, 60.751714939291, 60.3972907191026, 59.4632600014095, 59.9525000011384, 63.7352500004912, 59.8781600016839, 63.5323300086798, 67.1034200007533, 60.473407160669, 58.2929983182665, 58.0303700374623, 59.3966607181919, 64.1086133343685, 60.5592245632908, 59.43135113357, 62.3824240269406                                                                                                                                                                                                                  |
+|longitude         |numeric   |    52|      28958|10.7586831173402, 10.2448299995259, 21.7954699987227, 9.06759923922288, 18.8708857057404, 7.96007779072141, 10.411072432319, 10.625858, 5.95322826678008, 16.5515726141343, 5.26998001116075, 4.91770001583853, 15.2905496402062, 9.39353999965799, 10.3217442968732, 8.3354000011606, 10.6131832149149, 23.6621832663181, 10.9831678072947, 7.99000000131628                                                                                                                                                                                                                       |
+|coordinate_system |character |   152|          5|WGS 83, WGS 84, WGS 84 (grader), WGS1984 UTM Zone 32N                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|altitude_value    |numeric   |   232|         18|201, 136, 81.29, 81.25, 188, 225, 1420, 315, 0, 230, 205.2, 41, 300, 92, 285, 2025, 245                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+|altitude_unit     |character |   232|          3|m, NR                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|entered_by        |character |     0|         16|Max, CKM, HCT, RAS, LIX, SAW, MGJ/ASH, AR, KPE, RAW, MM, EGL, MST, TOH, KET, MCL                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|entered_date      |POSIXct   |     0|         73|2021-02-25, 2016-04-12 14:08:50, 2021-02-28, 2016-04-12 14:04:23, 2019-12-04, 2023-06-08, 2023-11-17, 2019-03-06 15:01:56, 2016-10-23 09:09:51, 2021-02-26, 2017-05-03, 2021-03-23, 2022-03-16 15:06:54, 2016-06-03 11:59:00, 2021-02-24, 2016-07-13 23:48:16, 2016-08-24 10:55:10, 2016-10-23 09:09:56, 2018-01-09, 2024-01-05                                                                                                                                                                                                                                                     |
+|comments          |character |    22|         22|"Case study ""Kaldvellfjorden"" (1639..., Test Multisource, The greenwall is located in a facade ..., , Test, Multisource pilot sites, Multisource pilot sites, blank, not c..., "Case study ""Sorfjorden"" (16396 MIX..., "Case study ""Oslofjorden"" (16396 MI..., Multisource pilot sites, Blank (B) sa..., Multisource pilot sites, Used as a proxy for the country of No..., Multisource pilot sites (Blanks, dist...,  , Converted from WG S84, Simulation, Undefined sampling location, Test EARTHRESQ, Converted from UTM Zone 32, Original site code (02.80.00.00.31-10... |
+|status            |character | 29149|          1|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|dwh_validfromdate |POSIXct   |     0|         17|2023-01-17, 2021-06-25, 2021-09-07, 2024-01-04, 2024-08-26, 2024-02-22, 2022-04-17, 2019-12-04, 2022-03-16, 2019-11-06, 2024-02-28, 2019-05-02, 2024-02-23, 2023-10-06, 2024-08-29, 2021-03-29, 2024-02-09                                                                                                                                                                                                                                                                                                                                                                          |
+|dwh_validtodate   |POSIXct   |     0|          2|2999-12-31, 2099-12-31                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|dwh_valid         |numeric   |     0|          1|1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|rnum              |numeric   |     0|      29149|6790, 6491, 19584, 18650, 618, 18289, 15034, 8529, 10265, 539, 25532, 13978, 3624, 23252, 19846, 22002, 15582, 23199, 23389, 23185                                                                                                                                                                                                                                                                                                                                                                                                                                                  |</code></pre>
+</div>
+</div>
+<ul>
+<li>There are quite a lot of sites in RADB</li>
+<li>A few issues related to data integrity to check first:</li>
+</ul>
+<section id="sites-data-integrity-check" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="sites-data-integrity-check"><span class="header-section-number">1.1</span> <code>sites</code> data integrity check</h2>
+<section id="unique-ids" class="level3" data-number="1.1.1">
+<h3 data-number="1.1.1" class="anchored" data-anchor-id="unique-ids"><span class="header-section-number">1.1.1</span> unique IDs</h3>
+<ul>
+<li>Do all sites have a unique <code>site_id</code>, <code>site_code</code>, <code>site_name</code>?</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>id_all_unique <span class="ot">&lt;-</span> <span class="cf">function</span>(table, col) {</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">all</span>(<span class="fu">count</span>(table, {{ col }}, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(n) <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">id_all_unique</span>(sites, site_id)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">id_all_unique</span>(sites, site_code)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">id_all_unique</span>(sites, site_name)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+<ul>
+<li>Site names aren’t unique, which is not an issue as they’re not expected to be</li>
+</ul>
+</section>
+<section id="sites-in-environmental-con" class="level3" data-number="1.1.2">
+<h3 data-number="1.1.2" class="anchored" data-anchor-id="sites-in-environmental-con"><span class="header-section-number">1.1.2</span> sites in <code>environmental-con</code></h3>
+<ul>
+<li>Do all sites correspond to at least one sample from <code>environmental-con</code>:</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anti_join</span>(sites, environmental_con, <span class="at">by =</span> <span class="fu">join_by</span>(site_code)) <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+| site_id|site_code           |site_name                |country |area                  | latitude| longitude|coordinate_system | altitude_value|altitude_unit |entered_by |entered_date        |comments |status |dwh_validfromdate |dwh_validtodate | dwh_valid| rnum|
+|-------:|:-------------------|:------------------------|:-------|:---------------------|--------:|---------:|:-----------------|--------------:|:-------------|:----------|:-------------------|:--------|:------|:-----------------|:---------------|---------:|----:|
+|     109|Novi Sad            |NA                       |NA      |NA                    |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   22|
+|     110|Vienna              |NA                       |NA      |NA                    |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   23|
+|     111|Vienna/Wien         |NA                       |NA      |NA                    |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   24|
+|     121|Empty               |NA                       |NA      |NA                    |       NA|        NA|NA                |             NA|NA            |TOH        |2015-11-17 09:47:34 |         |NA     |2019-05-02        |2999-12-31      |         1|   25|
+|     122|S6B-VIGGA (MONITOR) |Vigga monitoring station |NO      |NA                    |       NA|        NA|NA                |             NA|NA            |TOH        |2015-11-17 09:47:35 |         |NA     |2019-05-02        |2999-12-31      |         1|   26|
+|     123|S8-JARENVANNET      |Jarenvannet              |NO      |NA                    |       NA|        NA|NA                |             NA|NA            |TOH        |2015-11-17 09:47:36 |         |NA     |2019-05-02        |2999-12-31      |         1|   27|
+|     124|S1-DISPOSAL SITE    |Disposal site (road)     |NO      |NA                    |       NA|        NA|NA                |             NA|NA            |TOH        |2015-11-17 09:47:37 |         |NA     |2019-05-02        |2999-12-31      |         1|   28|
+|     141|S2-VIGGA            |Vigga (upstream)         |NO      |NA                    |       NA|        NA|NA                |             NA|NA            |KET        |2016-04-12 09:33:50 |         |NA     |2019-05-02        |2999-12-31      |         1|   29|
+|     142|S3-VÃ˜YENBEKKEN     |VÃ¸yenbekken             |NO      |Hadeland              | 60.34528|  10.57583|NA                |             NA|NA            |KET        |2016-04-12 14:04:23 |         |NA     |2019-05-02        |2999-12-31      |         1|   30|
+|     143|S4-GRAN VGS         |Gran High School         |NO      |Hadeland              | 60.35556|  10.58083|NA                |             NA|NA            |KET        |2016-04-12 14:04:57 |         |NA     |2019-05-02        |2999-12-31      |         1|   31|
+|     144|S6A-VIGGA (COOP)    |Vigga (Coop)             |NO      |Hadeland              | 60.36056|  10.56278|NA                |             NA|NA            |KET        |2016-04-12 14:05:41 |         |NA     |2019-05-02        |2999-12-31      |         1|   32|
+|     145|S7-NORDTANGEN       |Nordtangen               |NO      |Hadeland              | 60.37583|  10.56333|NA                |             NA|NA            |KET        |2016-04-12 14:08:50 |         |NA     |2019-05-02        |2999-12-31      |         1|   33|
+|     146|S9-HORGENBEKKEN     |Horgenbekken             |NO      |Hadeland              | 60.36417|  10.57111|NA                |             NA|NA            |KET        |2016-04-12 14:09:57 |         |NA     |2019-05-02        |2999-12-31      |         1|   34|
+|     147|S10-VIGGA (REF)     |Vigga (Reference)        |NO      |Hadeland              | 60.29444|  10.61056|NA                |             NA|NA            |KET        |2016-04-12 14:10:14 |         |NA     |2019-05-02        |2999-12-31      |         1|   35|
+|     150|S1-RÃ˜SSVASSBUKTA   |RÃ¸ssvassbukta           |NO      |Hemnes (Nordland)     | 66.03139|  14.29167|NA                |             NA|NA            |KET        |2016-06-03 11:59:00 |         |NA     |2019-05-02        |2999-12-31      |         1|   36|
+|     151|S2-NERSUND          |Nersundet                |NO      |Hemnes (Nordland)     | 66.07861|  13.99944|NA                |             NA|NA            |KET        |2016-06-03 11:59:00 |         |NA     |2019-05-02        |2999-12-31      |         1|   37|
+|     152|S3-BLEIKVANN        |Lille Bleikvatn          |NO      |Hemnes (Nordland)     | 65.93917|  14.03083|NA                |             NA|NA            |KET        |2016-06-03 14:45:30 |         |NA     |2019-05-02        |2999-12-31      |         1|   38|
+|     153|S4-BLEIKVASSELVA    |Bleikvasselva            |NO      |Hemnes (Nordland)     | 65.94361|  13.90361|NA                |             NA|NA            |KET        |2016-06-03 11:59:00 |         |NA     |2019-05-02        |2999-12-31      |         1|   39|
+|     154|S5-KJÃ˜KKENBUKTA    |KjÃ¸kkenbukta            |NO      |Hemnes (Nordland)     | 66.03472|  14.08500|NA                |             NA|NA            |KET        |2016-06-03 11:59:00 |         |NA     |2019-05-02        |2999-12-31      |         1|   40|
+|     155|S6-BID1             |Biddjovagge 1            |NO      |Kautokeino (Finnmark) | 69.54667|  22.69528|NA                |             NA|NA            |KET        |2016-06-03 11:59:00 |         |NA     |2019-05-02        |2999-12-31      |         1|   41|
+
+*and 28922 more rows*</code></pre>
+</div>
+</div>
+<ul>
+<li>We can see from the above that no, 28,942 sites aren’t in <code>environmental-con</code></li>
+<li>This is not immediately a problem, but we can see that some <code>site_code</code> are corrupted (e.g.&nbsp;<code>S3-VÃ˜YENBEKKEN</code>)</li>
+<li>More details below</li>
+</ul>
+</section>
+</section>
+<section id="site_id" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="site_id"><span class="header-section-number">1.2</span> <code>site_id</code></h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(site_id, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+| site_id|  n|
+|-------:|--:|
+|       2|  1|
+|       3|  1|
+|       4|  1|
+|       5|  1|
+|       6|  1|
+|       7|  1|
+|       8|  1|
+|       9|  1|
+|      10|  1|
+|      25|  1|
+|      26|  1|
+|      33|  1|
+|      38|  1|
+|      39|  1|
+|      40|  1|
+|      41|  1|
+|      42|  1|
+|      43|  1|
+|      44|  1|
+|      45|  1|
+
+*and 29129 more rows*</code></pre>
+</div>
+</div>
+<ul>
+<li>eData doesn’t have a <code>site_id</code> column, as it’s assumed this would be set on RADB upload</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Recommendations">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Recommendations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>None.</li>
+</ul>
+<p><strong>Assessment</strong></p>
+<ul>
+<li>Priority: 0/5</li>
+<li>Difficulty: 0/5</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="site_code" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="site_code"><span class="header-section-number">1.3</span> <code>site_code</code></h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>site_code_types <span class="ot">&lt;-</span> sites <span class="sc">|&gt;</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(site_code, site_name) <span class="sc">|&gt;</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">site_code_type =</span> <span class="fu">case_when</span>(</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(site_code, <span class="st">"[0-9]{3}-[0-9]{5,6}"</span>) <span class="sc">~</span> <span class="st">"Vm Freshwater"</span>,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(site_code, <span class="st">"HAV-[0-9]{5}"</span>) <span class="sc">~</span> <span class="st">"Vm Ocean"</span>,</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(site_code, <span class="st">"[0-9]{2}</span><span class="sc">\\</span><span class="st">.[0-9]{2}-[0-9]+"</span>) <span class="sc">~</span> <span class="st">"Vm Transitional"</span>,</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(site_code, <span class="st">"^J"</span>) <span class="sc">~</span> <span class="st">"JOVA?"</span>,</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">.default =</span> <span class="st">"Other"</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>site_code_types <span class="sc">|&gt;</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site_code_type) <span class="sc">|&gt;</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="at">codes_sample =</span> <span class="fu">str_flatten_comma</span>(<span class="fu">sample_n_safe</span>(site_code, <span class="at">n =</span> <span class="dv">10</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 89%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">site_code_type</th>
+<th style="text-align: left;">codes_sample</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">JOVA?</td>
+<td style="text-align: left;">JDS62, JDS4, JDS56, JDS27, JDS38, JDS36, JDS63a, JDS12, JDS9, JDS13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Other</td>
+<td style="text-align: left;">RIET_P_Black_IN, 57A, S1-DISPOSAL SITE, ICRA_WW_MID1, undefined-110340, MSU_BozemanWRF_B, FB_3, S18, SF_MIX2, S4-GRAN VGS</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Vm Freshwater</td>
+<td style="text-align: left;">111-92926, 155-44936, 121-44587, 142-44666, 002-44612, 119-99123, 021-29254, 025-56408, 177-30998, 196-83568</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Vm Ocean</td>
+<td style="text-align: left;">HAV-79712, HAV-79870, HAV-64295, HAV-62998, HAV-106844, HAV-57256, HAV-64283, HAV-79256, HAV-48484, HAV-91544</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Vm Transitional</td>
+<td style="text-align: left;">02.60-90711, 04.21-107901, 04.24-104577, 01.10-109540, 03.41-106024, 02.61-51442, 03.64-105479, 04.01-110833, 02.80-104758, 04.02-51589</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>RADB doesn’t appear to have any strict constraints on <code>site_code</code></li>
+<li>since <code>environmental_con</code> contains both <code>site_code</code> and <code>site_id</code>, I presume that the tables join on <code>site_id</code>, which means that <code>site_code</code> doesn’t strictly need to be unique</li>
+<li>nevertheless, the current <code>site_code</code> variables are all unique</li>
+<li>eData generates a <a href="https://nivanorge.github.io/eDataDRF/articles/sites_data.html#site-code---string-free-mandatory">Sites - SITE_CODE</a> based on campaign, long form site name, and a serial number. This isn’t necessarily a better option, but it might be good to lay down some “principles of a good site_code”</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Recommendations">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Recommendations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>No changes immediately needed for harmonisation between schemes</li>
+<li>Review guidelines for site codes if needed</li>
+</ul>
+<p><strong>Assessment</strong></p>
+<ul>
+<li>Priority: 1/5</li>
+<li>Difficulty: 1/5</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="site_name" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="site_name"><span class="header-section-number">1.4</span> <code>site_name</code></h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>site_code_types <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site_code_type) <span class="sc">|&gt;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="at">names_sample =</span> <span class="fu">str_flatten_comma</span>(<span class="fu">sample_n_safe</span>(site_name, <span class="at">n =</span> <span class="dv">10</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 94%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">site_code_type</th>
+<th style="text-align: left;">names_sample</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">JOVA?</td>
+<td style="text-align: left;">Oberloiben, Olt, Asten, Geisling power plant, Chemical inventory, Klizska Nema, Prut, Golubac/Koronin, Sava, Velika Morava</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Other</td>
+<td style="text-align: left;">Krossanes, Outer SÃ¸rfjord (S57A), RE2, Taraldrud X, Hasle, snow dep., OSLO_NO, OV_129218, RN5, Hovinmoen, JOVA2015, Heiabekken (10.07-27.07) synthetic mixture, SÃ¸rfjorden Ytre (S4)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Vm Freshwater</td>
+<td style="text-align: left;">E4-Flaataana, Kautokeino, Sidebekk ved Namsvassdammen, St.&nbsp;5 Deildalsbekken, LGN-stasjon 100: Ramfjordmoen, maalepunkt 50, Kristiansund lufthavn, ENKB-S2, Heftingsdalen (pumpestasjon), Kv-2, Freielva - Fredoe skytebane V2, Djupeskarvatnet</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Vm Ocean</td>
+<td style="text-align: left;">Nordland VI R0653GR0452, Nordkapp Soerkapptransektet R1709MC004, Nordland VI R0769MC001, 9901-516, Region IV, sydvest (13), Troms III R0628MC050, Indre Kongsfjorden, R1865 MC15, Norskehavet R2354GR125, Ingoeydjupet R0068MC149, Sularyggen R0961MC024k1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Vm Transitional</td>
+<td style="text-align: left;">Groettingsoey, HAF 4, Langstein, Sed8, Hellevika, HEL-REF, Havoeysund Hallvika, ST3, Ramsund_omraade1_P7, Kaavika, KAaV-4, C1 BLOMSOERAASA, Puddefjorden, NY 1, L8 Lohavn NGI 2013</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>Site names are presumably also based on original site names</li>
+<li>Using site names is difficult - they often make sense only in the immediate context of the study</li>
+<li>In general, assigning names to arbitrary spatial points (reverse geocoding) is difficult, but this spatial information is often very important for interpreting data</li>
+<li>If users search data by site name, collisions between names may be an issue?</li>
+<li>How does one e.g.&nbsp;get all data for a specific county?</li>
+<li>eData doesn’t solve any of these problems either</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Recommendations">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Recommendations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Review geodata needs of database</li>
+<li>Consider developing guidelines for naming sites depending on needs</li>
+</ul>
+<p><strong>Assessment</strong></p>
+<ul>
+<li>Priority: 1/5</li>
+<li>Difficulty: 5/5</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="country" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="country"><span class="header-section-number">1.5</span> <code>country</code></h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(country) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">AT</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BG</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Belgium</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DE</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DK</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ES</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">France</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Germany</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HR</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HU</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Italy</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NO</td>
+<td style="text-align: right;">29010</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RO</td>
+<td style="text-align: right;">17</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RS</td>
+<td style="text-align: right;">17</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SK</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spain</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">USA</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">25</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>Countries are a mix of two-letter codes (ISO-3166-A2?) and names</li>
+<li>I believe <code>country</code> is a mandatory field in some versions of the input spreadsheet, but not all sites will be in countries (or indeed on land)</li>
+<li>Out of interest, which sites have no country code?</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(country)) <span class="sc">|&gt;</span> <span class="fu">kable_abbreviate</span>(<span class="at">n =</span> <span class="dv">25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+| site_id|site_code      |site_name                                            |country |area | latitude| longitude|coordinate_system | altitude_value|altitude_unit |entered_by |entered_date        |comments |status |dwh_validfromdate |dwh_validtodate | dwh_valid| rnum|
+|-------:|:--------------|:----------------------------------------------------|:-------|:----|--------:|---------:|:-----------------|--------------:|:-------------|:----------|:-------------------|:--------|:------|:-----------------|:---------------|---------:|----:|
+|     109|Novi Sad       |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   22|
+|     110|Vienna         |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   23|
+|     111|Vienna/Wien    |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   24|
+|     121|Empty          |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2015-11-17 09:47:34 |         |NA     |2019-05-02        |2999-12-31      |         1|   25|
+|     201|EPA Toxcast    |Chemical inventory                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2016-07-13 23:48:16 |         |NA     |2019-05-02        |2999-12-31      |         1|   47|
+|     202|ECHA database  |Chemical inventory                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2016-07-13 23:53:32 |         |NA     |2019-05-02        |2999-12-31      |         1|   48|
+|     203|Japan MWHL     |Chemical inventory                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2016-07-13 23:54:00 |         |NA     |2019-05-02        |2999-12-31      |         1|   49|
+|     204|EPA ECOTOX     |Chemical inventory                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2016-07-13 23:54:35 |         |NA     |2019-05-02        |2999-12-31      |         1|   50|
+|     205|ECHA CHEM      |Chemical inventory                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2016-07-13 23:54:43 |         |NA     |2019-05-02        |2999-12-31      |         1|   51|
+|     221|S18            |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2016-08-24 10:53:52 |         |NA     |2019-05-02        |2999-12-31      |         1|   52|
+|       2|Bratislava     |Bratislava                                           |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   60|
+|       3|FB_1           |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   61|
+|       4|FB_2           |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   62|
+|       5|FB_3           |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   63|
+|       6|FB_4           |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   64|
+|       7|Inn            |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   65|
+|       8|INN_L          |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   66|
+|       9|INN_M          |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   67|
+|      10|INN_R          |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |TOH        |2014-11-25 11:29:08 |         |NA     |2019-05-02        |2999-12-31      |         1|   68|
+|     242|empty1         |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |KET        |2016-10-23 09:09:41 |         |NA     |2019-05-02        |2999-12-31      |         1|  136|
+|     243|empty3         |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |KET        |2016-10-23 09:09:46 |         |NA     |2019-05-02        |2999-12-31      |         1|  137|
+|     244|empty4         |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |KET        |2016-10-23 09:09:51 |         |NA     |2019-05-02        |2999-12-31      |         1|  138|
+|     245|empty5         |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |KET        |2016-10-23 09:09:56 |         |NA     |2019-05-02        |2999-12-31      |         1|  139|
+|     246|empty6         |NA                                                   |NA      |NA   |       NA|        NA|NA                |             NA|NA            |KET        |2016-10-23 09:10:02 |         |NA     |2019-05-02        |2999-12-31      |         1|  140|
+|     286|HEIA-SYNT MIX1 |JOVA2015, Heiabekken (10.07-27.07) synthetic mixture |NA      |NA   |       NA|        NA|NA                |             NA|NA            |KET        |2017-05-03 00:00:00 |         |NA     |2019-05-02        |2999-12-31      |         1|  148|</code></pre>
+</div>
+</div>
+<ul>
+<li>Some of these are chemical inventories, some appear to be “orphan” sites without relevant information</li>
+<li>eData <a href="https://nivanorge.github.io/eDataDRF/articles/sites_data.html#iso-country---string-controlled-mandatory">Sites - COUNTRY_ISO</a> standardises to ISO-3166 country names. I recommend this over two-letter codes, as some of the latter aren’t obvious (e.g.&nbsp;<code>HR</code> for Croatia)</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Recommendations">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Recommendations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Set format (ISO-3166 names?) and harmonise data</li>
+<li>Enforce format in Db and applications</li>
+<li>Review orphan sites and remove if necessary</li>
+<li>Consider adding new column for ocean sites, based on eData <a href="https://nivanorge.github.io/eDataDRF/articles/sites_data.html#iho-oceansea---string-controlled-mandatory">Sites - OCEAN_IHO</a></li>
+</ul>
+<p><strong>Assessment</strong></p>
+<ul>
+<li>Priority: 2/5</li>
+<li>Difficulty: 2/5</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="area" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="area"><span class="header-section-number">1.6</span> <code>area</code></h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(area) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">area</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Nedre Vats, Rogaland</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Barcelona</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BjÃ¸rnbÃ¦rvika</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Braanaasdalen</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Craponne</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Grimstad</td>
+<td style="text-align: right;">17</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Grimstad, Aust-Agder</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hadeland</td>
+<td style="text-align: right;">17</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hardanger</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hasle, Oslo</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hemnes (Nordland)</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kautokeino (Finnmark)</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Leipzig</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Levanger, Nord-TrÃ¸ndelag</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lillesand</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lofthus</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lombardia Region</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LÃ¸kken</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mainland Norway</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Moholmen</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Montana</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NIVA</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NMBU</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NR</td>
+<td style="text-align: right;">28854</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nerdal</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nes, Akershus</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Oslo</td>
+<td style="text-align: right;">18</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Oslofjord</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Province of Barcelona</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RÃ¥de, Ã˜stfold</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Salangen (Troms)</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sjaelland</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Stavanger</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Svalbard</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Taasen, Oslo</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Time, Rogaland</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Toraneskaia</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">West Flanders</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ã…s, Akershus</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">111</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>Very useful to capture lower-level geographical information, but <code>area</code> doesn’t enforce any formatting, so difficult to use</li>
+<li>Alternatively, possible to reverse-geocode based on coordinate data, which may be a better solution (could be done on-demand in STOPredictor?)</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Recommendations">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Recommendations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Review geographical needs for data and determine most pragmatic solution</li>
+<li>Standardise based on <a href="https://ec.europa.eu/eurostat/web/nuts">NUTS</a> (Europe-only) and/or FAO’s <a href="https://openknowledge.fao.org/items/aebf0333-a0e3-4177-9d4a-bb2472d0367e">Global Administrative Unit Layers</a>?</li>
+</ul>
+<p><strong>Assessment</strong></p>
+<ul>
+<li>Priority: 1/5</li>
+<li>Difficulty: 3/5</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="coordinates" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="coordinates"><span class="header-section-number">1.7</span> Coordinates</h2>
+<section id="coordinate_system" class="level3" data-number="1.7.1">
+<h3 data-number="1.7.1" class="anchored" data-anchor-id="coordinate_system"><span class="header-section-number">1.7.1</span> <code>coordinate_system</code></h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(coordinate_system) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">coordinate_system</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">WGS 83</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">WGS 84</td>
+<td style="text-align: right;">28932</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">WGS 84 (grader)</td>
+<td style="text-align: right;">58</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">WGS1984 UTM Zone 32N</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">152</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>Most sites use <code>WGS 84</code>, but there doesn’t appear to be a table for controlled CRS vocabulary</li>
+<li>Some errors (<code>WGS 83</code>, <code>WGS1984 UTM Zone 32N</code> - should be <code>ETRS89 / UTM zone 32N</code>)</li>
+<li>eData uses full ESPG dataset (<a href="https://nivanorge.github.io/eDataDRF/articles/sites_data.html#coordinate-reference-system---string-controlled-mandatory">Sites - SITE_COORDINATE_SYSTEM</a>) of CRS then highlights to those relevant to Arctic</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Recommendations">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Recommendations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Recommend use of eData solution as vocabulary table for consistency with ESPG</li>
+<li>Check CRS in existing data are valid</li>
+<li>Add constraints that all sites with lat/long must have CRS</li>
+</ul>
+<p><strong>Assessment</strong></p>
+<ul>
+<li>Priority: 2/5</li>
+<li>Difficulty: 3/5</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="latitude-and-longitude" class="level3" data-number="1.7.2">
+<h3 data-number="1.7.2" class="anchored" data-anchor-id="latitude-and-longitude"><span class="header-section-number">1.7.2</span> <code>latitude</code> and <code>longitude</code></h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>sites_wgs84 <span class="ot">&lt;-</span> sites <span class="sc">|&gt;</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(coordinate_system <span class="sc">==</span> <span class="st">"WGS 84"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"longitude"</span>, <span class="st">"latitude"</span>), <span class="at">crs =</span> <span class="dv">4326</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> rnaturalearth<span class="sc">::</span>countries110) <span class="sc">+</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> sites_wgs84, <span class="fu">aes</span>(<span class="at">geometry =</span> geometry, <span class="at">colour =</span> country)) <span class="sc">+</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="radb-sites_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Location appears to be correct for most sites, although some <code>NO</code> sites appear to be located at 0,0 and of coast of Russia</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Recommendations">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Recommendations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Review db sites data for inconsistencies</li>
+<li>Consider adding automated checking at data ingress for whether coordinates are reasonably for selected CRS/country/area/etc.</li>
+</ul>
+<p><strong>Assessment</strong></p>
+<ul>
+<li>Priority: 2/5</li>
+<li>Difficulty: 3/5</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="altitude" class="level2" data-number="1.8">
+<h2 data-number="1.8" class="anchored" data-anchor-id="altitude"><span class="header-section-number">1.8</span> Altitude</h2>
+<section id="altitude_value-and-altitude_unit" class="level3" data-number="1.8.1">
+<h3 data-number="1.8.1" class="anchored" data-anchor-id="altitude_value-and-altitude_unit"><span class="header-section-number">1.8.1</span> <code>altitude_value</code> and <code>altitude_unit</code></h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(<span class="fu">classify_value</span>(altitude_value), altitude_unit) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">classify_value(altitude_value)</th>
+<th style="text-align: left;">altitude_unit</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">NR</td>
+<td style="text-align: right;">28854</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">&gt;0</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: right;">53</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NA or NULL</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">232</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>altitude values/units appear to be consistent</li>
+<li>eData’s implementation is very similar (<a href="https://nivanorge.github.io/eDataDRF/articles/sites_data.html#altitude-value---numeric-free-mandatory">Sites - ALTITUDE_VALUE</a>)</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Recommendations">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Recommendations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Add guidelines for altitude, including edge cases and cases where altitude not reported</li>
+</ul>
+<p><strong>Assessment</strong></p>
+<ul>
+<li>Priority: 1/5</li>
+<li>Difficulty: 1/5</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="status" class="level2" data-number="1.9">
+<h2 data-number="1.9" class="anchored" data-anchor-id="status"><span class="header-section-number">1.9</span> <code>status</code></h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(status)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A data frame: 1 × 2
+  status     n
+  &lt;chr&gt;  &lt;int&gt;
+1 &lt;NA&gt;   29149</code></pre>
+</div>
+</div>
+<ul>
+<li>Purpose unknown.</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Recommendations">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Recommendations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Review and document purpose</li>
+</ul>
+<p><strong>Assessment</strong></p>
+<ul>
+<li>Priority: 1/5</li>
+<li>Difficulty: 1/5</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="provenance-and-entry-metadata" class="level2" data-number="1.10">
+<h2 data-number="1.10" class="anchored" data-anchor-id="provenance-and-entry-metadata"><span class="header-section-number">1.10</span> Provenance and entry metadata</h2>
+<section id="entered_by-and-entered_date" class="level3" data-number="1.10.1">
+<h3 data-number="1.10.1" class="anchored" data-anchor-id="entered_by-and-entered_date"><span class="header-section-number">1.10.1</span> <code>entered_by</code> and <code>entered_date</code></h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(entered_by, entered_date, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A data frame: 74 × 3
+   entered_by entered_date            n
+   &lt;chr&gt;      &lt;dttm&gt;              &lt;int&gt;
+ 1 KET        2023-09-26 00:00:00 28854
+ 2 TOH        2014-11-25 11:29:08    86
+ 3 KET        2018-11-07 00:00:00    20
+ 4 LIX        2022-04-12 00:00:00    18
+ 5 KPE        2017-12-04 00:00:00    17
+ 6 KET        2019-03-06 15:01:56    12
+ 7 MM         2023-10-31 00:00:00    12
+ 8 KET        2019-10-18 00:00:00    11
+ 9 KET        2016-06-03 11:59:00    10
+10 KET        2021-03-23 00:00:00    10
+# ℹ 64 more rows</code></pre>
+</div>
+</div>
+<ul>
+<li>All dates properly formatted</li>
+<li>Identical to eData <a href="https://nivanorge.github.io/eDataDRF/articles/sites_data.html#entered-by---string-free-mandatory">Sites - ENTERED_BY</a></li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Recommendations">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Recommendations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Consider automating <code>entered_by</code> info with STOP user accounts (partially implemented in eData pp)</li>
+</ul>
+<p><strong>Assessment</strong></p>
+<ul>
+<li>Priority: 1/5</li>
+<li>Difficulty: 1/5</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="comments" class="level3" data-number="1.10.2">
+<h3 data-number="1.10.2" class="anchored" data-anchor-id="comments"><span class="header-section-number">1.10.2</span> <code>comments</code></h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>sites <span class="sc">|&gt;</span> <span class="fu">count</span>(comments, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A data frame: 22 × 2
+   comments                                                       n
+   &lt;chr&gt;                                                      &lt;int&gt;
+ 1 "\r"                                                       28839
+ 2 " "                                                          177
+ 3 "Multisource pilot sites\r"                                   27
+ 4  &lt;NA&gt;                                                         22
+ 5 "Undefined sampling location"                                 14
+ 6 "Converted from UTM Zone 32"                                  12
+ 7 "Simulation"                                                  11
+ 8 "Test EARTHRESQ"                                              10
+ 9 "\"Case study \"\"Kaldvellfjorden\"\" (16396 MIXRISK)\"\r"     6
+10 "\"Case study \"\"Sorfjorden\"\" (16396 MIXRISK)\"\r"          6
+# ℹ 12 more rows</code></pre>
+</div>
+</div>
+<ul>
+<li>Similar carriage return (<code>\r</code>) issue as in other comments fields</li>
+<li>in eData, renamed to <a href="https://nivanorge.github.io/eDataDRF/articles/sites_data.html#site-comment---string-free-optional">Sites - SITE_COMMENT</a> for clarity</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Recommendations">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Recommendations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Add guidance on relevant information for comments</li>
+</ul>
+<p><strong>Assessment</strong></p>
+<ul>
+<li>Priority: 1/5</li>
+<li>Difficulty: 1/5</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="keys-and-data-warehouse-columns" class="level2" data-number="1.11">
+<h2 data-number="1.11" class="anchored" data-anchor-id="keys-and-data-warehouse-columns"><span class="header-section-number">1.11</span> Keys and data warehouse columns</h2>
+<section id="dwh_validfromdate-dwh_validtodate-dwh_valid-and-rnum" class="level3" data-number="1.11.1">
+<h3 data-number="1.11.1" class="anchored" data-anchor-id="dwh_validfromdate-dwh_validtodate-dwh_valid-and-rnum"><span class="header-section-number">1.11.1</span> <code>dwh_validfromdate</code>, <code>dwh_validtodate</code>, <code>dwh_valid</code>, and <code>rnum</code></h3>
+<p>Not reviewed per-table, see <a href="radb-env-con-exploration.qmd">environmental_con</a> for details.</p>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
